@@ -1,94 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="welcome">
 <head>
     <!-- Meta Information -->
+    <title>Midbound</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Spark</title>
-
-    <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
-
-    <style>
-        body, html {
-            background: url('/img/spark-bg.png');
-            background-repeat: repeat;
-            background-size: 300px 200px;
-            height: 100%;
-            margin: 0;
-        }
-
-        .full-height {
-            min-height: 100%;
-        }
-
-        .flex-column {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .flex-fill {
-            flex: 1;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-
-        .text-center {
-            text-align: center;
-        }
-
-        .links {
-            padding: 1em;
-            text-align: right;
-        }
-
-        .links a {
-            text-decoration: none;
-        }
-
-        .links button {
-            background-color: #3097D1;
-            border: 0;
-            border-radius: 4px;
-            color: white;
-            cursor: pointer;
-            font-family: 'Open Sans';
-            font-size: 14px;
-            font-weight: 600;
-            padding: 15px;
-            text-transform: uppercase;
-            width: 100px;
-        }
-    </style>
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon-32x32.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ asset('favicon-16x16.png') }}" sizes="16x16">
 </head>
 <body>
-    <div class="full-height flex-column">
-        <nav class="links">
-            <a href="/login" style="margin-right: 15px;">
-                <button>
-                    Login
-                </button>
-            </a>
-
-            <a href="/register">
-                <button>
-                    Register
-                </button>
-            </a>
-        </nav>
-
-        <div class="flex-fill flex-center">
-            <h1 class="text-center">
-                <img src="/img/color-logo.png">
-            </h1>
-        </div>
+    <div class="flex-fill flex-center">
+        <h1 class="text-center">
+            <img src="{{ asset('img/color-logo.png') }}">
+        </h1>
     </div>
 </body>
 </html>
