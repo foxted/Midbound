@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 /**
- * Class WelcomeController
+ * Class DashboardController
  * @package App\Http\Controllers
  */
-class WelcomeController extends Controller
+class DashboardController extends Controller
 {
     /**
-     * Show the application splash screen.
+     * Show the application dashboard.
      *
      * @return Response
      */
     public function show()
     {
-        return view('welcome');
+        return view('dashboard');
     }
 }

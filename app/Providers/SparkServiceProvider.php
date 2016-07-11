@@ -15,8 +15,8 @@ class SparkServiceProvider extends ServiceProvider
     protected $details = [
         'vendor' => 'Projet Secondaire',
         'product' => 'Midbound',
-        'street' => 'PO Box 111',
-        'location' => 'Your Town, NY 12345',
+        'street' => '',
+        'location' => 'Vancouver, BC',
         'phone' => '555-555-5555',
     ];
 
@@ -42,7 +42,7 @@ class SparkServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $usesApi = true;
+    protected $usesApi = false;
 
     /**
      * Finish configuring Spark for the application.

@@ -24,13 +24,6 @@ class AuthController extends Controller
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
     /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
-
-    /**
      * Create a new authentication controller instance.
      *
      * @return void
@@ -54,6 +47,15 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function redirectPath()
+    {
+        return route('app.dashboard');
+    }
+
 
     /**
      * Create a new user instance after a valid registration.
