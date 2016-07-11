@@ -1,3 +1,4 @@
+@import "variables";
 @import "spark/variables";
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
@@ -5,3 +6,8 @@
 
 // Pages
 @import "pages/welcome";
+
+// Components (sitewide components styles)
+
+
+// Modules (area wide styles. Ex.: Prospect pages)
