@@ -1,0 +1,31 @@
+.list-group {
+	background: $nav-bg;
+	border-radius: $border-radius-base;
+
+	.list-header {
+	    display: block;
+	    padding: 15px 0 0 20px;
+	    text-transform: uppercase;
+	    color: $list-group-link-heading-color;
+	    opacity: $list-group-link-opacity;
+	    font-size: $font-size-small;
+	}
+}
+
+
+a.list-group-item {
+	opacity: $list-group-link-opacity;
+	background: none;
+	padding-left: 20px;
+}
+
+a.list-group-item.active {
+	opacity: $list-group-link-hover-opacity;
+}
+
+
+a.list-group-item:hover {
+	opacity: $list-group-link-hover-opacity;
+	background-color: $list-group-hover-bg;
+}
+

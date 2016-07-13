@@ -1,3 +1,5 @@
 <?php
 
-Route::get('/', 'WelcomeController@show');
+Route::get('/', 'ExternalPagesController@home');
+
+Route::get('/styles', 'ExternalPagesController@styles');
