@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,900,900i';
+@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,700,900';
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -6281,16 +6281,22 @@ body {
   height: 100%; }
 
 body {
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400; }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 900; }
 
+.text-gray, .text-gray a, .text-gray a:hover, a.text-gray:hover, .text-gray a:focus, a.text-gray:focus {
+  color: #222; }
+
 .list-group {
   background: #2F4858;
-  border-radius: 3px; }
+  border-radius: 3px;
+  padding: 0 24px 24px 0; }
   .list-group .list-header {
     display: block;
+    font-weight: 700;
     padding: 15px 0 0 20px;
     text-transform: uppercase;
     color: #fff;
@@ -6300,7 +6306,13 @@ h1, h2, h3, h4, h5, h6 {
 a.list-group-item {
   opacity: 0.7;
   background: none;
-  padding-left: 20px; }
+  padding: 4px 10px 4px 20px;
+  border-radius: 0 3px 3px 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; }
+  a.list-group-item .fa {
+    font-size: 12px; }
 
 a.list-group-item.active {
   opacity: 1; }
@@ -6308,5 +6320,62 @@ a.list-group-item.active {
 a.list-group-item:hover {
   opacity: 1;
   background-color: #385669; }
+
+a.list-group-item.cta {
+  font-weight: 900;
+  font-weight: 900;
+  border-bottom: 1px dotted;
+  display: initial;
+  margin-left: 20px;
+  border-radius: 0;
+  padding: 4px 4px 4px 0; }
+  a.list-group-item.cta:hover {
+    background-color: inherit; }
+
+.panel-default {
+  border-color: #e8e8e8;
+  border-width: 1px 0 0 0;
+  box-shadow: none;
+  border-radius: 0;
+  margin-bottom: 0; }
+  .panel-default .panel-body {
+    font-weight: 400; }
+    .panel-default .panel-body .prospect {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: end;
+      align-items: flex-end; }
+      .panel-default .panel-body .prospect .info {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 300px; }
+        .panel-default .panel-body .prospect .info .name {
+          font-weight: 900; }
+        .panel-default .panel-body .prospect .info .email {
+          font-size: 14px; }
+        .panel-default .panel-body .prospect .info p {
+          margin: 0; }
+      .panel-default .panel-body .prospect .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 3px;
+        background: #dedede;
+        margin-right: 10px;
+        -ms-flex-negative: 0;
+        flex-shrink: 0; }
+      .panel-default .panel-body .prospect .actions {
+        font-size: 32px;
+        margin-left: 40px;
+        width: 400px; }
+    .panel-default .panel-body .event {
+      padding: 14px 0; }
+      .panel-default .panel-body .event .time {
+        font-style: italic;
+        color: #999999;
+        font-size: 14px; }
+
+.panel-default:hover, .panel-default:focus {
+  background-color: #f9f9f9; }
 
 /*# sourceMappingURL=app.css.map */

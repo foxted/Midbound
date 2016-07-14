@@ -15,7 +15,7 @@ $nav-bg: 		    #2F4858;
 $nav-hover-bg:     lighten($nav-bg, 5%);
 
 // Typography
-@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,900,900i';
+@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,700,900';
 
 $font-family-sans-serif: 'Lato', sans-serif;
 $text-color: $gray-base;
@@ -26,11 +26,20 @@ $font-size-h1:            floor(($font-size-base * 4));
 $font-size-h2:            floor(($font-size-base * 2));
 $font-size-h3:            $font-size-base; 
 
-$headings-font-weight: 900;
+$font-weight-normal: 400;
+$font-weight-bold:  700;
+$font-weight-black:  900;
+
+$nav-headings-font-weight: $font-weight-bold;
+$headings-font-weight: $font-weight-black;
+
+$fa-font-size-base: ceil(($font-size-base * 0.75));
 
 // List Groups
 $list-group-bg: $nav-bg;
 $list-group-border: none;
+$list-group-left-padding: 20px;
+$list-group-item-padding: 4px 10px 4px $list-group-left-padding;
 $list-group-link-color: #fff;
 $list-group-link-opacity: 0.7;
 
@@ -38,6 +47,7 @@ $list-group-hover-bg: $nav-hover-bg;
 $list-group-link-hover-opacity: 1;
 $list-group-link-heading-color: $list-group-link-color;
 $list-group-header-font-size: $font-size-small;
+
 
 
 // Panels
