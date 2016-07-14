@@ -1,3 +1,4 @@
 <?php
 
-Route::get('/dashboard', 'DashboardController@show')->middleware('auth')->name('app.dashboard');
+Route::get('dashboard', 'DashboardController@show')->name('dashboard');
+Route::resource('prospects', 'ProspectsController', ['only' => ['index']]);
