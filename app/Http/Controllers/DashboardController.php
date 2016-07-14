@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Midbound\Http\Controllers;
 
 /**
  * Class DashboardController
- * @package App\Http\Controllers
+ * @package Midbound\Http\Controllers
  */
 class DashboardController extends Controller
 {

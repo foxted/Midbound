@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Midbound\Http\Controllers;
 
 /**
  * Class WelcomeController
- * @package App\Http\Controllers
+ * @package Midbound\Http\Controllers
  */
 class WelcomeController extends Controller
 {

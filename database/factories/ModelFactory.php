@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\Prospect::class, function (Faker\Generator $faker) {
+$factory->define(Midbound\Prospect::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->safeEmail,

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Midbound\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Midbound\Http\Requests;
 
 class ProspectsController extends Controller
 {

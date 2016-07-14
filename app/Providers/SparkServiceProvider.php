@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Providers;
+namespace Midbound\Providers;
 
 use Laravel\Spark\Spark;
 use Laravel\Spark\Providers\AppServiceProvider as ServiceProvider;
+use Midbound\User;
 
 class SparkServiceProvider extends ServiceProvider
 {
@@ -46,8 +47,6 @@ class SparkServiceProvider extends ServiceProvider
 
     /**
      * Finish configuring Spark for the application.
-     *
-     * @return void
      */
     public function booted()
     {
@@ -63,5 +62,14 @@ class SparkServiceProvider extends ServiceProvider
             ->features([
                 'First', 'Second', 'Third'
             ]);
+    }
+
+    /**
+     * Register method
+     */
+    public function register()
+    {
+        Spark::useUserModel(\Midbound\User::class);
+        Spark::useTeamModel(\Midbound\Team::class);
     }
 }

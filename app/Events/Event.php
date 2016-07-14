@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Midbound\Events;
 
 abstract class Event
 {

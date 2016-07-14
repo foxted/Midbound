@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Midbound;
 
 use Laravel\Spark\Team as SparkTeam;
 
