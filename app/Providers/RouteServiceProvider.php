@@ -2,37 +2,41 @@
 
 namespace Midbound\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
+use Midbound\Bindings\ProspectBinding;
 
+/**
+ * Class RouteServiceProvider
+ * @package Midbound\Providers
+ */
 class RouteServiceProvider extends ServiceProvider
 {
+    protected $modelBindings = [
+        'prospects' => ProspectBinding::class
+    ];
+    
     /**
      * This namespace is applied to your controller routes.
-     *
-     * In addition, it is set as the URL generator's root namespace.
-     *
      * @var string
      */
     protected $namespace = 'Midbound\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function boot(Router $router)
     {
-        //
+        $this->registerBindings($router);
 
         parent::boot($router);
     }
 
     /**
      * Define the routes for the application.
-     *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)
@@ -44,16 +48,14 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the guest routes for the application (no authentication).
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapGuestRoutes(Router $router)
     {
         $router->group([
-            'namespace' => $this->namespace, 'middleware' => ['web', 'guest', 'hasTeam'],
+            'namespace' => $this->namespace,
+            'middleware' => ['web', 'guest', 'hasTeam'],
         ], function ($router) {
             require app_path('Http/guest.php');
         });
@@ -61,10 +63,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the application routes (behind authentication).
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapAppRoutes(Router $router)
@@ -80,16 +79,24 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "api" routes for the application.
-     *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapApiRoutes(Router $router)
     {
         $router->group([
-            'namespace' => $this->namespace,
+            'namespace' => $this->namespace . '\API',
+            'prefix' => 'api',
+            'middleware' => ['auth:api']
         ], function ($router) {
             require app_path('Http/api.php');
         });
+    }
+
+    private function registerBindings(Router $router)
+    {
+        foreach($this->modelBindings as $parameter => $binding) {
+            $router->bind($parameter, $binding);
+        }
     }
 }

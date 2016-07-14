@@ -14,6 +14,7 @@ class CreateProspectsTable extends Migration
     {
         Schema::create('prospects', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('pid')->nullable()->index();
             $table->integer('team_id')->unsigned()->index();
             $table->integer('assignee_id')->unsigned()->index()->nullable();
             $table->string('email')->nullable()->index();

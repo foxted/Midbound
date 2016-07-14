@@ -5,6 +5,10 @@ namespace Midbound;
 use Laravel\Spark\CanJoinTeams;
 use Laravel\Spark\User as SparkUser;
 
+/**
+ * Class User
+ * @package Midbound
+ */
 class User extends SparkUser
 {
     use CanJoinTeams;
