@@ -29,7 +29,7 @@ class Prospect extends Model
     public function getAvatarAttribute()
     {
         $hash = md5($this->email);
-        return "//www.gravatar.com/avatar/{$hash}";
+        return "//www.gravatar.com/avatar/{$hash}?s=250";
     }
 
     /**

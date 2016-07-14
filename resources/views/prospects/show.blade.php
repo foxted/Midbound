@@ -7,7 +7,7 @@
                 <div class="col-sm-3">
                     <div class="panel">
                         <div class="panel-body">
-                            <img class="img-rounded img-responsive center-block" src="{{ $prospect->avatar }}" style="margin-bottom: 2em;width: 100px">
+                            <img class="img-rounded img-responsive center-block" src="{{ $prospect->avatar }}" style="margin-bottom: 2em;">
                             <small><span class="text-uppercase text-muted">Name</span></small>
                             <h4 class="text-capitalize" style="margin-top: 0;"><strong>{{ $prospect->name }}</strong></h4>
 
