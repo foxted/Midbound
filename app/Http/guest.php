@@ -1,5 +1,4 @@
 <?php
 
-Route::get('/', 'ExternalPagesController@home');
-
-Route::get('/styles', 'ExternalPagesController@styles');
+Route::get('/', 'GuestController@home');
+Route::get('/styles', 'GuestController@styles');
