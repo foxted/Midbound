@@ -4,10 +4,19 @@
 
 @import "spark/spark";
 
+
+
 // Pages
 @import "pages/welcome";
 
 // Components (sitewide components styles)
+@import "components/typography";
+@import "components/listgroups";
+@import "components/panels";
+// @import "components/navs";
+
+// @import "components/buttons";
+// @import "components/scaffolding";
 
 
 // Modules (area wide styles. Ex.: Prospect pages)

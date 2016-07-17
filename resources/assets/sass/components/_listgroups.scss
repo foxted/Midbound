@@ -1,0 +1,55 @@
+.list-group {
+	background: $nav-bg;
+	border-radius: $border-radius-base;
+	padding: 0 24px 24px 0;
+
+	.list-header {
+	    display: block;
+	    font-weight: $nav-headings-font-weight;
+	    padding: 15px 0 0 $list-group-left-padding; 
+	    text-transform: uppercase;
+	    color: $list-group-link-heading-color;
+	    opacity: $list-group-link-opacity;
+	    font-size: $font-size-small;
+	}
+}
+
+
+a.list-group-item {
+	opacity: $list-group-link-opacity;
+	background: none;
+	padding: $list-group-item-padding;
+	border-radius: 0 $border-radius-base  $border-radius-base 0;
+	text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+     
+     .fa {
+     	font-size: $fa-font-size-base;
+     }
+}
+
+a.list-group-item.active {
+	opacity: $list-group-link-hover-opacity;
+}
+
+
+a.list-group-item:hover {
+	opacity: $list-group-link-hover-opacity;
+	background-color: $list-group-hover-bg;
+}
+
+a.list-group-item.cta {
+	font-weight: $headings-font-weight;
+	font-weight: 900;
+	border-bottom: 1px dotted;
+	display: initial;
+	margin-left: $list-group-left-padding;
+	border-radius: 0;
+	padding: 4px 4px 4px 0;
+
+	&:hover { 
+     	background-color: inherit;
+	}
+}
+
