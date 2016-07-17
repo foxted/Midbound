@@ -25,8 +25,27 @@
         <a href="#" class="btn btn-default">Default Button</a>
         <a href="#" class="btn btn-primary">Primary Button</a>
         <a href="#" class="btn btn-success">Success Button</a>
+        <a href="#" class="btn btn-warning">Success Button</a>
+        <a href="#" class="btn btn-info">Success Button</a>
         <a href="#" class="btn btn-danger">Danger Button</a>
-        
+
+        <div class="alert alert-info">
+            <h4>Alert!</h4>
+            Blablabla
+        </div>
+        <div class="alert alert-success">
+            <h4>Alert!</h4>
+            Blablabla
+        </div>
+        <div class="alert alert-warning">
+            <h4>Alert!</h4>
+            Blablabla
+        </div>
+        <div class="alert alert-danger">
+            <h4>Alert!</h4>
+            Blablabla
+        </div>
+
         <div class="clearfix"></div>
         <div class="col-md-3">
         <h3>Left Nav Style</h3>

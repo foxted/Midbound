@@ -16,8 +16,8 @@ $gray-base: #222;
 
 $brand-primary:         #5DADD8;
 $brand-success:         #6CAD5F;
-$brand-info:            #FFC857;
-$brand-warning:         #BF5452;
+$brand-info:            #6C6999;
+$brand-warning:         #FFC857;
 $brand-danger:          #BF5452;
 
 $nav-bg: 		    #2F4858;
@@ -61,6 +61,11 @@ $list-group-header-font-size: $font-size-small;
 
 // Panels
 
+
+// Alert
+$alert-info-bg: lighten($brand-info, 30%);
+$alert-info-border: lighten($brand-info, 40%);
+$alert-info-text: $brand-info;
 
 // Buttons
 $btn-primary-bg: $brand-primary;
