@@ -14,7 +14,7 @@
 <body>
     <div class="flex-fill flex-center">
         <h1 class="text-center">
-            <img src="{{ asset('img/color-logo.png') }}">
+            <img src="{{ asset('img/midbound-logo-600.png') }}">
         </h1>
     </div>
 </body>
