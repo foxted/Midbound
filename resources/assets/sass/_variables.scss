@@ -8,12 +8,17 @@ $border-radius-small: 0;
 $border-radius-large: 0;
 
 // Scaffolding 
-$body-bg: #fff;
+$body-bg: #e9ebee;
 $border-radius-base: 3px;
 
 
 // Colors
-$gray-base: #222;
+$gray-base:              #222;
+$gray-darker:            lighten($gray-base, 13.5%);
+$gray-dark:              lighten($gray-base, 20%);
+$gray:                   lighten($gray-base, 33.5%);
+$gray-light:             lighten($gray-base, 46.7%);
+$gray-lighter:           #dddfe2;
 
 $brand-primary:         #5DADD8;
 $brand-success:         #6CAD5F;
@@ -30,6 +35,7 @@ $font-family-sans-serif: 'Lato', sans-serif;
 $text-color: $gray-base;
 $font-size-base: 16px;
 $font-size-small: ceil(($font-size-base * 0.85));
+$font-size-smaller: ceil(($font-size-base * 0.8));
 
 $font-size-h1:            floor(($font-size-base * 4));
 $font-size-h2:            floor(($font-size-base * 2));
@@ -125,16 +131,14 @@ $nav-disabled-link-hover-color:             $gray-light !default;
 
 
 // List Groups
-$list-group-bg: $navbar-inverse-bg;
+$list-group-bg: transparent;
 $list-group-border: none;
-$list-group-left-padding: 20px;
-$list-group-item-padding: 4px 10px 4px $list-group-left-padding;
-$list-group-link-color: #fff;
-$list-group-link-opacity: 0.7;
+$list-group-item-padding: 4px 10px 4px 4px;
+$list-group-link-color: $gray-dark;
 
-$list-group-hover-bg: $navbar-inverse-link-hover-bg;
-$list-group-link-hover-opacity: 1;
-$list-group-link-heading-color: $list-group-link-color;
+$list-group-hover-bg: $gray-lighter;
+$list-group-hover-link-color: $gray-darker;
+$list-group-link-heading-color: $gray;
 $list-group-header-font-size: $font-size-small;
 
 

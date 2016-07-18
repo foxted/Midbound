@@ -1,25 +1,20 @@
 .list-group {
-	background: $navbar-inverse-bg;
-	border-radius: $border-radius-base;
-	padding: 0 24px 24px 0;
 
 	.list-header {
 	    display: block;
 	    font-weight: $nav-headings-font-weight;
-	    padding: 15px 0 0 $list-group-left-padding; 
 	    text-transform: uppercase;
 	    color: $list-group-link-heading-color;
-	    opacity: $list-group-link-opacity;
-	    font-size: $font-size-small;
+	    font-size: $font-size-smaller;
 	}
 }
 
-
 a.list-group-item {
-	opacity: $list-group-link-opacity;
-	background: none;
+	font-size: $font-size-small;
+	color: $list-group-link-color;
+	background: $list-group-bg;
 	padding: $list-group-item-padding;
-	border-radius: 0 $border-radius-base  $border-radius-base 0;
+	border-radius: 0;
 	text-overflow: ellipsis;
      overflow: hidden;
      white-space: nowrap;
@@ -27,29 +22,35 @@ a.list-group-item {
      .fa {
      	font-size: $fa-font-size-base;
      }
-}
-
-a.list-group-item.active {
-	opacity: $list-group-link-hover-opacity;
-}
 
 
-a.list-group-item:hover {
-	opacity: $list-group-link-hover-opacity;
-	background-color: $list-group-hover-bg;
+	&.active {
+		color: $list-group-link-color;
+		font-weight: $font-weight-bold;
+		background-color: $list-group-hover-bg;
+		&:hover { 
+	     	background-color: $list-group-hover-bg;
+	     	color: $list-group-hover-link-color;
+		}
+		&:focus {
+			background-color: $gray-light;
+			color: $list-group-hover-link-color;
+		}
+	}
 }
+
 
 a.list-group-item.cta {
-	font-weight: $headings-font-weight;
-	font-weight: 900;
+	color: $list-group-link-heading-color;
+	font-weight: $font-weight-black;
 	border-bottom: 1px dotted;
 	display: initial;
-	margin-left: $list-group-left-padding;
 	border-radius: 0;
 	padding: 4px 4px 4px 0;
 
 	&:hover { 
      	background-color: inherit;
+     	color: $list-group-hover-link-color;
 	}
 }
 

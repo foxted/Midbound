@@ -5,24 +5,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="active">
-                                <a href="#">New <span class="badge">14</span></a></li>
-                            <li>
-                                <a href="#">Active <span class="badge">5</span></a>
-                                <ul id="subnav" class="nav" style="display: block; text-indent: 10px;">
-                                    <li><a href="#">Past 24 Hours</a></li>
-                                    <li><a href="#">Past 7 Days</a></li>
-                                    <li><a href="#">Past 30 Days</a></li>
-                                </ul>
-                            </li>
-
-                            <li><a href="#">All </a></li>
-                            <li><a href="#">Ignored </a></li>
-                        </ul>
-                    </div>
+                <div class="list-group">
+                    <div class="list-header">Saved Searches</div>
+                    <a href="#" class="list-group-item">Most Recent</a>
+                    <a href="#" class="list-group-item active">Most Engaged</a>
+                    <a href="#" class="list-group-item">Newly Added</a>
+                    <a href="#" class="list-group-item cta"><i class="fa fa-plus"></i> Add</a>
                 </div>
             </div>
             <div class="col-md-9">
