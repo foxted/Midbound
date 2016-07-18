@@ -1,3 +1,3 @@
 <a class="navbar-brand" href="{{ route('app.dashboard') }}">
-    <img src="/img/color-logo.png" style="height: 32px;">
+    <img src="/img/color-logo-inverse.png" style="height: 18px;">
 </a>

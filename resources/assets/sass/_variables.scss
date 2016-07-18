@@ -11,6 +11,7 @@ $border-radius-large: 0;
 $body-bg: #fff;
 $border-radius-base: 3px;
 
+
 // Colors
 $gray-base: #222;
 
@@ -20,8 +21,7 @@ $brand-info:            #6C6999;
 $brand-warning:         #FFC857;
 $brand-danger:          #BF5452;
 
-$nav-bg: 		    #2F4858;
-$nav-hover-bg:     lighten($nav-bg, 5%);
+
 
 // Typography
 @import 'https://fonts.googleapis.com/css?family=Lato:400,400i,700,900';
@@ -39,23 +39,105 @@ $font-weight-normal: 400;
 $font-weight-bold:  700;
 $font-weight-black:  900;
 
+$line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
+
 $nav-headings-font-weight: $font-weight-bold;
 $headings-font-weight: $font-weight-black;
 
 $fa-font-size-base: ceil(($font-size-base * 0.75));
 
+
+//== Navbar
+//
+//##
+
+// Basics of a navbar
+
+$navbar-height:                    50px !default;
+$navbar-margin-bottom:             $line-height-computed !default;
+$navbar-border-radius:             $border-radius-base !default;
+
+$navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
+$navbar-collapse-max-height:       340px !default;
+
+$navbar-default-color:             #777 !default;
+$navbar-default-bg:                #f8f8f8 !default;
+$navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
+
+// Navbar links
+$navbar-default-link-color:                #777 !default;
+$navbar-default-link-hover-color:          #333 !default;
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         #555 !default;
+$navbar-default-link-active-bg:            #86bbd8;
+$navbar-default-link-disabled-color:       #ccc !default;
+$navbar-default-link-disabled-bg:          transparent !default;
+
+// Navbar brand label
+$navbar-default-brand-color:               $navbar-default-link-color !default;
+$navbar-default-brand-hover-color:         darken($navbar-default-brand-color, 10%) !default;
+$navbar-default-brand-hover-bg:            transparent !default;
+
+// Navbar toggle
+$navbar-default-toggle-hover-bg:           #ddd !default;
+$navbar-default-toggle-icon-bar-bg:        #888 !default;
+$navbar-default-toggle-border-color:       #ddd !default;
+
+
+//=== Inverted navbar
+// Reset inverted navbar basics
+
+$navbar-inverse-color:                      lighten($gray-light, 15%) !default;
+$navbar-inverse-bg:                         #2F4858;
+$navbar-inverse-border:                     darken($navbar-inverse-bg, 10%) !default;
+
+// Inverted navbar links
+$navbar-inverse-link-color:                 #fff;
+$navbar-inverse-link-hover-color:           #fff;
+$navbar-inverse-link-hover-bg:              lighten($navbar-inverse-bg, 5%);
+$navbar-inverse-link-active-color:          $navbar-inverse-link-hover-color !default;
+$navbar-inverse-link-active-bg:             #86bbd8;
+$navbar-inverse-link-disabled-color:        #444 !default;
+$navbar-inverse-link-disabled-bg:           transparent !default;
+
+// Inverted navbar brand label
+$navbar-inverse-brand-color:                $navbar-inverse-link-color !default;
+$navbar-inverse-brand-hover-color:          #fff !default;
+$navbar-inverse-brand-hover-bg:             transparent !default;
+
+// Inverted navbar toggle
+$navbar-inverse-toggle-hover-bg:            #333 !default;
+$navbar-inverse-toggle-icon-bar-bg:         #fff !default;
+$navbar-inverse-toggle-border-color:        #333 !default;
+
+
+//== Navs
+//
+//##
+
+//=== Shared nav styles
+$nav-link-padding:                          10px 15px !default;
+$nav-link-hover-bg:                         $gray-lighter !default;
+
+$nav-disabled-link-color:                   $gray-light !default;
+$nav-disabled-link-hover-color:             $gray-light !default;
+
+
+
 // List Groups
-$list-group-bg: $nav-bg;
+$list-group-bg: $navbar-inverse-bg;
 $list-group-border: none;
 $list-group-left-padding: 20px;
 $list-group-item-padding: 4px 10px 4px $list-group-left-padding;
 $list-group-link-color: #fff;
 $list-group-link-opacity: 0.7;
 
-$list-group-hover-bg: $nav-hover-bg;
+$list-group-hover-bg: $navbar-inverse-link-hover-bg;
 $list-group-link-hover-opacity: 1;
 $list-group-link-heading-color: $list-group-link-color;
 $list-group-header-font-size: $font-size-small;
+
+
 
 
 

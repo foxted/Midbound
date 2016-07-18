@@ -1,0 +1,20 @@
+.navbar-nav > li > a,
+.navbar-brand, .hamburger {
+	height: $navbar-height;
+}
+
+.navbar-brand {
+    margin-right: 10px;
+ }
+
+.navbar {
+	 .spark-profile-photo, .spark-profile-photo-lg, .spark-profile-photo-xl, .spark-nav-profile-photo, .spark-team-photo {
+	 	border-radius: 0;
+	 	padding: 0;
+	 	border: 0;
+	 }
+	 .caret {
+	 	    margin-left: 6px;
+    		    margin-top: 4px;
+	 }
+}
