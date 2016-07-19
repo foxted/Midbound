@@ -1198,7 +1198,7 @@ h3, .h3 {
   font-size: 16px; }
 
 h4, .h4 {
-  font-size: 20px; }
+  font-size: 14px; }
 
 h5, .h5 {
   font-size: 16px; }
@@ -6323,8 +6323,7 @@ a.list-group-item {
       color: #444444; }
 
 a.list-group-item.cta {
-  color: #777777;
-  font-weight: 900;
+  color: #999999;
   border-bottom: 1px dotted;
   display: initial;
   border-radius: 0;
@@ -6333,60 +6332,59 @@ a.list-group-item.cta {
     background-color: inherit;
     color: #444444; }
 
-.panel-default {
-  border-color: #e8e8e8;
-  border-width: 1px 0 0 0;
-  box-shadow: none;
-  border-radius: 0;
-  margin-bottom: 0; }
-  .panel-default .panel-body {
+.panel-prospect {
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  margin-bottom: 15px; }
+  .panel-prospect .panel-body {
     font-weight: 400; }
-    .panel-default .panel-body .prospect {
+    .panel-prospect .panel-body .prospect-top {
       display: -ms-flexbox;
       display: flex;
-      -ms-flex-align: end;
-      align-items: flex-end; }
-      .panel-default .panel-body .prospect .info {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        width: 300px; }
-        .panel-default .panel-body .prospect .info .name {
-          font-weight: 900; }
-        .panel-default .panel-body .prospect .info .email {
-          font-size: 14px; }
-        .panel-default .panel-body .prospect .info p {
-          margin: 0; }
-      .panel-default .panel-body .prospect .avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 3px;
-        background: #dedede;
+      -ms-flex-pack: justify;
+      justify-content: space-between; }
+    .panel-prospect .panel-body .prospect-left {
+      -ms-flex-positive: 1;
+      flex-grow: 1; }
+    .panel-prospect .panel-body .prospect-right {
+      -ms-flex-positive: 0;
+      flex-grow: 0; }
+    .panel-prospect .panel-body .prospect-header {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: start;
+      align-items: flex-start; }
+      .panel-prospect .panel-body .prospect-header .prospect-avatar {
         margin-right: 10px;
         -ms-flex-negative: 0;
         flex-shrink: 0; }
-      .panel-default .panel-body .prospect .actions {
-        font-size: 32px;
-        margin-left: 40px;
-        width: 400px;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-pack: justify;
-        justify-content: space-between; }
-        .panel-default .panel-body .prospect .actions .engagement img {
-          background-color: #fbfbfb;
-          padding: 10px;
-          border: 1px solid #f5f5f5;
-          height: 50px; }
-    .panel-default .panel-body .event {
-      padding: 14px 0; }
-      .panel-default .panel-body .event .time {
+      .panel-prospect .panel-body .prospect-header .prospect-info {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap; }
+        .panel-prospect .panel-body .prospect-header .prospect-info .name {
+          margin: 0; }
+        .panel-prospect .panel-body .prospect-header .prospect-info .name a {
+          color: #222; }
+        .panel-prospect .panel-body .prospect-header .prospect-info .email {
+          font-size: 14px; }
+        .panel-prospect .panel-body .prospect-header .prospect-info p {
+          margin: 0; }
+    .panel-prospect .panel-body .prospect-event {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: baseline;
+      align-items: baseline;
+      margin-top: 10px; }
+      .panel-prospect .panel-body .prospect-event .event-date, .panel-prospect .panel-body .prospect-event .event-date a {
         font-style: italic;
         color: #999999;
         font-size: 14px; }
-
-.panel-default:hover, .panel-default:focus {
-  background-color: #f9f9f9; }
+      .panel-prospect .panel-body .prospect-event .event {
+        font-size: 16px;
+        margin-right: 5px; }
+  .panel-prospect .panel-footer {
+    background-color: #f7f8f9;
+    padding: 5px 4px; }
 
 .navbar-nav > li > a,
 .navbar-brand, .hamburger {
@@ -6403,5 +6401,11 @@ a.list-group-item.cta {
 .navbar .caret {
   margin-left: 6px;
   margin-top: 4px; }
+
+.btn-ghost, .btn-ghost a, a.btn-ghost {
+  background-color: transparent;
+  border: 0;
+  color: #999999;
+  text-transform: none; }
 
 /*# sourceMappingURL=app.css.map */

@@ -4,8 +4,8 @@
         Prospects
     </a>
 </li>
-<li @if(request()->is('companies*')) class="active" @endif>
+<!--- <li @if(request()->is('companies*')) class="active" @endif>
     <a href="#">
         Companies
     </a>
-</li>
+</li>-->
