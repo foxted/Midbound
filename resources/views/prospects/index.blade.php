@@ -6,23 +6,45 @@
         <div class="row">
             <div class="col-sm-3 col-md-2">
                 <div class="list-group">
-                    <div class="list-header">Saved Searches</div>
-                    <a href="#" class="list-group-item">Most Recent</a>
-                    <a href="#" class="list-group-item active">Most Engaged</a>
-                    <a href="#" class="list-group-item">Newly Added</a>
-                    <a href="#" class="list-group-item">Recently Viewed</a>
-                    <a href="#" class="list-group-item cta"><i class="fa fa-plus"></i> Add</a>
+                    <li class="list-header">Saved Searches</li>
+                    <li class="list-group-item">
+                        <a href="#">Most Recent</a>
+                    </li>
+                    <li class="list-group-item active">
+                        <a href="#">Most Engaged</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#">Newly Added</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#">Recently Viewed</a>
+                    </li>
+                    <li class="list-group-item cta">
+                        <a href="#">
+                            <span><i class="fa fa-plus"></i> Add</span>
+                        </a>
+                    </li>
                 </div>
-                 <div class="list-group">
-                    <div class="list-header">Another Section</div>
-                    <a href="#" class="list-group-item">Most Recent</a>
-                    <a href="#" class="list-group-item">Most Engaged</a>
-                    <a href="#" class="list-group-item">Newly Added</a>
-                    <a href="#" class="list-group-item cta"><i class="fa fa-plus"></i> Add</a>
-                </div>
+                 <ul class="list-group">
+                    <li class="list-header">Another Section</li>
+                    <li class="list-group-item">
+                        <a href="#">Most Recent</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#">Most Engaged</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#">Newly Added</a>
+                    </li>
+                    <li class="list-group-item cta">
+                        <a href="#">
+                            <span><i class="fa fa-plus"></i> Add</span>
+                        </a>
+                    </li>
+                </ul>
                 <hr>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Ignored</a>
+                    <li class="list-group-item"><a href="#">Ignored</a></li>
                 </div>
             </div>
             <div class="col-sm-9 col-md-10">
@@ -32,7 +54,7 @@
                             <div class="prospect-left">
                                 <div class="prospect-header">
                                     <div class="prospect-avatar">
-                                        <a :href="prospect.url"><img src="/img/avatar.png" width="40"></a>
+                                        <a :href="prospect.url"><img src="http://loremflickr.com/64/64/business+photo" width="40"></a>
                                     </div>
                                     <div class="prospect-info">
                                         <h4 class="name">

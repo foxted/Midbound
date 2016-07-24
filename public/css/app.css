@@ -6299,37 +6299,39 @@ h3 {
   color: #777777;
   font-size: 13px; }
 
-a.list-group-item {
-  font-size: 14px;
-  color: #555555;
-  background: transparent;
-  padding: 4px 10px 4px 4px;
+.list-group .list-group-item {
   border-radius: 0;
-  text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap; }
-  a.list-group-item .fa {
-    font-size: 12px; }
-  a.list-group-item.active {
-    color: #555555;
-    font-weight: 700;
-    background-color: #dddfe2; }
-    a.list-group-item.active:hover {
-      background-color: #dddfe2;
-      color: #444444; }
-    a.list-group-item.active:focus {
-      background-color: #999999;
-      color: #444444; }
-
-a.list-group-item.cta {
-  color: #999999;
-  border-bottom: 1px dotted;
-  display: initial;
-  border-radius: 0;
-  padding: 4px 4px 4px 0; }
-  a.list-group-item.cta:hover {
-    background-color: inherit;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  background-color: transparent;
+  padding: 0.3em 0; }
+  .list-group .list-group-item > a {
+    padding: 0 .5em;
+    display: block;
+    color: #555555; }
+    .list-group .list-group-item > a:hover {
+      text-decoration: none; }
+  .list-group .list-group-item:hover {
+    background-color: #dddfe2;
     color: #444444; }
+  .list-group .list-group-item.active {
+    background-color: #dddfe2; }
+    .list-group .list-group-item.active > a {
+      color: #555555;
+      font-weight: 700; }
+  .list-group .list-group-item.cta > a {
+    color: #999999; }
+    .list-group .list-group-item.cta > a > span {
+      display: inline-block;
+      border-bottom: 1px dotted; }
+  .list-group .list-group-item.cta:hover {
+    background-color: inherit; }
+    .list-group .list-group-item.cta:hover > a > span {
+      color: #444444; }
+  .list-group .list-group-item .fa {
+    font-size: 12px; }
 
 .panel-prospect {
   border-color: #e5e6e9 #dfe0e4 #d0d1d5;
