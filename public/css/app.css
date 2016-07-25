@@ -6369,6 +6369,9 @@ a.list-group-item.cta {
           font-size: 14px; }
         .panel-prospect .panel-body .prospect-header .prospect-info p {
           margin: 0; }
+    .panel-prospect .panel-body .engagement {
+      font-weight: 700;
+      color: #999999; }
     .panel-prospect .panel-body .prospect-event {
       display: -ms-flexbox;
       display: flex;
@@ -6401,6 +6404,9 @@ a.list-group-item.cta {
 .navbar .caret {
   margin-left: 6px;
   margin-top: 4px; }
+
+.navbar-icon .icon {
+  font-size: 16px; }
 
 .btn-ghost, .btn-ghost a, a.btn-ghost {
   background-color: transparent;

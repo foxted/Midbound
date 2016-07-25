@@ -43,7 +43,9 @@
                                 </div>
                             </div>
                              <div class="prospect-right">
-                                <div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a></div> 
+                                <div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
+                                9
+                                </div> 
                             </div>
                         </div>
                         <div class="prospect-event">
@@ -52,7 +54,7 @@
                             </div> 
                            <div class="event-date">
                                 &mdash;
-                                 <a :href="prospect.url"> @{{ prospect.latest_activity.date | human }} </a>
+                                 <a :href="prospect.url"> @{{ prospect.latest_activity.date | human }} </a> 
                             </div>   
                         </div>  
                     </div>
