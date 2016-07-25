@@ -5,7 +5,19 @@
 
 .navbar-brand {
     margin-right: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700 !important;
+    font-size: $font-size-logo;
+    letter-spacing: -2px;
  }
+
+.light-blue {
+	color: $light-blue;
+}
+
+.dark-blue {
+	color: $dark-blue;
+}
 
 .navbar {
 	 .spark-profile-photo, .spark-profile-photo-lg, .spark-profile-photo-xl, .spark-nav-profile-photo, .spark-team-photo {
