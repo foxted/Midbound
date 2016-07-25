@@ -1189,7 +1189,7 @@ h6, .h6 {
     font-size: 75%; }
 
 h1, .h1 {
-  font-size: 64px; }
+  font-size: 48px; }
 
 h2, .h2 {
   font-size: 32px; }
@@ -6273,7 +6273,11 @@ body {
 .home-banner {
   background: url("/img/background-1.jpg") 50% 50%/cover no-repeat;
   height: 800px;
-  margin-top: -100px; }
+  width: 100%;
+  margin-top: -100px;
+  padding: 10%;
+  text-align: center;
+  color: #2F4858; }
 
 body {
   -webkit-font-smoothing: antialiased;
