@@ -13,7 +13,7 @@
     <div class="spark-screen container">
         <div class="row">
             <!-- Tabs -->
-            <div class="col-sm-3 col-md-2">
+            <div class="col-sm-3 col-md-2 spark-settings-tabs">
                 <ul class="list-group" role="tablist">
                     <li class="list-header">Settings</li>
                     <!-- Profile Link -->
