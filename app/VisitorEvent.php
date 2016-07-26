@@ -14,8 +14,16 @@ class VisitorEvent extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
+        'created_at' => 'date',
+        'updated_at' => 'date',
+        'deleted_at' => 'date',
     ];
+
+    /**
+     * @var array
+     */
+    protected $appends = ['prospect'];
 
     /**
      * @var array
@@ -28,5 +36,13 @@ class VisitorEvent extends Model
     public function visitor()
     {
         return $this->belongsTo(Visitor::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProspectAttribute()
+    {
+        return $this->visitor->prospect;
     }
 }

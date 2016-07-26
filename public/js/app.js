@@ -33729,9 +33729,9 @@ require('./../spark-components/bootstrap');
 require('./home');
 
 // Prospects
-require('./prospects/index');
+require('./prospects/events');
 
-},{"./../spark-components/bootstrap":42,"./home":37,"./prospects/index":38}],37:[function(require,module,exports){
+},{"./../spark-components/bootstrap":42,"./home":37,"./prospects/events":38}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('home', {
@@ -33751,27 +33751,41 @@ var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-Vue.component('prospects-index', {
+Vue.component('prospects-events', {
+
     props: ['user'],
 
     data: function data() {
         return {
-            prospects: []
+            pagination: null,
+            events: []
         };
     },
     ready: function ready() {
         var _this = this;
 
-        this.$http.get('/api/prospects').then(function (response) {
-            _this.prospects = response.data;
+        this.$http.get('/api/events').then(function (response) {
+            _this.events = response.data.data;
+            delete response.data.data;
+            _this.pagination = response.data;
         });
     },
 
 
     methods: {
         activity: function activity(date) {
-            console.log(date);
             return (0, _moment2.default)(date).fromNow(true);
+        },
+        loadMore: function loadMore($event) {
+            var _this2 = this;
+
+            $($event.target).button('loading');
+            this.$http.get('/api/events?page=' + (this.pagination.current_page + 1)).then(function (response) {
+                _this2.events = _this2.events.concat(response.data.data);
+                delete response.data.data;
+                _this2.pagination = response.data;
+                $($event.target).button('reset');
+            });
         }
     }
 });

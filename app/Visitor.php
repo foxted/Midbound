@@ -24,6 +24,14 @@ class Visitor extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function prospect()
+    {
+        return $this->belongsTo(Prospect::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function events()

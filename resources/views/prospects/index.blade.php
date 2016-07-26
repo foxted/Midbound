@@ -1,16 +1,16 @@
 @extends('spark::layouts.app')
 
 @section('content')
-<prospects-index :user="user" inline-template>
+<prospects-events :user="user" inline-template>
     <div class="container">
         <div class="row">
             <div class="col-sm-3 col-md-2">
                 <div class="list-group">
-                    <li class="list-header">Saved Searches</li>
+                    <li class="list-header">Filters</li>
                     <li class="list-group-item">
                         <a href="#">Most Recent</a>
                     </li>
-                    <li class="list-group-item active">
+                    <li class="list-group-item">
                         <a href="#">Most Engaged</a>
                     </li>
                     <li class="list-group-item">
@@ -19,66 +19,44 @@
                     <li class="list-group-item">
                         <a href="#">Recently Viewed</a>
                     </li>
-                    <li class="list-group-item cta">
-                        <a href="#">
-                            <span><i class="fa fa-plus"></i> Add</span>
-                        </a>
-                    </li>
                 </div>
-                 <ul class="list-group">
-                    <li class="list-header">Another Section</li>
-                    <li class="list-group-item">
-                        <a href="#">Most Recent</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#">Most Engaged</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#">Newly Added</a>
-                    </li>
-                    <li class="list-group-item cta">
-                        <a href="#">
-                            <span><i class="fa fa-plus"></i> Add</span>
-                        </a>
-                    </li>
-                </ul>
                 <hr>
                 <div class="list-group">
                     <li class="list-group-item"><a href="#">Ignored</a></li>
                 </div>
             </div>
-            <div class="col-sm-9 col-md-10">
-                <div class="panel panel-prospect" v-for="prospect in prospects">
+            <div class="col-sm-9 col-md-10" v-if="events.length > 0">
+                <div class="panel panel-prospect" v-for="event in events">
                     <div class="panel-body">
-                     <div class="prospect-top">
+                        <div class="prospect-top">
                             <div class="prospect-left">
                                 <div class="prospect-header">
                                     <div class="prospect-avatar">
-                                        <a :href="prospect.url"><img src="http://loremflickr.com/64/64/business+photo" width="40"></a>
+                                        <a :href="event.prospect.url"><img :src="event.prospect.avatar" width="40"></a>
                                     </div>
                                     <div class="prospect-info">
                                         <h4 class="name">
-                                            <a :href="prospect.url">@{{ prospect.name }}</a>
+                                            <a :href="event.prospect.url">@{{ event.prospect.name }}</a>
                                         </h4>
-                                        <a href="mailto:@{{ prospect.email }}" class="email">@{{ prospect.email }}</a>
+                                        <a href="mailto:@{{ event.prospect.email }}" class="email">@{{ event.prospect.email }}</a>
                                     </div>
                                 </div>
                             </div>
                              <div class="prospect-right">
-                                <div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
+                                <div class="engagement"><a :href="event.prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
                                 9
-                                </div> 
+                                </div>
                             </div>
                         </div>
                         <div class="prospect-event">
-                            <div class="event">
-                                Visited <a href="#">/services/what-we-do</a> and <a :href="prospect.url">4 other pages</a>
-                            </div> 
-                           <div class="event-date">
+                            <p class="event">
+                                @{{ event.action }} <a href="">@{{ event.resource }}</a>
+                            </p>
+                           <time class="event-date">
                                 &mdash;
-                                 <a :href="prospect.url"> @{{ prospect.latest_activity.date | human }} </a> 
-                            </div>   
-                        </div>  
+                                @{{ event.created_at.date | human }}
+                            </time>
+                        </div>
                     </div>
                     <div class="panel-footer">
                         <a class="btn btn-ghost btn-sm " href="#"><i class="fa fa-user"></i> Assign</a>
@@ -89,8 +67,11 @@
                         </div>
                     </div>
                 </div>
+                <button @click="loadMore" v-if="pagination.current_page < pagination.last_page" type="button" class="btn btn-ghost btn-lg btn-block" data-loading-text="Loading...">
+                    Load more
+                </button>
             </div>
         </div>
     </div>
-</prospects-index>
+</prospects-events>
 @endsection

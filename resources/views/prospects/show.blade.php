@@ -15,7 +15,7 @@
                             <p class="text-lowercase"><a href="#">{{ $prospect->email }}</a></p>
 
                             <small><span class="text-uppercase text-muted">Phone</span></small>
-                            <p><a href="#">1-894-904-9648</a></p>
+                            <p><a href="#">{{ $prospect->phone or 'N/A'}}</a></p>
 
                             <small><span class="text-uppercase text-muted">Company</span></small>
                             <p><a href="/midbound-frontend/company-detail.php?id=97">Vulputate Risus A PC</a></p>
@@ -27,101 +27,38 @@
                             <p>4</p>
 
                             <small><span class="text-uppercase text-muted">Created</span></small>
-                            <p>Jun 3, 2015</p>
+                            <p>{{ $prospect->created_at->format(config('app.date_format')) }}</p>
 
                             <a href="#" class="btn btn-default">Edit</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-9">
-                    <div class="alert alert-warning" style="padding: 20px; margin: 0 0 20px;">
-                        <strong>Next campaign action (4 of 7)</strong> from Best Practices Whitepaper Downloads:
-                        <h4 class="lead">Send "<a href="#">Don't miss: B2B Marketing Webinar</a>"
-                            <span class="text-right text-muted"><small>in 2 days</small></span>
-                        </h4>
-                        <a href="#" class="btn btn-default">Send Now</a>
-                        <a href="#" class="" style="border-right: 1px solid; padding: 0 10px;">Skip</a>
-                        <a href="#" class="" style="padding: 0 10px;">Switch Campaigns</a>
-                    </div>
+                    {{--<div class="alert alert-warning" style="padding: 20px; margin: 0 0 20px;">--}}
+                        {{--<strong>Next campaign action (4 of 7)</strong> from Best Practices Whitepaper Downloads:--}}
+                        {{--<h4 class="lead">Send "<a href="#">Don't miss: B2B Marketing Webinar</a>"--}}
+                            {{--<span class="text-right text-muted"><small>in 2 days</small></span>--}}
+                        {{--</h4>--}}
+                        {{--<a href="#" class="btn btn-default">Send Now</a>--}}
+                        {{--<a href="#" class="" style="border-right: 1px solid; padding: 0 10px;">Skip</a>--}}
+                        {{--<a href="#" class="" style="padding: 0 10px;">Switch Campaigns</a>--}}
+                    {{--</div>--}}
 
+                    @foreach($events as $event)
                     <div class="panel panel-prospect">
                         <div class="panel-body">
                             <div class="prospect-event">
-                                <div class="event">
-                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
-                                </div> 
-                               <div class="event-date">
+                                <p class="event">
+                                    {{ $event->action }} <a href="#">{{ $event->resource }}</a>
+                                </p>
+                               <time class="event-date">
                                     &mdash;
-                                      3 minutes ago 
-                                </div>   
-                            </div>  
+                                      {{ $event->created_at->format(config('app.date_format')) }}
+                                </time>
+                            </div>
                         </div>
                     </div>
-                    <div class="panel panel-prospect">
-                        <div class="panel-body">
-                            <div class="prospect-event">
-                                <div class="event">
-                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
-                                </div> 
-                               <div class="event-date">
-                                    &mdash;
-                                      3 minutes ago 
-                                </div>   
-                            </div>  
-                        </div>
-                    </div>
-                    <div class="panel panel-prospect">
-                        <div class="panel-body">
-                            <div class="prospect-event">
-                                <div class="event">
-                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
-                                </div> 
-                               <div class="event-date">
-                                    &mdash;
-                                      3 minutes ago 
-                                </div>   
-                            </div>  
-                        </div>
-                    </div>
-                   <div class="panel panel-prospect">
-                        <div class="panel-body">
-                            <div class="prospect-event">
-                                <div class="event">
-                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
-                                </div> 
-                               <div class="event-date">
-                                    &mdash;
-                                      3 minutes ago 
-                                </div>   
-                            </div>  
-                        </div>
-                    </div>
-                    <div class="panel panel-prospect">
-                        <div class="panel-body">
-                            <div class="prospect-event">
-                                <div class="event">
-                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
-                                </div> 
-                               <div class="event-date">
-                                    &mdash;
-                                      3 minutes ago 
-                                </div>   
-                            </div>  
-                        </div>
-                    </div>
-                    <div class="panel panel-prospect">
-                        <div class="panel-body">
-                            <div class="prospect-event">
-                                <div class="event">
-                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
-                                </div> 
-                               <div class="event-date">
-                                    &mdash;
-                                      3 minutes ago 
-                                </div>   
-                            </div>  
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

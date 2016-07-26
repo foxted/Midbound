@@ -1,10 +1,12 @@
+// Config
 @import "spark/variables";
 @import "variables";
+
+// Vendors
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+// Spark
 @import "spark/spark";
-
-
 
 // Pages
 @import "pages/home";

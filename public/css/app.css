@@ -6267,6 +6267,9 @@ button.close {
 body {
   font-weight: 300; }
 
+#spark-app {
+  padding-bottom: 2em; }
+
 [v-cloak] {
   display: none; }
 
@@ -6419,10 +6422,15 @@ h3 {
 .navbar-icon .icon {
   font-size: 16px; }
 
+.btn:active, .btn.active {
+  box-shadow: none;
+  color: #555555; }
+
 .btn-ghost, .btn-ghost a, a.btn-ghost {
-  background-color: transparent;
   border: 0;
   color: #999999;
-  text-transform: none; }
+  text-transform: none;
+  outline: none !important;
+  background-color: transparent; }
 
 /*# sourceMappingURL=app.css.map */

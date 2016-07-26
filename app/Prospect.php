@@ -13,7 +13,7 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $appends = ['url', 'avatar', 'latest_activity'];
+    protected $appends = ['url', 'avatar'];
 
     /**
      * @return string
@@ -35,8 +35,25 @@ class Prospect extends Model
     /**
      * @return mixed
      */
+    public function getLatestEventAttribute()
+    {
+        return $this->events()->latest()->first();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function events()
+    {
+        return $this->hasManyThrough(VisitorEvent::class, Visitor::class);
+    }
+
+    /**
+     * @return mixed
+     */
     public function getLatestActivityAttribute()
     {
-        return $this->created_at;
+        return $this->latestEvent->created_at;
     }
+
 }

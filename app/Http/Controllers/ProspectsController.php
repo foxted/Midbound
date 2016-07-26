@@ -23,6 +23,8 @@ class ProspectsController extends Controller
      */
     public function show(Prospect $prospect)
     {
-        return view('prospects.show', compact('prospect'));
+        $events = $prospect->events()->latest()->get();
+
+        return view('prospects.show', compact('prospect', 'events'));
     }
 }

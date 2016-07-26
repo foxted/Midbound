@@ -14,4 +14,4 @@ require('./../spark-components/bootstrap');
 require('./home');
 
 // Prospects
-require('./prospects/index');
+require('./prospects/events');
