@@ -19,17 +19,18 @@ $gray-dark:              lighten($gray-base, 20%);
 $gray:                   lighten($gray-base, 33.5%);
 $gray-light:             lighten($gray-base, 46.7%);
 $gray-lighter:           #dddfe2;
+	
+$light-blue:			#5DADD8;
+$dark-blue: 			#2F4858;
 
-$brand-primary:         #5DADD8;
+$brand-primary:         $light-blue;
 $brand-success:         #6CAD5F;
 $brand-info:            #6C6999;
 $brand-warning:         #FFC857;
 $brand-danger:          #BF5452;
 
-
-
 // Typography
-@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,700,900';
+@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,700,900|Montserrat:700';
 
 $font-family-sans-serif: 'Lato', sans-serif;
 $text-color: $gray-base;
@@ -37,7 +38,9 @@ $font-size-base: 16px;
 $font-size-small: ceil(($font-size-base * 0.85));
 $font-size-smaller: ceil(($font-size-base * 0.8));
 
-$font-size-h1:            floor(($font-size-base * 4));
+$font-size-logo: 		floor(($font-size-base * 1.8));
+
+$font-size-h1:            floor(($font-size-base * 3));
 $font-size-h2:            floor(($font-size-base * 2));
 $font-size-h3:            $font-size-base; 
 $font-size-h4:            $font-size-small; 
@@ -68,15 +71,15 @@ $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2
 $navbar-collapse-max-height:       340px !default;
 
 $navbar-default-color:             #777 !default;
-$navbar-default-bg:                #f8f8f8 !default;
-$navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-default-bg:                transparent;
+$navbar-default-border:            transparent;
 
 // Navbar links
-$navbar-default-link-color:                #777 !default;
-$navbar-default-link-hover-color:          #333 !default;
+$navbar-default-link-color:                $brand-primary;
+$navbar-default-link-hover-color:          lighten($brand-primary, 5%);
 $navbar-default-link-hover-bg:             transparent !default;
-$navbar-default-link-active-color:         #555 !default;
-$navbar-default-link-active-bg:            #86bbd8;
+$navbar-default-link-active-color:         $brand-primary;
+$navbar-default-link-active-bg:            transparent;
 $navbar-default-link-disabled-color:       #ccc !default;
 $navbar-default-link-disabled-bg:          transparent !default;
 
@@ -95,7 +98,7 @@ $navbar-default-toggle-border-color:       #ddd !default;
 // Reset inverted navbar basics
 
 $navbar-inverse-color:                      lighten($gray-light, 15%) !default;
-$navbar-inverse-bg:                         #2F4858;
+$navbar-inverse-bg:                         $dark-blue;
 $navbar-inverse-border:                     darken($navbar-inverse-bg, 10%) !default;
 
 // Inverted navbar links

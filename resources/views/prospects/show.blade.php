@@ -44,40 +44,82 @@
                         <a href="#" class="" style="padding: 0 10px;">Switch Campaigns</a>
                     </div>
 
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">visited</span> <a href="#">Prices
-                                &amp; Plans</a> <a href="#">and 4 other pages</a></p>
-                        <div class="text-right text-muted">
-                            <small>Just now</small>
+                    <div class="panel panel-prospect">
+                        <div class="panel-body">
+                            <div class="prospect-event">
+                                <div class="event">
+                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
+                                </div> 
+                               <div class="event-date">
+                                    &mdash;
+                                      3 minutes ago 
+                                </div>   
+                            </div>  
                         </div>
                     </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">visited</span> <a href="#">Our
-                                Services</a> <a href="#">and 12 other pages</a></p>
-                        <div class="text-right text-muted">
-                            <small>Just now</small>
+                    <div class="panel panel-prospect">
+                        <div class="panel-body">
+                            <div class="prospect-event">
+                                <div class="event">
+                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
+                                </div> 
+                               <div class="event-date">
+                                    &mdash;
+                                      3 minutes ago 
+                                </div>   
+                            </div>  
                         </div>
                     </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">subscribed</span> <a
-                                    href="#">to Blog</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Just now</small>
+                    <div class="panel panel-prospect">
+                        <div class="panel-body">
+                            <div class="prospect-event">
+                                <div class="event">
+                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
+                                </div> 
+                               <div class="event-date">
+                                    &mdash;
+                                      3 minutes ago 
+                                </div>   
+                            </div>  
                         </div>
                     </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">clicked</span> <a href="#">Why
-                                40% of B2B companies fail at inbound marketing</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Yesterday</small>
+                   <div class="panel panel-prospect">
+                        <div class="panel-body">
+                            <div class="prospect-event">
+                                <div class="event">
+                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
+                                </div> 
+                               <div class="event-date">
+                                    &mdash;
+                                      3 minutes ago 
+                                </div>   
+                            </div>  
                         </div>
                     </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">opened</span> <a href="#">Thanks
-                                for your interest in B2B Co</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Last Week</small>
+                    <div class="panel panel-prospect">
+                        <div class="panel-body">
+                            <div class="prospect-event">
+                                <div class="event">
+                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
+                                </div> 
+                               <div class="event-date">
+                                    &mdash;
+                                      3 minutes ago 
+                                </div>   
+                            </div>  
                         </div>
                     </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">downloaded</span> <a
-                                    href="#">Best Practices Whitepaper</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Last Week</small>
+                    <div class="panel panel-prospect">
+                        <div class="panel-body">
+                            <div class="prospect-event">
+                                <div class="event">
+                                    Visited <a href="#">/services/what-we-do</a> and <a href="#">4 other pages</a>
+                                </div> 
+                               <div class="event-date">
+                                    &mdash;
+                                      3 minutes ago 
+                                </div>   
+                            </div>  
                         </div>
                     </div>
                 </div>
