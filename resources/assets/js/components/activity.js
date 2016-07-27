@@ -1,8 +1,10 @@
 import moment from 'moment';
 
-Vue.component('prospects-events', {
+Vue.component('activity', {
 
     props: ['user'],
+
+    mixins: [require('./../spark/mixins/tab-state')],
 
     data() {
         return {
@@ -12,6 +14,7 @@ Vue.component('prospects-events', {
     },
 
     ready() {
+        this.usePushStateForTabs('.filter-tabs');
         this.$http.get('/api/events').then((response) => {
             this.events = response.data.data;
             delete response.data.data;

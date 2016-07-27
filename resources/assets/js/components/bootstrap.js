@@ -13,5 +13,5 @@ require('./../spark-components/bootstrap');
 
 require('./home');
 
-// Prospects
-require('./prospects/events');
+// Activity
+require('./activity');

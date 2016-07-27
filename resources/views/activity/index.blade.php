@@ -1,28 +1,40 @@
 @extends('spark::layouts.app')
 
 @section('content')
-<prospects-events :user="user" inline-template>
+<activity :user="user" inline-template>
     <div class="container">
         <div class="row">
-            <div class="col-sm-3 col-md-2">
+            <div class="col-sm-3 col-md-2 filter-tabs">
                 <div class="list-group">
                     <li class="list-header">Filters</li>
                     <li class="list-group-item">
-                        <a href="#">Most Recent</a>
+                        <a href="#most-recent" aria-controls="most-recent" role="tab" data-toggle="tab">
+                            Most Recent
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">Most Engaged</a>
+                        <a href="#most-engaged" aria-controls="most-engaged" role="tab" data-toggle="tab">
+                            Most Engaged
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">Newly Added</a>
+                        <a href="#newly-added" aria-controls="newly-added" role="tab" data-toggle="tab">
+                            Newly Added
+                        </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">Recently Viewed</a>
+                        <a href="#recently-viewed" aria-controls="recently-viewed" role="tab" data-toggle="tab">
+                            Recently Viewed
+                        </a>
                     </li>
                 </div>
                 <hr>
                 <div class="list-group">
-                    <li class="list-group-item"><a href="#">Ignored</a></li>
+                    <li class="list-group-item">
+                        <a href="#ignored" aria-controls="ignored" role="tab" data-toggle="tab">
+                            Ignored
+                        </a>
+                    </li>
                 </div>
             </div>
             <div class="col-sm-9 col-md-10" v-if="events.length > 0">
@@ -73,5 +85,5 @@
             </div>
         </div>
     </div>
-</prospects-events>
+</activity>
 @endsection
