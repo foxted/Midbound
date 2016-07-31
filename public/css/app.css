@@ -6389,6 +6389,11 @@ h3 {
       .panel-prospect .panel-body .prospect-event .event {
         font-size: 16px;
         margin-right: 5px; }
+    .panel-prospect .panel-body ul.more-events {
+      margin-bottom: 0;
+      padding: 0; }
+      .panel-prospect .panel-body ul.more-events li {
+        list-style: none; }
   .panel-prospect .panel-footer {
     background-color: #f7f8f9;
     padding: 5px 4px; }

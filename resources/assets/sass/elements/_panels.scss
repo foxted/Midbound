@@ -64,6 +64,14 @@
 				margin-right: 5px;
 			}
 		}
+		ul.more-events {
+		    margin-bottom: 0;
+		    padding: 0;
+
+		    li {
+    				list-style: none;
+		    }
+		}
 	}
 	
 	.panel-footer {
