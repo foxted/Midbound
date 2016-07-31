@@ -46,7 +46,15 @@
                         </div>
                         <div class="prospect-event">
                             <div class="event">
-                                Visited <a href="#">/services/what-we-do</a> and <a :href="prospect.url">4 other pages</a>
+                                Visited <a href="#">/services/what-we-do</a> and <a href="#" onclick="showMoreEvents(@{{prospect.id}});">4 other pages</a>
+                             <ul class="more-events" id="moreEvents-@{{prospect.id}}" style="display:none;">
+                                <li>Visited <a href="#">/case-studies/dmv</a> <span class="event-date">  @{{ prospect.latest_activity.date | human }} </span>
+                                </li>
+                                <li>Visited <a href="#">/resources/whitepaper</a> <span class="event-date">  @{{ prospect.latest_activity.date | human }} </span>
+                                </li>
+                                <li>Visited <a href="#">/blog/how-to-find-your-value-prop</a> <span class="event-date">  @{{ prospect.latest_activity.date | human }} </span>
+                                </li>
+                              </ul>
                             </div> 
                            <div class="event-date">
                                 &mdash;
@@ -76,4 +84,17 @@
         </div>
     </div>
 </prospects-index>
+
+<!-- For demo purposes only (to show additional events) -->
+<script>
+    function showMoreEvents(prospect) {
+        var moreEvents = document.getElementById("moreEvents-" + prospect);
+        if (moreEvents.style.display === "none") {
+            moreEvents.style.display = "block";
+        }
+        else {
+            moreEvents.style.display = "none"
+        }
+    }
+</script>
 @endsection
