@@ -6429,6 +6429,18 @@ h3 {
 .navbar-icon .icon {
   font-size: 16px; }
 
+nav.navbar-inverse form.search input {
+  width: 300px; }
+
+nav.navbar-inverse form.search .btn-default {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  padding: 5px 10px; }
+  nav.navbar-inverse form.search .btn-default:hover {
+    color: #ccc; }
+
 .btn:active, .btn.active {
   box-shadow: none;
   color: #555555; }

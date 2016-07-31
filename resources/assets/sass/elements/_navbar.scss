@@ -34,3 +34,20 @@
 .navbar-icon .icon {
 	font-size: $font-size-base;
 }
+
+nav.navbar-inverse form.search {
+	input {
+		width: 300px;
+	}
+	.btn-default {
+	    background-color: transparent;
+	    color: #fff;
+	    border: none;
+	    font-size: 16px;
+	    padding: 5px 10px;
+
+	    &:hover {
+	    		color: #ccc;
+	    }
+	}
+}

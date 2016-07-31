@@ -4,8 +4,11 @@
         Activity
     </a>
 </li>
-<!--- <li @if(request()->is('companies*')) class="active" @endif>
-    <a href="#">
-        Companies
-    </a>
-</li>-->
+<form class="navbar-form navbar-left search"> 
+	<div class="form-group"> 
+		<input class="form-control" placeholder="Search for anything..."> 
+	</div> 
+	<button type="submit" class="btn btn-lg btn-default">
+		<i class="fa fa-search"></i>
+	</button> 
+</form>
