@@ -6,11 +6,11 @@
         <div class="row">
             <div class="col-sm-3 col-md-2">
                 <div class="list-group">
-                    <div class="list-header">FILTERS</div>
+                    <div class="list-header">FILTER PROSPECTS</div>
+                    <a href="#" class="list-group-item">Fresh</a>
                     <a href="#" class="list-group-item">Most Engaged</a>
-                    <a href="#" class="list-group-item">Fresh Prospects</a>
                     <a href="#" class="list-group-item">Recently Emailed</a>
-                    <a href="#" class="list-group-item active">Assigned to Me</a>
+                    <a href="#" class="list-group-item active">All</a>
                 </div>
                  <div class="list-group">
                     <div class="list-header">SAVED SEARCHES</div>

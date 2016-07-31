@@ -6424,6 +6424,18 @@ a.list-group-item.cta {
 .navbar-icon .icon {
   font-size: 16px; }
 
+nav.navbar-inverse form.search input {
+  width: 300px; }
+
+nav.navbar-inverse form.search .btn-default {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  padding: 5px 10px; }
+  nav.navbar-inverse form.search .btn-default:hover {
+    color: #ccc; }
+
 .btn-ghost, .btn-ghost a, a.btn-ghost {
   background-color: transparent;
   border: 0;
