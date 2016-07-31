@@ -39,7 +39,7 @@
                                         <h4 class="name">
                                             <a :href="prospect.url">@{{ prospect.name }}</a>
                                         </h4>
-                                        <a href="mailto:@{{ prospect.email }}" class="email">@{{ prospect.email }}</a>
+                                        <a class="email" data-toggle="modal" data-target="#emailModal">@{{ prospect.email }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -89,6 +89,27 @@
         </div>
     </div>
 </prospects-index>
+
+<!-- Modal -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- For demo purposes only (to show additional events) -->
 <script>
