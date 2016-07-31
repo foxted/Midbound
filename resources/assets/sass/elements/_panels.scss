@@ -69,6 +69,10 @@
 	.panel-footer {
 		background-color: lighten($body-bg, 5%);
 		padding: 5px 4px;
+
+		.dropdown {
+			display: inline;
+		}
 	}
 }
 
