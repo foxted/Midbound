@@ -90,7 +90,7 @@
     </div>
 </prospects-index>
 
-<!-- Modal -->
+<!-- Email Modal -->
 <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -127,6 +127,10 @@
         var undoMessage = document.getElementsByClassName("undo-message")[0];
         prospectPanel.style.display = "none";
         undoMessage.style.display = "block";
+    }
+    function showAdvancedSearch() {
+        var advancedSearchPanel = document.getElementById("advancedSearchPanel");
+        advancedSearchPanel.style.display = "block";
     }
 </script>
 @endsection

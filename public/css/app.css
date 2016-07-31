@@ -6299,6 +6299,9 @@ h3 {
   color: #777777;
   font-size: 13px; }
 
+.list-group-item.disabled {
+  background-color: transparent; }
+
 a.list-group-item {
   font-size: 14px;
   color: #555555;
@@ -6308,6 +6311,9 @@ a.list-group-item {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap; }
+  a.list-group-item:last-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; }
   a.list-group-item .fa {
     font-size: 12px; }
   a.list-group-item.active {
@@ -6394,6 +6400,16 @@ a.list-group-item.cta {
     padding: 5px 4px; }
     .panel-prospect .panel-footer .dropdown {
       display: inline; }
+
+.panel.advanced-search {
+  position: absolute;
+  width: 400px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  border: none; }
+  .panel.advanced-search a.list-group-item {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    padding: 4px 8px; }
 
 .navbar-nav > li > a,
 .navbar-brand, .hamburger {

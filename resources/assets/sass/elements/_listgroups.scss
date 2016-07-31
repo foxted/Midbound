@@ -9,6 +9,9 @@
 	}
 }
 
+.list-group-item.disabled {
+     background-color: transparent;
+}
 a.list-group-item {
 	font-size: $font-size-small;
 	color: $list-group-link-color;
@@ -18,6 +21,11 @@ a.list-group-item {
 	text-overflow: ellipsis;
      overflow: hidden;
      white-space: nowrap;
+
+     &:last-child {
+     	border-bottom-left-radius: 0; 
+     	border-bottom-right-radius: 0;
+     }
      
      .fa {
      	font-size: $fa-font-size-base;
