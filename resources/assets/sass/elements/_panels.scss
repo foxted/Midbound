@@ -84,5 +84,17 @@
 	}
 }
 
+.panel.advanced-search {
+    position: absolute;
+    width: 400px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    border: none;
+
+    a.list-group-item {
+    		display: inline-flex;
+    		padding: 4px 8px;
+    }
+}
+
 
 
