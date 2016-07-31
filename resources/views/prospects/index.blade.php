@@ -20,9 +20,14 @@
                 <div class="list-group">
                     <a href="#" class="list-group-item">Ignored</a>
                 </div>
+                <div class="alert alert-warning alert-dismissible undo-message" role="alert" style="display:none;">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  You ignored <strong>Prospect Name</strong>.
+                  <a href="#">Undo</a>
+                </div>
             </div>
             <div class="col-sm-9 col-md-10">
-                <div class="panel panel-prospect" v-for="prospect in prospects">
+                <div class="panel panel-prospect" v-for="prospect in prospects" id="prospect-@{{prospect.id}}">
                     <div class="panel-body">
                      <div class="prospect-top">
                             <div class="prospect-left">
@@ -76,7 +81,7 @@
                         <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>
                         <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
                         <div class="pull-right">
-                        <a class="btn btn-ghost btn-sm " href="#"><i class="fa fa-ban"></i> Ignore</a>
+                        <a class="btn btn-ghost btn-sm " href="#" onclick="ignoreProspect(@{{prospect.id}});"><i class="fa fa-ban"></i> Ignore</a>
                         </div>
                     </div>
                 </div>
@@ -95,6 +100,12 @@
         else {
             moreEvents.style.display = "none"
         }
+    }
+    function ignoreProspect(prospect) {
+        var prospectPanel = document.getElementById("prospect-" + prospect);
+        var undoMessage = document.getElementsByClassName("undo-message")[0];
+        prospectPanel.style.display = "none";
+        undoMessage.style.display = "block";
     }
 </script>
 @endsection

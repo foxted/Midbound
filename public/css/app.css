@@ -6430,4 +6430,13 @@ a.list-group-item.cta {
   color: #999999;
   text-transform: none; }
 
+.undo-message {
+  z-index: 100;
+  width: inherit;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); }
+
 /*# sourceMappingURL=app.css.map */
