@@ -6,18 +6,14 @@
         <div class="row">
             <div class="col-sm-3 col-md-2">
                 <div class="list-group">
-                    <div class="list-header">Saved Searches</div>
-                    <a href="#" class="list-group-item">Most Recent</a>
-                    <a href="#" class="list-group-item active">Most Engaged</a>
-                    <a href="#" class="list-group-item">Newly Added</a>
-                    <a href="#" class="list-group-item">Recently Viewed</a>
-                    <a href="#" class="list-group-item cta"><i class="fa fa-plus"></i> Add</a>
+                    <div class="list-header">FILTERS</div>
+                    <a href="#" class="list-group-item">Most Engaged</a>
+                    <a href="#" class="list-group-item">Fresh Prospects</a>
+                    <a href="#" class="list-group-item">Recently Emailed</a>
+                    <a href="#" class="list-group-item active">Assigned to Me</a>
                 </div>
                  <div class="list-group">
-                    <div class="list-header">Another Section</div>
-                    <a href="#" class="list-group-item">Most Recent</a>
-                    <a href="#" class="list-group-item">Most Engaged</a>
-                    <a href="#" class="list-group-item">Newly Added</a>
+                    <div class="list-header">SAVED SEARCHES</div>
                     <a href="#" class="list-group-item cta"><i class="fa fa-plus"></i> Add</a>
                 </div>
                 <hr>
@@ -59,7 +55,16 @@
                         </div>  
                     </div>
                     <div class="panel-footer">
-                        <a class="btn btn-ghost btn-sm " href="#"><i class="fa fa-user"></i> Assign</a>
+                        <div class="dropdown">
+                            <a class="btn btn-ghost btn-sm" href="#" dropdown-toggle" type="button" id="assignMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Assign</a>
+                                 <ul class="dropdown-menu" aria-labelledby="assignMenu">
+                                    <li><a href="#">Valentin (you)</a></li>
+                                    <li><a href="#">James</a></li>
+                                    <li><a href="#">Chris</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="disabled"><a href="#">Unassign</a></li>
+                                </ul>
+                        </div>
                         <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>
                         <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
                         <div class="pull-right">

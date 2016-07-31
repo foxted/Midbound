@@ -6387,6 +6387,8 @@ a.list-group-item.cta {
   .panel-prospect .panel-footer {
     background-color: #f7f8f9;
     padding: 5px 4px; }
+    .panel-prospect .panel-footer .dropdown {
+      display: inline; }
 
 .navbar-nav > li > a,
 .navbar-brand, .hamburger {
