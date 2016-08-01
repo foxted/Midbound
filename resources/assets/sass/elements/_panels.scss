@@ -106,8 +106,15 @@
 			margin-top: 0;
 		}
 	}
-	.right {
+	&.right {
 		text-align: right;
+		.description {
+			order: 2;
+		}
+		.img-preview {
+			order: 1;
+		}
+
 	}
 }
 
