@@ -84,6 +84,33 @@
 	}
 }
 
+.panel-benefit {
+	padding: 40px; 
+
+	.panel-heading {
+	    font-size: 24px;
+	    font-weight: 900;
+	}
+	.panel-body {
+		display: flex;
+		align-items: center;
+		
+		.description {
+			flex: 2;
+		}
+		.img-preview {
+			flex: 3;
+			padding: 0 10px;
+		}
+		h2 {
+			margin-top: 0;
+		}
+	}
+	.right {
+		text-align: right;
+	}
+}
+
 .panel.advanced-search {
     position: absolute;
     width: 400px;
