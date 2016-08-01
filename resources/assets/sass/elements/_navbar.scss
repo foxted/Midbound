@@ -31,6 +31,19 @@
 	 }
 }
 
+.navbar-default .navbar-nav > li > .btn-primary {
+    color: #fff;
+    text-transform: none;
+    font-size: inherit;
+    height: 36px;
+    margin-top: 7px;
+
+    &:hover, &:focus {
+    		background-color: $navbar-default-brand-hover-color;
+    		color: #fff;
+    }
+}
+
 .navbar-icon .icon {
 	font-size: $font-size-base;
 }

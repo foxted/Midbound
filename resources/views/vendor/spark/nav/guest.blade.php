@@ -23,8 +23,8 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/login" class="navbar-link">Login</a></li>
-                <li><a href="/register" class="navbar-link">Register</a></li>
+                <li><a href="/register" class="btn btn-primary">60-Day Free Trial</a></li>
+                <li><a href="/login" class="navbar-link">Log In</a></li>
             </ul>
         </div>
     </div>

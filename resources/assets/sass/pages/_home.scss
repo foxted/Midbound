@@ -1,9 +1,19 @@
-.home-banner {
-	background: url('/img/background-1.jpg') 50% 50% / cover no-repeat;
+.home-banner, .color-overlay{
 	height: 800px;
 	width: 100%;
+}
+.home-banner {
 	margin-top: -100px;
+	background: url('/img/background-1.jpg') 50% 50% / cover no-repeat;
+}
+.color-overlay {
 	padding: 10%;
     	text-align: center;
     	color: $dark-blue;
+	background: rgba(255,255,255,0.3);
+}
+
+.home-banner h1{
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	margin-bottom: 25px;
 }
