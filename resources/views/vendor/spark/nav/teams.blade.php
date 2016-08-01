@@ -1,14 +1,7 @@
-<li class="divider"></li>
+<!-- <li class="divider"></li> -->
 
 <!-- Teams -->
-<li class="dropdown-header">Teams</li>
-
-<!-- Create Team -->
-<li>
-    <a href="/settings#/teams">
-        <i class="fa fa-fw fa-btn fa-plus"></i>Create Team
-    </a>
-</li>
+<li class="dropdown-header">Switch Teams</li>
 
 <!-- Switch Current Team -->
 <li v-for="team in teams">
@@ -22,3 +15,10 @@
         </span>
     </a>
 </li>
+
+<!-- Create Team -->
+<!-- <li>
+    <a href="/settings#/teams">
+        <i class="fa fa-fw fa-btn fa-plus"></i>Create Team
+    </a>
+</li> -->

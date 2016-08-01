@@ -34,8 +34,8 @@
 
                 <!-- Security Link -->
                     <li role="presentation" class="list-group-item">
-                        <a href="#security" aria-controls="security" role="tab" data-toggle="tab">
-                            <i class="fa fa-fw fa-btn fa-lock"></i>Security
+                        <a href="#password" aria-controls="security" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-btn fa-lock"></i>Password
                         </a>
                     </li>
 
@@ -50,7 +50,6 @@
                 </ul>
             </div>
             <div class="col-md-4">
-
                 <!-- Billing Tabs -->
                 @if (Spark::canBillCustomers())
                     <div class="panel panel-default panel-flush">
@@ -106,8 +105,8 @@
                     @endif
 
                     <!-- Security -->
-                    <div role="tabpanel" class="tab-pane" id="security">
-                        @include('spark::settings.security')
+                    <div role="tabpanel" class="tab-pane" id="password">
+                        @include('spark::settings.password')
                     </div>
 
                     <!-- API -->

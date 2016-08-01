@@ -1,7 +1,7 @@
 <spark-current-teams :user="user" :teams="teams" inline-template>
     <div>
         <div class="panel panel-default">
-            <div class="panel-heading">Current Teams</div>
+            <div class="panel-heading">My Teams</div>
 
             <div class="panel-body">
                 <table class="table table-borderless m-b-none">
@@ -40,11 +40,12 @@
                                 </div>
                             </td>
 
+
                             <!-- Edit Button -->
                             <td>
                                 <a href="/settings/teams/@{{ team.id }}">
                                     <button class="btn btn-primary">
-                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-cog"></i> Settings
                                     </button>
                                 </a>
                             </td>

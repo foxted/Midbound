@@ -64,7 +64,7 @@
                                     </a>
                                 </li>
 
-                                <li class="divider"></li>
+                               
                             @endif
 
                             <!-- Developer -->
@@ -75,15 +75,7 @@
                             <!-- Subscription Reminders -->
                             @include('spark::nav.subscriptions')
 
-                            <!-- Settings -->
-                            <li class="dropdown-header">Settings</li>
-
-                            <!-- Your Settings -->
-                            <li>
-                                <a href="/settings">
-                                    <i class="fa fa-fw fa-btn fa-cog"></i>Your Settings
-                                </a>
-                            </li>
+                            
 
                             @if (Spark::usesTeams())
                                 <!-- Team Settings -->
@@ -92,12 +84,22 @@
 
                             <li class="divider"></li>
 
+                            <!-- Settings -->
+                            <!-- <li class="dropdown-header">Me</li> -->
+
+                            <!-- Your Settings -->
+                            <li>
+                                <a href="/settings">
+                                    <i class="fa fa-fw fa-btn fa-cog"></i>Settings
+                                </a>
+                            </li>
+                            
                             <!-- Support -->
-                            <li class="dropdown-header">Support</li>
+                            <!-- <li class="dropdown-header">Support</li> -->
 
                             <li>
                                 <a @click.prevent="showSupportForm" style="cursor: pointer;">
-                                    <i class="fa fa-fw fa-btn fa-paper-plane"></i>Email Us
+                                    <i class="fa fa-fw fa-btn fa-paper-plane"></i>Support
                                 </a>
                             </li>
 
