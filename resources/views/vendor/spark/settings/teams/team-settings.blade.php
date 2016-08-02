@@ -14,6 +14,13 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 spark-settings-tabs">
                 <ul class="list-group" role="tablist">
+                    <!-- View All Teams -->
+                    <li role="presentation" class="list-group-item cta">
+                        <a href="/settings#/teams">
+                            <span><i class="fa fa-fw fa-btn fa-arrow-left"></i>View All Teams</span>
+                        </a>
+                    </li>
+
                     <li class="list-header">@{{ team.name }} Settings</li>
                     <!-- Owner Settings -->
                     @if (Auth::user()->ownsTeam($team))
@@ -35,12 +42,6 @@
                         </a>
                     </li>
 
-                    <!-- View All Teams -->
-                    <li role="presentation" class="list-group-item cta">
-                        <a href="/settings#/teams">
-                            <span><i class="fa fa-fw fa-btn fa-arrow-left"></i>View All Teams</span>
-                        </a>
-                    </li>
                 </ul>
                 @if (Spark::canBillTeams() && Auth::user()->ownsTeam($team))
                 <ul class="list-group">
@@ -119,6 +120,7 @@
                     @endif
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </spark-team-settings>

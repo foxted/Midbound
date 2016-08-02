@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
             <!-- Collapsed Hamburger -->
@@ -23,8 +23,11 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/login" class="navbar-link">Login</a></li>
-                <li><a href="/register" class="navbar-link">Register</a></li>
+                @if(request()->is('/') || request()->is('register') || request()->is('login') )
+                @else 
+                    <li><a href="/register" class="btn btn-primary">60-Day Free Trial</a></li>
+                @endif
+                <li><a href="/login" class="navbar-link">Log In</a></li>
             </ul>
         </div>
     </div>

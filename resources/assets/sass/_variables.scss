@@ -3,9 +3,9 @@ $well-bg: darken($body-bg, 2%);
 $well-border: darken($well-bg, 20%);
 
 // Border
-$border-radius-base: 0;
-$border-radius-small: 0;
-$border-radius-large: 0;
+$border-radius-base: 3px;
+$border-radius-small: 3px;
+$border-radius-large: 3px;
 
 // Scaffolding 
 $body-bg: #e9ebee;

@@ -1,11 +1,11 @@
 .list-group {
-	.list-header {
-	    display: block;
-	    font-weight: $nav-headings-font-weight;
-	    text-transform: uppercase;
-	    color: $list-group-link-heading-color;
-	    font-size: $font-size-smaller;
-	}
+    .list-header {
+        display: block;
+        font-weight: $nav-headings-font-weight;
+        text-transform: uppercase;
+        color: $list-group-link-heading-color;
+        font-size: $font-size-smaller;
+    }
 
     .list-group-item {
         border-radius: 0;
@@ -15,6 +15,19 @@
         font-size: $font-size-small;
         background-color: $list-group-bg;
         padding: $list-group-item-padding;
+
+        &.disabled {
+            background-color: transparent;
+        }
+
+        &:last-child {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .fa {
+            font-size: $fa-font-size-base;
+        }
 
         & > a {
             padding: 0 .5em;
@@ -54,7 +67,7 @@
             &:hover {
                 background-color: inherit;
 
-                & > a > span{
+                & > a > span {
                     color: $list-group-hover-link-color;
                 }
             }

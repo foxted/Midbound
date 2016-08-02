@@ -33711,7 +33711,7 @@ var app = new Vue({
     mixins: [require('spark')]
 });
 
-},{"./components/bootstrap":37,"./filters":39,"spark":153,"spark-bootstrap":152}],36:[function(require,module,exports){
+},{"./components/bootstrap":37,"./filters":40,"spark":154,"spark-bootstrap":153}],36:[function(require,module,exports){
 'use strict';
 
 var _moment = require('moment');
@@ -33762,7 +33762,7 @@ Vue.component('activity', {
     }
 });
 
-},{"./../spark/mixins/tab-state":89,"moment":18}],37:[function(require,module,exports){
+},{"./../spark/mixins/tab-state":90,"moment":18}],37:[function(require,module,exports){
 'use strict';
 
 /*
@@ -33778,11 +33778,12 @@ Vue.component('activity', {
 require('./../spark-components/bootstrap');
 
 require('./home');
+require('./modal');
 
 // Activity
 require('./activity');
 
-},{"./../spark-components/bootstrap":42,"./activity":36,"./home":38}],38:[function(require,module,exports){
+},{"./../spark-components/bootstrap":43,"./activity":36,"./home":38,"./modal":39}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('home', {
@@ -33794,6 +33795,316 @@ Vue.component('home', {
 });
 
 },{}],39:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+/* ========================================================================
+ * Bootstrap: modal.js v3.3.6
+ * http://getbootstrap.com/javascript/#modals
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
++function ($) {
+  'use strict';
+
+  // MODAL CLASS DEFINITION
+  // ======================
+
+  var Modal = function Modal(element, options) {
+    this.options = options;
+    this.$body = $(document.body);
+    this.$element = $(element);
+    this.$dialog = this.$element.find('.modal-dialog');
+    this.$backdrop = null;
+    this.isShown = null;
+    this.originalBodyPad = null;
+    this.scrollbarWidth = 0;
+    this.ignoreBackdropClick = false;
+
+    if (this.options.remote) {
+      this.$element.find('.modal-content').load(this.options.remote, $.proxy(function () {
+        this.$element.trigger('loaded.bs.modal');
+      }, this));
+    }
+  };
+
+  Modal.VERSION = '3.3.6';
+
+  Modal.TRANSITION_DURATION = 300;
+  Modal.BACKDROP_TRANSITION_DURATION = 150;
+
+  Modal.DEFAULTS = {
+    backdrop: true,
+    keyboard: true,
+    show: true
+  };
+
+  Modal.prototype.toggle = function (_relatedTarget) {
+    return this.isShown ? this.hide() : this.show(_relatedTarget);
+  };
+
+  Modal.prototype.show = function (_relatedTarget) {
+    var that = this;
+    var e = $.Event('show.bs.modal', { relatedTarget: _relatedTarget });
+
+    this.$element.trigger(e);
+
+    if (this.isShown || e.isDefaultPrevented()) return;
+
+    this.isShown = true;
+
+    this.checkScrollbar();
+    this.setScrollbar();
+    this.$body.addClass('modal-open');
+
+    this.escape();
+    this.resize();
+
+    this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this));
+
+    this.$dialog.on('mousedown.dismiss.bs.modal', function () {
+      that.$element.one('mouseup.dismiss.bs.modal', function (e) {
+        if ($(e.target).is(that.$element)) that.ignoreBackdropClick = true;
+      });
+    });
+
+    this.backdrop(function () {
+      var transition = $.support.transition && that.$element.hasClass('fade');
+
+      if (!that.$element.parent().length) {
+        that.$element.appendTo(that.$body); // don't move modals dom position
+      }
+
+      that.$element.show().scrollTop(0);
+
+      that.adjustDialog();
+
+      if (transition) {
+        that.$element[0].offsetWidth; // force reflow
+      }
+
+      that.$element.addClass('in');
+
+      that.enforceFocus();
+
+      var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget });
+
+      transition ? that.$dialog // wait for modal to slide in
+      .one('bsTransitionEnd', function () {
+        that.$element.trigger('focus').trigger(e);
+      }).emulateTransitionEnd(Modal.TRANSITION_DURATION) : that.$element.trigger('focus').trigger(e);
+    });
+  };
+
+  Modal.prototype.hide = function (e) {
+    if (e) e.preventDefault();
+
+    e = $.Event('hide.bs.modal');
+
+    this.$element.trigger(e);
+
+    if (!this.isShown || e.isDefaultPrevented()) return;
+
+    this.isShown = false;
+
+    this.escape();
+    this.resize();
+
+    $(document).off('focusin.bs.modal');
+
+    this.$element.removeClass('in').off('click.dismiss.bs.modal').off('mouseup.dismiss.bs.modal');
+
+    this.$dialog.off('mousedown.dismiss.bs.modal');
+
+    $.support.transition && this.$element.hasClass('fade') ? this.$element.one('bsTransitionEnd', $.proxy(this.hideModal, this)).emulateTransitionEnd(Modal.TRANSITION_DURATION) : this.hideModal();
+  };
+
+  Modal.prototype.enforceFocus = function () {
+    $(document).off('focusin.bs.modal') // guard against infinite focus loop
+    .on('focusin.bs.modal', $.proxy(function (e) {
+      if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+        this.$element.trigger('focus');
+      }
+    }, this));
+  };
+
+  Modal.prototype.escape = function () {
+    if (this.isShown && this.options.keyboard) {
+      this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
+        e.which == 27 && this.hide();
+      }, this));
+    } else if (!this.isShown) {
+      this.$element.off('keydown.dismiss.bs.modal');
+    }
+  };
+
+  Modal.prototype.resize = function () {
+    if (this.isShown) {
+      $(window).on('resize.bs.modal', $.proxy(this.handleUpdate, this));
+    } else {
+      $(window).off('resize.bs.modal');
+    }
+  };
+
+  Modal.prototype.hideModal = function () {
+    var that = this;
+    this.$element.hide();
+    this.backdrop(function () {
+      that.$body.removeClass('modal-open');
+      that.resetAdjustments();
+      that.resetScrollbar();
+      that.$element.trigger('hidden.bs.modal');
+    });
+  };
+
+  Modal.prototype.removeBackdrop = function () {
+    this.$backdrop && this.$backdrop.remove();
+    this.$backdrop = null;
+  };
+
+  Modal.prototype.backdrop = function (callback) {
+    var that = this;
+    var animate = this.$element.hasClass('fade') ? 'fade' : '';
+
+    if (this.isShown && this.options.backdrop) {
+      var doAnimate = $.support.transition && animate;
+
+      this.$backdrop = $(document.createElement('div')).addClass('modal-backdrop ' + animate).appendTo(this.$body);
+
+      this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
+        if (this.ignoreBackdropClick) {
+          this.ignoreBackdropClick = false;
+          return;
+        }
+        if (e.target !== e.currentTarget) return;
+        this.options.backdrop == 'static' ? this.$element[0].focus() : this.hide();
+      }, this));
+
+      if (doAnimate) this.$backdrop[0].offsetWidth; // force reflow
+
+      this.$backdrop.addClass('in');
+
+      if (!callback) return;
+
+      doAnimate ? this.$backdrop.one('bsTransitionEnd', callback).emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) : callback();
+    } else if (!this.isShown && this.$backdrop) {
+      this.$backdrop.removeClass('in');
+
+      var callbackRemove = function callbackRemove() {
+        that.removeBackdrop();
+        callback && callback();
+      };
+      $.support.transition && this.$element.hasClass('fade') ? this.$backdrop.one('bsTransitionEnd', callbackRemove).emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) : callbackRemove();
+    } else if (callback) {
+      callback();
+    }
+  };
+
+  // these following methods are used to handle overflowing modals
+
+  Modal.prototype.handleUpdate = function () {
+    this.adjustDialog();
+  };
+
+  Modal.prototype.adjustDialog = function () {
+    var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight;
+
+    this.$element.css({
+      paddingLeft: !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
+      paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
+    });
+  };
+
+  Modal.prototype.resetAdjustments = function () {
+    this.$element.css({
+      paddingLeft: '',
+      paddingRight: ''
+    });
+  };
+
+  Modal.prototype.checkScrollbar = function () {
+    var fullWindowWidth = window.innerWidth;
+    if (!fullWindowWidth) {
+      // workaround for missing window.innerWidth in IE8
+      var documentElementRect = document.documentElement.getBoundingClientRect();
+      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left);
+    }
+    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth;
+    this.scrollbarWidth = this.measureScrollbar();
+  };
+
+  Modal.prototype.setScrollbar = function () {
+    var bodyPad = parseInt(this.$body.css('padding-right') || 0, 10);
+    this.originalBodyPad = document.body.style.paddingRight || '';
+    if (this.bodyIsOverflowing) this.$body.css('padding-right', bodyPad + this.scrollbarWidth);
+  };
+
+  Modal.prototype.resetScrollbar = function () {
+    this.$body.css('padding-right', this.originalBodyPad);
+  };
+
+  Modal.prototype.measureScrollbar = function () {
+    // thx walsh
+    var scrollDiv = document.createElement('div');
+    scrollDiv.className = 'modal-scrollbar-measure';
+    this.$body.append(scrollDiv);
+    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    this.$body[0].removeChild(scrollDiv);
+    return scrollbarWidth;
+  };
+
+  // MODAL PLUGIN DEFINITION
+  // =======================
+
+  function Plugin(option, _relatedTarget) {
+    return this.each(function () {
+      var $this = $(this);
+      var data = $this.data('bs.modal');
+      var options = $.extend({}, Modal.DEFAULTS, $this.data(), (typeof option === 'undefined' ? 'undefined' : _typeof(option)) == 'object' && option);
+
+      if (!data) $this.data('bs.modal', data = new Modal(this, options));
+      if (typeof option == 'string') data[option](_relatedTarget);else if (options.show) data.show(_relatedTarget);
+    });
+  }
+
+  var old = $.fn.modal;
+
+  $.fn.modal = Plugin;
+  $.fn.modal.Constructor = Modal;
+
+  // MODAL NO CONFLICT
+  // =================
+
+  $.fn.modal.noConflict = function () {
+    $.fn.modal = old;
+    return this;
+  };
+
+  // MODAL DATA-API
+  // ==============
+
+  $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
+    var $this = $(this);
+    var href = $this.attr('href');
+    var $target = $($this.attr('data-target') || href && href.replace(/.*(?=#[^\s]+$)/, '')); // strip for ie7
+    var option = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data());
+
+    if ($this.is('a')) e.preventDefault();
+
+    $target.one('show.bs.modal', function (showEvent) {
+      if (showEvent.isDefaultPrevented()) return; // only register focus restorer if modal will actually get shown
+      $target.one('hidden.bs.modal', function () {
+        $this.is(':visible') && $this.trigger('focus');
+      });
+    });
+    Plugin.call($target, option, this);
+  });
+}(jQuery);
+
+},{}],40:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -33812,7 +34123,7 @@ _vue2.default.filter('human', function (value) {
     return (0, _moment2.default)(value, format).fromNow();
 });
 
-},{"moment":18,"vue":34}],40:[function(require,module,exports){
+},{"moment":18,"vue":34}],41:[function(require,module,exports){
 'use strict';
 
 var base = require('auth/register-braintree');
@@ -33821,7 +34132,7 @@ Vue.component('spark-register-braintree', {
     mixins: [base]
 });
 
-},{"auth/register-braintree":90}],41:[function(require,module,exports){
+},{"auth/register-braintree":91}],42:[function(require,module,exports){
 'use strict';
 
 var base = require('auth/register-stripe');
@@ -33830,7 +34141,7 @@ Vue.component('spark-register-stripe', {
     mixins: [base]
 });
 
-},{"auth/register-stripe":91}],42:[function(require,module,exports){
+},{"auth/register-stripe":92}],43:[function(require,module,exports){
 'use strict';
 
 /**
@@ -33925,7 +34236,7 @@ require('./kiosk/users');
 require('./kiosk/profile');
 require('./kiosk/add-discount');
 
-},{"./auth/register-braintree":40,"./auth/register-stripe":41,"./kiosk/add-discount":43,"./kiosk/announcements":44,"./kiosk/kiosk":45,"./kiosk/metrics":46,"./kiosk/profile":47,"./kiosk/users":48,"./navbar/navbar":49,"./notifications/notifications":50,"./settings/api":51,"./settings/api/create-token":52,"./settings/api/tokens":53,"./settings/invoices":54,"./settings/invoices/invoice-list":55,"./settings/invoices/update-extra-billing-information":56,"./settings/payment-method-braintree":57,"./settings/payment-method-stripe":58,"./settings/payment-method/redeem-coupon":59,"./settings/payment-method/update-payment-method-braintree":60,"./settings/payment-method/update-payment-method-stripe":61,"./settings/payment-method/update-vat-id":62,"./settings/profile":63,"./settings/profile/update-contact-information":64,"./settings/profile/update-profile-photo":65,"./settings/security":66,"./settings/security/disable-two-factor-auth":67,"./settings/security/enable-two-factor-auth":68,"./settings/security/update-password":69,"./settings/settings":70,"./settings/subscription":71,"./settings/subscription/cancel-subscription":72,"./settings/subscription/resume-subscription":73,"./settings/subscription/subscribe-braintree":74,"./settings/subscription/subscribe-stripe":75,"./settings/subscription/update-subscription":76,"./settings/teams":77,"./settings/teams/create-team":78,"./settings/teams/current-teams":79,"./settings/teams/mailed-invitations":80,"./settings/teams/pending-invitations":81,"./settings/teams/send-invitation":82,"./settings/teams/team-members":83,"./settings/teams/team-membership":84,"./settings/teams/team-profile":85,"./settings/teams/team-settings":86,"./settings/teams/update-team-name":87,"./settings/teams/update-team-photo":88}],43:[function(require,module,exports){
+},{"./auth/register-braintree":41,"./auth/register-stripe":42,"./kiosk/add-discount":44,"./kiosk/announcements":45,"./kiosk/kiosk":46,"./kiosk/metrics":47,"./kiosk/profile":48,"./kiosk/users":49,"./navbar/navbar":50,"./notifications/notifications":51,"./settings/api":52,"./settings/api/create-token":53,"./settings/api/tokens":54,"./settings/invoices":55,"./settings/invoices/invoice-list":56,"./settings/invoices/update-extra-billing-information":57,"./settings/payment-method-braintree":58,"./settings/payment-method-stripe":59,"./settings/payment-method/redeem-coupon":60,"./settings/payment-method/update-payment-method-braintree":61,"./settings/payment-method/update-payment-method-stripe":62,"./settings/payment-method/update-vat-id":63,"./settings/profile":64,"./settings/profile/update-contact-information":65,"./settings/profile/update-profile-photo":66,"./settings/security":67,"./settings/security/disable-two-factor-auth":68,"./settings/security/enable-two-factor-auth":69,"./settings/security/update-password":70,"./settings/settings":71,"./settings/subscription":72,"./settings/subscription/cancel-subscription":73,"./settings/subscription/resume-subscription":74,"./settings/subscription/subscribe-braintree":75,"./settings/subscription/subscribe-stripe":76,"./settings/subscription/update-subscription":77,"./settings/teams":78,"./settings/teams/create-team":79,"./settings/teams/current-teams":80,"./settings/teams/mailed-invitations":81,"./settings/teams/pending-invitations":82,"./settings/teams/send-invitation":83,"./settings/teams/team-members":84,"./settings/teams/team-membership":85,"./settings/teams/team-profile":86,"./settings/teams/team-settings":87,"./settings/teams/update-team-name":88,"./settings/teams/update-team-photo":89}],44:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/add-discount');
@@ -33934,7 +34245,7 @@ Vue.component('spark-kiosk-add-discount', {
     mixins: [base]
 });
 
-},{"kiosk/add-discount":98}],44:[function(require,module,exports){
+},{"kiosk/add-discount":99}],45:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/announcements');
@@ -33943,7 +34254,7 @@ Vue.component('spark-kiosk-announcements', {
     mixins: [base]
 });
 
-},{"kiosk/announcements":99}],45:[function(require,module,exports){
+},{"kiosk/announcements":100}],46:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/kiosk');
@@ -33952,7 +34263,7 @@ Vue.component('spark-kiosk', {
     mixins: [base]
 });
 
-},{"kiosk/kiosk":100}],46:[function(require,module,exports){
+},{"kiosk/kiosk":101}],47:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/metrics');
@@ -33961,7 +34272,7 @@ Vue.component('spark-kiosk-metrics', {
     mixins: [base]
 });
 
-},{"kiosk/metrics":101}],47:[function(require,module,exports){
+},{"kiosk/metrics":102}],48:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/profile');
@@ -33970,7 +34281,7 @@ Vue.component('spark-kiosk-profile', {
     mixins: [base]
 });
 
-},{"kiosk/profile":102}],48:[function(require,module,exports){
+},{"kiosk/profile":103}],49:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/users');
@@ -33979,7 +34290,7 @@ Vue.component('spark-kiosk-users', {
     mixins: [base]
 });
 
-},{"kiosk/users":103}],49:[function(require,module,exports){
+},{"kiosk/users":104}],50:[function(require,module,exports){
 'use strict';
 
 var base = require('navbar/navbar');
@@ -33988,7 +34299,7 @@ Vue.component('spark-navbar', {
     mixins: [base]
 });
 
-},{"navbar/navbar":112}],50:[function(require,module,exports){
+},{"navbar/navbar":113}],51:[function(require,module,exports){
 'use strict';
 
 var base = require('notifications/notifications');
@@ -33997,7 +34308,7 @@ Vue.component('spark-notifications', {
     mixins: [base]
 });
 
-},{"notifications/notifications":113}],51:[function(require,module,exports){
+},{"notifications/notifications":114}],52:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api');
@@ -34006,7 +34317,7 @@ Vue.component('spark-api', {
     mixins: [base]
 });
 
-},{"settings/api":114}],52:[function(require,module,exports){
+},{"settings/api":115}],53:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/create-token');
@@ -34015,7 +34326,7 @@ Vue.component('spark-create-token', {
     mixins: [base]
 });
 
-},{"settings/api/create-token":115}],53:[function(require,module,exports){
+},{"settings/api/create-token":116}],54:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/tokens');
@@ -34024,7 +34335,7 @@ Vue.component('spark-tokens', {
     mixins: [base]
 });
 
-},{"settings/api/tokens":116}],54:[function(require,module,exports){
+},{"settings/api/tokens":117}],55:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices');
@@ -34033,7 +34344,7 @@ Vue.component('spark-invoices', {
     mixins: [base]
 });
 
-},{"settings/invoices":117}],55:[function(require,module,exports){
+},{"settings/invoices":118}],56:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/invoice-list');
@@ -34042,7 +34353,7 @@ Vue.component('spark-invoice-list', {
     mixins: [base]
 });
 
-},{"settings/invoices/invoice-list":118}],56:[function(require,module,exports){
+},{"settings/invoices/invoice-list":119}],57:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/update-extra-billing-information');
@@ -34051,7 +34362,7 @@ Vue.component('spark-update-extra-billing-information', {
     mixins: [base]
 });
 
-},{"settings/invoices/update-extra-billing-information":119}],57:[function(require,module,exports){
+},{"settings/invoices/update-extra-billing-information":120}],58:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-braintree');
@@ -34060,7 +34371,7 @@ Vue.component('spark-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method-braintree":120}],58:[function(require,module,exports){
+},{"settings/payment-method-braintree":121}],59:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-stripe');
@@ -34069,7 +34380,7 @@ Vue.component('spark-payment-method-stripe', {
     mixins: [base]
 });
 
-},{"settings/payment-method-stripe":121}],59:[function(require,module,exports){
+},{"settings/payment-method-stripe":122}],60:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/redeem-coupon');
@@ -34078,7 +34389,7 @@ Vue.component('spark-redeem-coupon', {
     mixins: [base]
 });
 
-},{"settings/payment-method/redeem-coupon":122}],60:[function(require,module,exports){
+},{"settings/payment-method/redeem-coupon":123}],61:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-braintree');
@@ -34087,7 +34398,7 @@ Vue.component('spark-update-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-payment-method-braintree":123}],61:[function(require,module,exports){
+},{"settings/payment-method/update-payment-method-braintree":124}],62:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-stripe');
@@ -34096,7 +34407,7 @@ Vue.component('spark-update-payment-method-stripe', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-payment-method-stripe":124}],62:[function(require,module,exports){
+},{"settings/payment-method/update-payment-method-stripe":125}],63:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-vat-id');
@@ -34105,7 +34416,7 @@ Vue.component('spark-update-vat-id', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-vat-id":125}],63:[function(require,module,exports){
+},{"settings/payment-method/update-vat-id":126}],64:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile');
@@ -34114,7 +34425,7 @@ Vue.component('spark-profile', {
     mixins: [base]
 });
 
-},{"settings/profile":126}],64:[function(require,module,exports){
+},{"settings/profile":127}],65:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-contact-information');
@@ -34123,7 +34434,7 @@ Vue.component('spark-update-contact-information', {
     mixins: [base]
 });
 
-},{"settings/profile/update-contact-information":127}],65:[function(require,module,exports){
+},{"settings/profile/update-contact-information":128}],66:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-profile-photo');
@@ -34132,7 +34443,7 @@ Vue.component('spark-update-profile-photo', {
     mixins: [base]
 });
 
-},{"settings/profile/update-profile-photo":128}],66:[function(require,module,exports){
+},{"settings/profile/update-profile-photo":129}],67:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security');
@@ -34141,7 +34452,7 @@ Vue.component('spark-security', {
     mixins: [base]
 });
 
-},{"settings/security":129}],67:[function(require,module,exports){
+},{"settings/security":130}],68:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/disable-two-factor-auth');
@@ -34150,7 +34461,7 @@ Vue.component('spark-disable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/disable-two-factor-auth":130}],68:[function(require,module,exports){
+},{"settings/security/disable-two-factor-auth":131}],69:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/enable-two-factor-auth');
@@ -34159,7 +34470,7 @@ Vue.component('spark-enable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/enable-two-factor-auth":131}],69:[function(require,module,exports){
+},{"settings/security/enable-two-factor-auth":132}],70:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/update-password');
@@ -34168,7 +34479,7 @@ Vue.component('spark-update-password', {
     mixins: [base]
 });
 
-},{"settings/security/update-password":132}],70:[function(require,module,exports){
+},{"settings/security/update-password":133}],71:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/settings');
@@ -34177,7 +34488,7 @@ Vue.component('spark-settings', {
     mixins: [base]
 });
 
-},{"settings/settings":133}],71:[function(require,module,exports){
+},{"settings/settings":134}],72:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription');
@@ -34186,7 +34497,7 @@ Vue.component('spark-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription":134}],72:[function(require,module,exports){
+},{"settings/subscription":135}],73:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/cancel-subscription');
@@ -34195,7 +34506,7 @@ Vue.component('spark-cancel-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/cancel-subscription":135}],73:[function(require,module,exports){
+},{"settings/subscription/cancel-subscription":136}],74:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/resume-subscription');
@@ -34204,7 +34515,7 @@ Vue.component('spark-resume-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/resume-subscription":136}],74:[function(require,module,exports){
+},{"settings/subscription/resume-subscription":137}],75:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-braintree');
@@ -34213,7 +34524,7 @@ Vue.component('spark-subscribe-braintree', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-braintree":137}],75:[function(require,module,exports){
+},{"settings/subscription/subscribe-braintree":138}],76:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-stripe');
@@ -34222,7 +34533,7 @@ Vue.component('spark-subscribe-stripe', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-stripe":138}],76:[function(require,module,exports){
+},{"settings/subscription/subscribe-stripe":139}],77:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/update-subscription');
@@ -34231,7 +34542,7 @@ Vue.component('spark-update-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/update-subscription":139}],77:[function(require,module,exports){
+},{"settings/subscription/update-subscription":140}],78:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams');
@@ -34240,7 +34551,7 @@ Vue.component('spark-teams', {
     mixins: [base]
 });
 
-},{"settings/teams":140}],78:[function(require,module,exports){
+},{"settings/teams":141}],79:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/create-team');
@@ -34249,7 +34560,7 @@ Vue.component('spark-create-team', {
     mixins: [base]
 });
 
-},{"settings/teams/create-team":141}],79:[function(require,module,exports){
+},{"settings/teams/create-team":142}],80:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/current-teams');
@@ -34258,7 +34569,7 @@ Vue.component('spark-current-teams', {
     mixins: [base]
 });
 
-},{"settings/teams/current-teams":142}],80:[function(require,module,exports){
+},{"settings/teams/current-teams":143}],81:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/mailed-invitations');
@@ -34267,7 +34578,7 @@ Vue.component('spark-mailed-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/mailed-invitations":143}],81:[function(require,module,exports){
+},{"settings/teams/mailed-invitations":144}],82:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/pending-invitations');
@@ -34276,7 +34587,7 @@ Vue.component('spark-pending-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/pending-invitations":144}],82:[function(require,module,exports){
+},{"settings/teams/pending-invitations":145}],83:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/send-invitation');
@@ -34285,7 +34596,7 @@ Vue.component('spark-send-invitation', {
     mixins: [base]
 });
 
-},{"settings/teams/send-invitation":145}],83:[function(require,module,exports){
+},{"settings/teams/send-invitation":146}],84:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-members');
@@ -34294,7 +34605,7 @@ Vue.component('spark-team-members', {
     mixins: [base]
 });
 
-},{"settings/teams/team-members":146}],84:[function(require,module,exports){
+},{"settings/teams/team-members":147}],85:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-membership');
@@ -34303,7 +34614,7 @@ Vue.component('spark-team-membership', {
     mixins: [base]
 });
 
-},{"settings/teams/team-membership":147}],85:[function(require,module,exports){
+},{"settings/teams/team-membership":148}],86:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-profile');
@@ -34312,7 +34623,7 @@ Vue.component('spark-team-profile', {
     mixins: [base]
 });
 
-},{"settings/teams/team-profile":148}],86:[function(require,module,exports){
+},{"settings/teams/team-profile":149}],87:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-settings');
@@ -34321,7 +34632,7 @@ Vue.component('spark-team-settings', {
     mixins: [base]
 });
 
-},{"settings/teams/team-settings":149}],87:[function(require,module,exports){
+},{"settings/teams/team-settings":150}],88:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-name');
@@ -34330,7 +34641,7 @@ Vue.component('spark-update-team-name', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-name":150}],88:[function(require,module,exports){
+},{"settings/teams/update-team-name":151}],89:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-photo');
@@ -34339,7 +34650,7 @@ Vue.component('spark-update-team-photo', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-photo":151}],89:[function(require,module,exports){
+},{"settings/teams/update-team-photo":152}],90:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -34437,7 +34748,7 @@ module.exports = {
     }
 };
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -34557,7 +34868,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/braintree":105,"./../mixins/plans":107,"./../mixins/register":108}],91:[function(require,module,exports){
+},{"./../mixins/braintree":106,"./../mixins/plans":108,"./../mixins/register":109}],92:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -34786,7 +35097,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":107,"./../mixins/register":108,"./../mixins/vat":111}],92:[function(require,module,exports){
+},{"./../mixins/plans":108,"./../mixins/register":109,"./../mixins/vat":112}],93:[function(require,module,exports){
 'use strict';
 
 /**
@@ -34828,7 +35139,7 @@ Vue.filter('relative', function (value) {
     return moment.utc(value).local().fromNow();
 });
 
-},{}],93:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 'use strict';
 
 /**
@@ -34855,7 +35166,7 @@ require('./errors');
  */
 $.extend(Spark, require('./http'));
 
-},{"./errors":94,"./form":95,"./http":96}],94:[function(require,module,exports){
+},{"./errors":95,"./form":96,"./http":97}],95:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -34922,7 +35233,7 @@ window.SparkFormErrors = function () {
     };
 };
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 "use strict";
 
 /**
@@ -34976,7 +35287,7 @@ window.SparkForm = function (data) {
   };
 };
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35028,7 +35339,7 @@ module.exports = {
     }
 };
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35066,7 +35377,7 @@ module.exports = {
     }
 };
 
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 'use strict';
 
 function kioskAddDiscountForm() {
@@ -35132,7 +35443,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":106}],99:[function(require,module,exports){
+},{"./../mixins/discounts":107}],100:[function(require,module,exports){
 'use strict';
 
 var announcementsCreateForm = function announcementsCreateForm() {
@@ -35254,7 +35565,7 @@ module.exports = {
     }
 };
 
-},{}],100:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35290,7 +35601,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":110}],101:[function(require,module,exports){
+},{"./../mixins/tab-state":111}],102:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35574,7 +35885,7 @@ module.exports = {
     }
 };
 
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35724,7 +36035,7 @@ module.exports = {
     }
 };
 
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35859,7 +36170,7 @@ module.exports = {
     }
 };
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35894,7 +36205,7 @@ module.exports = {
     }
 };
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 'use strict';
 
 window.braintreeCheckout = [];
@@ -35950,7 +36261,7 @@ module.exports = {
     }
 };
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36048,7 +36359,7 @@ module.exports = {
     }
 };
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 'use strict';
 
 /*
@@ -36179,7 +36490,7 @@ module.exports = {
     }
 };
 
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36295,7 +36606,7 @@ module.exports = {
     }
 };
 
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 'use strict';
 
 /*
@@ -36464,9 +36775,9 @@ module.exports = {
     }
 };
 
-},{}],110:[function(require,module,exports){
-arguments[4][89][0].apply(exports,arguments)
-},{"dup":89}],111:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
+arguments[4][90][0].apply(exports,arguments)
+},{"dup":90}],112:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36509,7 +36820,7 @@ module.exports = {
     }
 };
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36534,7 +36845,7 @@ module.exports = {
     }
 };
 
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36620,7 +36931,7 @@ module.exports = {
     }
 };
 
-},{}],114:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36678,7 +36989,7 @@ module.exports = {
     }
 };
 
-},{}],115:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36807,7 +37118,7 @@ module.exports = {
     }
 };
 
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36916,7 +37227,7 @@ module.exports = {
     }
 };
 
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36967,7 +37278,7 @@ module.exports = {
 	}
 };
 
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36984,7 +37295,7 @@ module.exports = {
     }
 };
 
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37031,7 +37342,7 @@ module.exports = {
     }
 };
 
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37107,7 +37418,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":106}],121:[function(require,module,exports){
+},{"./../mixins/discounts":107}],122:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37150,7 +37461,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":106}],122:[function(require,module,exports){
+},{"./../mixins/discounts":107}],123:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37195,7 +37506,7 @@ module.exports = {
     }
 };
 
-},{}],123:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37293,7 +37604,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":105}],124:[function(require,module,exports){
+},{"./../../mixins/braintree":106}],125:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37480,7 +37791,7 @@ module.exports = {
     }
 };
 
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37525,14 +37836,14 @@ module.exports = {
     }
 };
 
-},{}],126:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user']
 };
 
-},{}],127:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37575,7 +37886,7 @@ module.exports = {
     }
 };
 
-},{}],128:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37637,7 +37948,7 @@ module.exports = {
     }
 };
 
-},{}],129:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37666,7 +37977,7 @@ module.exports = {
     }
 };
 
-},{}],130:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37697,7 +38008,7 @@ module.exports = {
 	}
 };
 
-},{}],131:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37742,7 +38053,7 @@ module.exports = {
 	}
 };
 
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37772,7 +38083,7 @@ module.exports = {
     }
 };
 
-},{}],133:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37801,7 +38112,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":110}],134:[function(require,module,exports){
+},{"./../mixins/tab-state":111}],135:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37865,7 +38176,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":107,"./../mixins/subscriptions":109}],135:[function(require,module,exports){
+},{"./../mixins/plans":108,"./../mixins/subscriptions":110}],136:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37917,7 +38228,7 @@ module.exports = {
     }
 };
 
-},{}],136:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37959,7 +38270,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":107,"./../../mixins/subscriptions":109}],137:[function(require,module,exports){
+},{"./../../mixins/plans":108,"./../../mixins/subscriptions":110}],138:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38058,7 +38369,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":105,"./../../mixins/plans":107,"./../../mixins/subscriptions":109}],138:[function(require,module,exports){
+},{"./../../mixins/braintree":106,"./../../mixins/plans":108,"./../../mixins/subscriptions":110}],139:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38263,7 +38574,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":107,"./../../mixins/subscriptions":109,"./../../mixins/vat":111}],139:[function(require,module,exports){
+},{"./../../mixins/plans":108,"./../../mixins/subscriptions":110,"./../../mixins/vat":112}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38358,14 +38669,14 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":107,"./../../mixins/subscriptions":109}],140:[function(require,module,exports){
+},{"./../../mixins/plans":108,"./../../mixins/subscriptions":110}],141:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'teams']
 };
 
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38416,7 +38727,7 @@ module.exports = {
     }
 };
 
-},{}],142:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38507,7 +38818,7 @@ module.exports = {
     }
 };
 
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38530,7 +38841,7 @@ module.exports = {
     }
 };
 
-},{}],144:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38608,7 +38919,7 @@ module.exports = {
     }
 };
 
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38643,7 +38954,7 @@ module.exports = {
     }
 };
 
-},{}],146:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38794,7 +39105,7 @@ module.exports = {
     }
 };
 
-},{}],147:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38843,14 +39154,14 @@ module.exports = {
     }
 };
 
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'team']
 };
 
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38913,7 +39224,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/tab-state":110}],150:[function(require,module,exports){
+},{"./../../mixins/tab-state":111}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38955,7 +39266,7 @@ module.exports = {
     }
 };
 
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39028,7 +39339,7 @@ module.exports = {
     }
 };
 
-},{}],152:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 'use strict';
 
 /*
@@ -39056,7 +39367,7 @@ if ($('#spark-app').length > 0) {
   require('vue-bootstrap');
 }
 
-},{"bootstrap/dist/js/npm":3,"jquery":16,"js-cookie":17,"moment":18,"promise":20,"underscore":28,"urijs":31,"vue-bootstrap":154}],153:[function(require,module,exports){
+},{"bootstrap/dist/js/npm":3,"jquery":16,"js-cookie":17,"moment":18,"promise":20,"underscore":28,"urijs":31,"vue-bootstrap":155}],154:[function(require,module,exports){
 'use strict';
 
 /**
@@ -39346,7 +39657,7 @@ module.exports = {
     }
 };
 
-},{}],154:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 /*
@@ -39384,6 +39695,6 @@ require('./filters');
  */
 require('./forms/bootstrap');
 
-},{"./filters":92,"./forms/bootstrap":93,"./interceptors":97,"./mixin":104,"vue":34,"vue-resource":33}]},{},[35]);
+},{"./filters":93,"./forms/bootstrap":94,"./interceptors":98,"./mixin":105,"vue":34,"vue-resource":33}]},{},[35]);
 
 //# sourceMappingURL=app.js.map

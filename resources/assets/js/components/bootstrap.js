@@ -12,6 +12,7 @@
 require('./../spark-components/bootstrap');
 
 require('./home');
+require('./modal');
 
 // Activity
 require('./activity');

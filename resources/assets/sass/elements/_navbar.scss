@@ -31,6 +31,36 @@
 	 }
 }
 
+.navbar-default .navbar-nav > li > .btn-primary {
+    color: #fff;
+    text-transform: none;
+    font-size: inherit;
+    height: 36px;
+    margin-top: 7px;
+
+    &:hover, &:focus {
+    		background-color: $navbar-default-brand-hover-color;
+    		color: #fff;
+    }
+}
+
 .navbar-icon .icon {
 	font-size: $font-size-base;
+}
+
+nav.navbar-inverse form.search {
+	input {
+		width: 300px;
+	}
+	.btn-default {
+	    background-color: transparent;
+	    color: #fff;
+	    border: none;
+	    font-size: 16px;
+	    padding: 5px 10px;
+
+	    &:hover {
+	    		color: #ccc;
+	    }
+	}
 }
