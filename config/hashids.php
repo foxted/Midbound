@@ -43,6 +43,12 @@ return [
             'alphabet' => 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789',
         ],
 
+        'websites' => [
+            'salt' => env('APP_KEY'),
+            'length' => '8',
+            'alphabet' => 'ABCDEFGHIJKLMNPQRSTUVWXYZ0123456789',
+        ],
+
     ],
 
 ];

@@ -1,6 +1,12 @@
+.btn:active, .btn.active {
+	box-shadow: none;
+	color: $gray-dark;
+}
+
 .btn-ghost, .btn-ghost a, a.btn-ghost {
-	background-color: transparent;
 	border: 0;
 	color: $gray-light;
 	text-transform: none;
+	outline : none !important;
+	background-color: transparent;
 }

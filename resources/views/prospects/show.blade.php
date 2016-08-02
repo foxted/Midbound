@@ -15,7 +15,7 @@
                             <p class="text-lowercase"><a href="#">{{ $prospect->email }}</a></p>
 
                             <small><span class="text-uppercase text-muted">Phone</span></small>
-                            <p><a href="#">1-894-904-9648</a></p>
+                            <p><a href="#">{{ $prospect->phone or 'N/A'}}</a></p>
 
                             <small><span class="text-uppercase text-muted">Company</span></small>
                             <p><a href="/midbound-frontend/company-detail.php?id=97">Vulputate Risus A PC</a></p>
@@ -27,59 +27,38 @@
                             <p>4</p>
 
                             <small><span class="text-uppercase text-muted">Created</span></small>
-                            <p>Jun 3, 2015</p>
+                            <p>{{ $prospect->created_at->format(config('app.date_format')) }}</p>
 
                             <a href="#" class="btn btn-default">Edit</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-9">
-                    <div class="alert alert-warning" style="padding: 20px; margin: 0 0 20px;">
-                        <strong>Next campaign action (4 of 7)</strong> from Best Practices Whitepaper Downloads:
-                        <h4 class="lead">Send "<a href="#">Don't miss: B2B Marketing Webinar</a>"
-                            <span class="text-right text-muted"><small>in 2 days</small></span>
-                        </h4>
-                        <a href="#" class="btn btn-default">Send Now</a>
-                        <a href="#" class="" style="border-right: 1px solid; padding: 0 10px;">Skip</a>
-                        <a href="#" class="" style="padding: 0 10px;">Switch Campaigns</a>
-                    </div>
+                    {{--<div class="alert alert-warning" style="padding: 20px; margin: 0 0 20px;">--}}
+                        {{--<strong>Next campaign action (4 of 7)</strong> from Best Practices Whitepaper Downloads:--}}
+                        {{--<h4 class="lead">Send "<a href="#">Don't miss: B2B Marketing Webinar</a>"--}}
+                            {{--<span class="text-right text-muted"><small>in 2 days</small></span>--}}
+                        {{--</h4>--}}
+                        {{--<a href="#" class="btn btn-default">Send Now</a>--}}
+                        {{--<a href="#" class="" style="border-right: 1px solid; padding: 0 10px;">Skip</a>--}}
+                        {{--<a href="#" class="" style="padding: 0 10px;">Switch Campaigns</a>--}}
+                    {{--</div>--}}
 
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">visited</span> <a href="#">Prices
-                                &amp; Plans</a> <a href="#">and 4 other pages</a></p>
-                        <div class="text-right text-muted">
-                            <small>Just now</small>
+                    @foreach($events as $event)
+                    <div class="panel panel-prospect">
+                        <div class="panel-body">
+                            <div class="prospect-event">
+                                <p class="event">
+                                    {{ $event->action }} <a href="#">{{ $event->resource }}</a>
+                                </p>
+                               <time class="event-date">
+                                    &mdash;
+                                      {{ $event->created_at->format(config('app.date_format')) }}
+                                </time>
+                            </div>
                         </div>
                     </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">visited</span> <a href="#">Our
-                                Services</a> <a href="#">and 12 other pages</a></p>
-                        <div class="text-right text-muted">
-                            <small>Just now</small>
-                        </div>
-                    </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">subscribed</span> <a
-                                    href="#">to Blog</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Just now</small>
-                        </div>
-                    </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">clicked</span> <a href="#">Why
-                                40% of B2B companies fail at inbound marketing</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Yesterday</small>
-                        </div>
-                    </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">opened</span> <a href="#">Thanks
-                                for your interest in B2B Co</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Last Week</small>
-                        </div>
-                    </div>
-                    <div class="well well-sm"><p class="lead"><span class="text-capitalize">downloaded</span> <a
-                                    href="#">Best Practices Whitepaper</a> <a href="#"></a></p>
-                        <div class="text-right text-muted">
-                            <small>Last Week</small>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

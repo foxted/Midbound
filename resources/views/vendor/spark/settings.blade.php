@@ -13,50 +13,43 @@
     <div class="spark-screen container">
         <div class="row">
             <!-- Tabs -->
+            <div class="col-sm-3 col-md-2 spark-settings-tabs">
+                <ul class="list-group" role="tablist">
+                    <li class="list-header">Settings</li>
+                    <!-- Profile Link -->
+                    <li role="presentation" class="list-group-item active">
+                        <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-btn fa-user"></i>Profile
+                        </a>
+                    </li>
+
+                    <!-- Teams Link -->
+                    @if (Spark::usesTeams())
+                        <li role="presentation" class="list-group-item">
+                            <a href="#teams" aria-controls="teams" role="tab" data-toggle="tab">
+                                <i class="fa fa-fw fa-btn fa-users"></i>Teams
+                            </a>
+                        </li>
+                    @endif
+
+                <!-- Security Link -->
+                    <li role="presentation" class="list-group-item">
+                        <a href="#security" aria-controls="security" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-btn fa-lock"></i>Security
+                        </a>
+                    </li>
+
+                    <!-- API Link -->
+                    @if (Spark::usesApi())
+                        <li role="presentation" class="list-group-item">
+                            <a href="#api" aria-controls="api" role="tab" data-toggle="tab">
+                                <i class="fa fa-fw fa-btn fa-cubes"></i>API
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </div>
             <div class="col-md-4">
-                <div class="panel panel-default panel-flush">
-                    <div class="panel-heading">
-                        Settings
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="spark-settings-tabs">
-                            <ul class="nav spark-settings-stacked-tabs" role="tablist">
-                                <!-- Profile Link -->
-                                <li role="presentation">
-                                    <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
-                                        <i class="fa fa-fw fa-btn fa-edit"></i>Profile
-                                    </a>
-                                </li>
-
-                                <!-- Teams Link -->
-                                @if (Spark::usesTeams())
-                                    <li role="presentation">
-                                        <a href="#teams" aria-controls="teams" role="tab" data-toggle="tab">
-                                            <i class="fa fa-fw fa-btn fa-users"></i>Teams
-                                        </a>
-                                    </li>
-                                @endif
-
-                                <!-- Security Link -->
-                                <li role="presentation">
-                                    <a href="#security" aria-controls="security" role="tab" data-toggle="tab">
-                                        <i class="fa fa-fw fa-btn fa-lock"></i>Security
-                                    </a>
-                                </li>
-
-                                <!-- API Link -->
-                                @if (Spark::usesApi())
-                                    <li role="presentation">
-                                        <a href="#api" aria-controls="api" role="tab" data-toggle="tab">
-                                            <i class="fa fa-fw fa-btn fa-cubes"></i>API
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Billing Tabs -->
                 @if (Spark::canBillCustomers())
@@ -98,7 +91,7 @@
             </div>
 
             <!-- Tab Panels -->
-            <div class="col-md-8">
+            <div class="col-sm-9 col-md-10">
                 <div class="tab-content">
                     <!-- Profile -->
                     <div role="tabpanel" class="tab-pane active" id="profile">
