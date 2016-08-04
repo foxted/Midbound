@@ -17,9 +17,6 @@ class CreateProspectsTable extends Migration
             $table->string('pid')->nullable()->index();
             $table->integer('team_id')->unsigned()->index();
             $table->integer('assignee_id')->unsigned()->index()->nullable();
-            $table->string('email')->nullable()->index();
-            $table->string('name')->nullable();
-            $table->string('phone')->nullable();
             $table->timestampsTz();
             $table->softDeletes();
         });

@@ -4,6 +4,7 @@ namespace Midbound\Observers;
 
 use Hashids;
 use Midbound\Prospect;
+use Midbound\ProspectProfile;
 
 /**
  * Class ProspectObserver
@@ -18,5 +19,9 @@ class ProspectObserver
     {
         $prospect->pid = Hashids::encode($prospect->id);
         $prospect->save();
+
+        $profile = new ProspectProfile();
+        $profile->prospect()->associate($prospect);
+        $profile->save();
     }
 }

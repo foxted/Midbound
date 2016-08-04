@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Prospect
+ * @property string pid
+ * @property mixed id
  * @package Midbound
  */
 class Prospect extends Model
@@ -54,6 +56,14 @@ class Prospect extends Model
     public function getLatestActivityAttribute()
     {
         return $this->latestEvent->created_at;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function informations()
+    {
+        return $this->hasOne(ProspectInformation::class);
     }
 
 }

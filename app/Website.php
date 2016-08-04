@@ -5,10 +5,10 @@ namespace Midbound;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Tracker
+ * Class Website
  * @package Midbound
  */
-class Tracker extends Model
+class Website extends Model
 {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

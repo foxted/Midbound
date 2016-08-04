@@ -13,14 +13,14 @@ class Visitor extends Model
     /**
      * @var array
      */
-    protected $fillable = ['guid', 'team_id', 'tracker_id'];
+    protected $fillable = ['guid', 'team_id', 'website_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tracker()
+    public function website()
     {
-        return $this->belongsTo(Tracker::class);
+        return $this->belongsTo(Website::class);
     }
 
     /**

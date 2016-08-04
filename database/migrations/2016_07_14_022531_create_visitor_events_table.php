@@ -20,6 +20,8 @@ class CreateVisitorEventsTable extends Migration
             $table->json('meta')->nullable();
             $table->timestampsTz();
             $table->softDeletes();
+
+            $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');
         });
     }
 
@@ -30,6 +32,6 @@ class CreateVisitorEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('visitors');
+        Schema::drop('visitor_events');
     }
 }

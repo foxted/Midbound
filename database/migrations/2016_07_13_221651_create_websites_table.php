@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTrackersTable extends Migration
+class CreateWebsitesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateTrackersTable extends Migration
      */
     public function up()
     {
-        Schema::create('trackers', function (Blueprint $table) {
+        Schema::create('websites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('team_id')->unsigned()->index();
             $table->string('hash')->unique();
@@ -29,6 +29,6 @@ class CreateTrackersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('trackers');
+        Schema::drop('websites');
     }
 }
