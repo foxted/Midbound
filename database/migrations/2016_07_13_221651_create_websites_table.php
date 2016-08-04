@@ -15,10 +15,11 @@ class CreateWebsitesTable extends Migration
         Schema::create('websites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('team_id')->unsigned()->index();
-            $table->string('hash')->unique();
+            $table->string('hash')->nullable();
             $table->string('name');
             $table->string('url');
             $table->timestampsTz();
+            $table->timestampTz('last_used_at')->nullable();
         });
     }
 

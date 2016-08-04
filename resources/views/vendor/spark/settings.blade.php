@@ -43,10 +43,17 @@
                     @if (Spark::usesApi())
                         <li role="presentation" class="list-group-item">
                             <a href="#api" aria-controls="api" role="tab" data-toggle="tab">
-                                <i class="fa fa-fw fa-btn fa-cubes"></i>API
+                                <i class="fa fa-fw fa-btn fa-key"></i>API Tokens
                             </a>
                         </li>
                     @endif
+
+                    <!-- Websites -->
+                    <li role="presentation" class="list-group-item">
+                        <a href="#websites" aria-controls="websites" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-btn fa-cubes"></i>Websites
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="col-md-4">
@@ -115,6 +122,11 @@
                             @include('spark::settings.api')
                         </div>
                     @endif
+
+                    <!-- Websites -->
+                    <div role="tabpanel" class="tab-pane" id="websites">
+                        @include('spark::settings.websites')
+                    </div>
 
                     <!-- Billing Tab Panes -->
                     @if (Spark::canBillCustomers())
