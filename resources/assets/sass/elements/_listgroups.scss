@@ -46,11 +46,8 @@
 
         &.active {
             background-color: $list-group-hover-bg;
-
-            & > a {
-                color: $list-group-link-color;
-                font-weight: $font-weight-bold;
-            }
+            color: $list-group-link-color;
+            font-weight: $font-weight-bold;
         }
 
         &.cta {

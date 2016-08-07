@@ -6,12 +6,33 @@
 </li>
 <form class="navbar-form navbar-left search"> 
 	<div class="form-group"> 
-		<input class="form-control" onclick="showAdvancedSearch();" placeholder="Search for anything..."> 
+		<input class="form-control" placeholder="Search for anything..." value="Lead"> 
 	</div> 
-	<!-- Advanced Search Panel -->
-       <div class="panel advanced-search" id="advancedSearchPanel" style="display:none;">
+	<!-- Default Search Panel -->
+       <div class="panel search">
           <div class="panel-body">
-          	<div class="list-group">
+            <div class="search-results">
+            <h3>Prospects</h3>
+                <ul>
+                  <li><a href="#">John Prospo<strong>lead</strong></a></li>
+                  <li><a href="#">Bob <strong>Lead</strong>sworth</a></li>
+                </ul>
+              <h3>Companies</h3>
+              <ul>
+                <li><a href="#"><strong>Lead</strong>corp</a></li>
+                <li><a href="#">Pro<strong>lead</strong>sper Inc</a></li>
+              </ul>
+          </div>
+          </div>
+          <div class="panel-footer">
+            <a class="btn btn-ghost" href="#">Advanced Search</a>
+          </div>
+       </div>
+    <!-- Advanced Search Panel -->
+       <div class="panel search" style="margin-left: 430px;">
+          <div class="panel-body">
+            <div class="advanced-search"> 
+             <div class="list-group">
                     <div class="list-header">Type</div>
                     <a href="#" class="list-group-item active">Prospects</a>
                     <a href="#" class="list-group-item disabled">Companies</a>
@@ -31,14 +52,13 @@
                     <a href="#" class="list-group-item">Medium</a>
                     <a href="#" class="list-group-item active">High</a>
                     <a href="#" class="list-group-item">Any</a>
+                </div> 
                 </div>
           </div>
           <div class="panel-footer">
-          	<button class="btn btn-primary" type="submit">Search</button>
-          	<a class="btn btn-ghost">Save this Search</a>
-          	<div class="pull-right">
-              		<a class="btn btn-ghost" href="#"> Cancel</a>
-              </div>
+            <a class="btn btn-primary">Search</a>
+            <a class="btn btn-ghost">Save this search</a>
+            <a class="btn btn-ghost pull-right">Cancel</a>
           </div>
        </div>
 </form>
