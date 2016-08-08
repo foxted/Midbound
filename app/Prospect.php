@@ -15,7 +15,7 @@ class Prospect extends Model
 {
 
     use TeamScope;
-    
+
     /**
      * @var array
      */
