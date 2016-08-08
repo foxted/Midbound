@@ -57,7 +57,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->group([
             'namespace' => $this->namespace,
-            'middleware' => ['web', 'guest', 'hasTeam'],
+            'middleware' => ['web', 'guest'],
         ], function ($router) {
             require app_path('Http/guest.php');
         });
