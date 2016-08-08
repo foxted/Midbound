@@ -3,6 +3,7 @@
 namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
+use Midbound\Scopes\TeamScope;
 
 /**
  * Class Website
@@ -12,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Website extends Model
 {
+
+    use TeamScope;
+
     /**
      * @var array
      */

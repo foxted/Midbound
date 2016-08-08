@@ -18,7 +18,7 @@ class WebsitesController extends Controller
      */
     public function index()
     {
-        $websites = Website::latest()->get();
+        $websites = Website::currentTeam()->latest()->get();
 
         return response()->json($websites);
     }
