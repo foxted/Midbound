@@ -5,6 +5,7 @@ namespace Midbound\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Midbound\Bindings\ProspectBinding;
+use Midbound\Bindings\WebsiteBinding;
 
 /**
  * Class RouteServiceProvider
@@ -13,7 +14,8 @@ use Midbound\Bindings\ProspectBinding;
 class RouteServiceProvider extends ServiceProvider
 {
     protected $modelBindings = [
-        'prospects' => ProspectBinding::class
+        'prospects' => ProspectBinding::class,
+        'websites' => WebsiteBinding::class,
     ];
     
     /**
@@ -55,7 +57,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->group([
             'namespace' => $this->namespace,
-            'middleware' => ['web', 'guest', 'hasTeam'],
+            'middleware' => ['web', 'guest'],
         ], function ($router) {
             require app_path('Http/guest.php');
         });

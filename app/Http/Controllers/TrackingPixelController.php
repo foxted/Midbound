@@ -4,7 +4,7 @@ namespace Midbound\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Midbound\Tracker;
+use Midbound\Website;
 use Midbound\VisitorEvent;
 
 /**
@@ -19,28 +19,35 @@ class TrackingPixelController extends Controller
      */
     public function show(Request $request)
     {
-        // Fetch tracker record
-        $tracker = Tracker::whereHash($request->get('midid'))->first();
+        try {
+            // Fetch tracker record
+            $website = Website::whereHash($request->get('midid'))->first();
 
-        // Fetch or create visitor record
-        $visitor = $tracker->visitors()->firstOrCreate([
-            'team_id' => $tracker->team->id,
-            'tracker_id' => $tracker->id,
-            'guid' => $request->get('midguid')
-        ]);
+            // Fetch or create visitor record
+            $visitor = $website->visitors()->firstOrCreate([
+                'team_id' => $website->team->id,
+                'website_id' => $website->id,
+                'guid' => $request->get('midguid')
+            ]);
 
-        // Record event
-        $event = new VisitorEvent([
-            'action' => $request->get('midac'),
-            'resource' => $request->get('midrc'),
-            'meta' => $request->get('midmeta', [])
-        ]);
-        $event->visitor()->associate($visitor);
-        $event->save();
+            // Record event
+            if(in_array($request->get('midac'), config('tracking.allowed-events'))) {
+                $event = new VisitorEvent([
+                    'action' => $request->get('midac'),
+                    'resource' => $request->get('midrc'),
+                    'meta' => $request->get('midmeta', [])
+                ]);
+                $event->visitor()->associate($visitor);
+                $event->save();
+            }
+        } catch(Exception $e) {
 
-        $image = file_get_contents(public_path('img/pixel.gif'));
-        return response($image, Response::HTTP_OK, [
-            'Content-Type' => 'image/gif'
-        ]);
+        } finally {
+            $image = file_get_contents(public_path('img/pixel.gif'));
+
+            return response($image, Response::HTTP_OK, [
+                'Content-Type' => 'image/gif'
+            ]);
+        }
     }
 }

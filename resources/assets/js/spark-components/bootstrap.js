@@ -55,6 +55,13 @@ require('./settings/api/create-token');
 require('./settings/api/tokens');
 
 /**
+ * Websites Settings Components
+ */
+require('./settings/websites');
+require('./settings/websites/create-website');
+require('./settings/websites/list');
+
+/**
  * Subscription Settings Components...
  */
 require('./settings/subscription');

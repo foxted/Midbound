@@ -15,13 +15,16 @@ class CreateVisitorsTable extends Migration
         Schema::create('visitors', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('team_id')->unsigned()->index();
-            $table->integer('tracker_id')->unsigned()->index();
+            $table->integer('website_id')->unsigned()->nullable()->index();
             $table->integer('prospect_id')->unsigned()->nullable()->index();
             $table->string('guid')->index();
             $table->timestampsTz();
             $table->softDeletes();
 
-            $table->unique(['team_id', 'tracker_id', 'guid']);
+            $table->unique(['team_id', 'website_id', 'guid']);
+            $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
+            $table->foreign('website_id')->references('id')->on('websites')->onDelete('set null');
+            $table->foreign('prospect_id')->references('id')->on('prospects')->onDelete('set null');
         });
     }
 

@@ -4,13 +4,16 @@ namespace Midbound\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Midbound\Observers\ProspectObserver;
+use Midbound\Observers\WebsiteObserver;
 use Midbound\Prospect;
+use Midbound\Website;
 
 class AppServiceProvider extends ServiceProvider
 {
 
     protected $observers = [
-        Prospect::class => ProspectObserver::class
+        Prospect::class => ProspectObserver::class,
+        Website::class => WebsiteObserver::class,
     ];
 
     /**

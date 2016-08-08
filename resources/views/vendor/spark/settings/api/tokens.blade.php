@@ -1,4 +1,4 @@
-<spark-tokens :tokens="tokens" :available-abilities="availableAbilities" inline-template>
+<spark-tokens :tokens.sync="tokens" :available-abilities="availableAbilities" inline-template>
     <div>
         <div>
             <div class="panel panel-default" v-if="tokens.length > 0">
