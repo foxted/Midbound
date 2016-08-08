@@ -20,7 +20,7 @@ class VisitorEventsController extends Controller
      */
     public function index()
     {
-        $events = VisitorEvent::latest()->paginate(25);
+        $events = VisitorEvent::currentTeam()->latest()->paginate(25);
 
         return response()->json($events);
     }

@@ -4,8 +4,10 @@ namespace Midbound\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Midbound\Observers\ProspectObserver;
+use Midbound\Observers\VisitorEventObserver;
 use Midbound\Observers\WebsiteObserver;
 use Midbound\Prospect;
+use Midbound\VisitorEvent;
 use Midbound\Website;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
 
     protected $observers = [
         Prospect::class => ProspectObserver::class,
+        VisitorEvent::class => VisitorEventObserver::class,
         Website::class => WebsiteObserver::class,
     ];
 

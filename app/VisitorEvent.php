@@ -3,6 +3,7 @@
 namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
+use Midbound\Scopes\TeamScope;
 
 /**
  * Class VisitorEvent
@@ -10,6 +11,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class VisitorEvent extends Model
 {
+
+    use TeamScope;
+
     /**
      * @var array
      */
