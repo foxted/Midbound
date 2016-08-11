@@ -22,6 +22,11 @@ class Prospect extends Model
     protected $appends = ['url', 'avatar'];
 
     /**
+     * @var array
+     */
+    protected $with = ['profile'];
+
+    /**
      * @return string
      */
     public function getUrlAttribute()
