@@ -44,6 +44,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map(Router $router)
     {
         $this->mapGuestRoutes($router);
+        $this->mapPublicRoutes($router);
         $this->mapAppRoutes($router);
         $this->mapApiRoutes($router);
     }
@@ -60,6 +61,21 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => ['web', 'guest'],
         ], function ($router) {
             require app_path('Http/guest.php');
+        });
+    }
+
+    /**
+     * Define the guest routes for the application (no authentication).
+     * @param  \Illuminate\Routing\Router $router
+     * @return void
+     */
+    protected function mapPublicRoutes(Router $router)
+    {
+        $router->group([
+            'namespace' => $this->namespace,
+            'middleware' => ['web'],
+        ], function ($router) {
+            require app_path('Http/public.php');
         });
     }
 

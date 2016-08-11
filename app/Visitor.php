@@ -3,6 +3,7 @@
 namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
+use Midbound\Traits\Belonging\BelongsToTeam;
 
 /**
  * Class Visitor
@@ -10,6 +11,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Visitor extends Model
 {
+
+    use BelongsToTeam;
+
     /**
      * @var array
      */

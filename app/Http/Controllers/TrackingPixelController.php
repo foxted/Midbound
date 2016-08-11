@@ -4,6 +4,7 @@ namespace Midbound\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Midbound\Prospect;
 use Midbound\Website;
 use Midbound\VisitorEvent;
 
@@ -30,6 +31,19 @@ class TrackingPixelController extends Controller
                 'guid' => $request->get('midguid')
             ]);
 
+            // Check for capture
+            if($request->get('midac') == "capture") {
+                if(!$prospect = $visitor->prospect) {
+                    $prospect = Prospect::create();
+                    $visitor->prospect()->associate($prospect);
+                    $visitor->save();
+                }
+
+                $profile = $prospect->profile;
+                $profile->capture($request->get('midtype'), $request->get('midrc'));
+                $profile->save();
+            }
+
             // Record event
             if(in_array($request->get('midac'), config('tracking.allowed-events'))) {
                 $event = new VisitorEvent([
@@ -41,7 +55,7 @@ class TrackingPixelController extends Controller
                 $event->save();
             }
         } catch(Exception $e) {
-
+            //
         } finally {
             $image = file_get_contents(public_path('img/pixel.gif'));
 

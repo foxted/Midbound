@@ -15,6 +15,9 @@ class VisitorEventObserver
      */
     public function creating(VisitorEvent $event)
     {
-        $event->team()->associate(auth()->user()->currentTeam()->id);
+        if(auth()->check())
+        {
+            $event->team()->associate(auth()->user()->currentTeam()->id);
+        }
     }
 }

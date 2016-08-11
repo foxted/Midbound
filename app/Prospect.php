@@ -3,7 +3,7 @@
 namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
-use Midbound\Scopes\TeamScope;
+use Midbound\Traits\Belonging\BelongsToTeam;
 
 /**
  * Class Prospect
@@ -14,7 +14,7 @@ use Midbound\Scopes\TeamScope;
 class Prospect extends Model
 {
 
-    use TeamScope;
+    use BelongsToTeam;
 
     /**
      * @var array
@@ -65,9 +65,9 @@ class Prospect extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function informations()
+    public function profile()
     {
-        return $this->hasOne(ProspectInformation::class);
+        return $this->hasOne(ProspectProfile::class);
     }
 
 }

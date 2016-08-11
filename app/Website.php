@@ -3,7 +3,7 @@
 namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
-use Midbound\Scopes\TeamScope;
+use Midbound\Traits\Belonging\BelongsToTeam;
 
 /**
  * Class Website
@@ -14,7 +14,7 @@ use Midbound\Scopes\TeamScope;
 class Website extends Model
 {
 
-    use TeamScope;
+    use BelongsToTeam;
 
     /**
      * @var array
@@ -25,14 +25,6 @@ class Website extends Model
      * @var array
      */
     protected $appends = ['snippet'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function team()
-    {
-        return $this->belongsTo(Team::class);
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
