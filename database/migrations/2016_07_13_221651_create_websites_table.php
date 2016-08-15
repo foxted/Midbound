@@ -16,7 +16,6 @@ class CreateWebsitesTable extends Migration
             $table->increments('id');
             $table->integer('team_id')->unsigned()->index();
             $table->string('hash')->nullable();
-            $table->string('name');
             $table->string('url');
             $table->timestampsTz();
             $table->timestampTz('last_used_at')->nullable();

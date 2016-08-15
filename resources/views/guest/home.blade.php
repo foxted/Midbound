@@ -1,4 +1,4 @@
-@extends('spark::layouts.app')
+@extends('layouts.guest')
 
 @section('title')
 	Turn prospects into leads faster with Midbound

@@ -10,7 +10,7 @@
                     <div class="panel-heading">Dashboard</div>
 
                     <div class="panel-body">
-                        Your application's dashboard.
+                        Application Dashboard
                     </div>
                 </div>
             </div>

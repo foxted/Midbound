@@ -306,10 +306,10 @@ require('../../js/tab.js')
 require('../../js/affix.js')
 },{"../../js/affix.js":4,"../../js/alert.js":5,"../../js/button.js":6,"../../js/carousel.js":7,"../../js/collapse.js":8,"../../js/dropdown.js":9,"../../js/modal.js":10,"../../js/popover.js":11,"../../js/scrollspy.js":12,"../../js/tab.js":13,"../../js/tooltip.js":14,"../../js/transition.js":15}],4:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: affix.js v3.3.6
+ * Bootstrap: affix.js v3.3.7
  * http://getbootstrap.com/javascript/#affix
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -335,7 +335,7 @@ require('../../js/affix.js')
     this.checkPosition()
   }
 
-  Affix.VERSION  = '3.3.6'
+  Affix.VERSION  = '3.3.7'
 
   Affix.RESET    = 'affix affix-top affix-bottom'
 
@@ -470,10 +470,10 @@ require('../../js/affix.js')
 
 },{}],5:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: alert.js v3.3.6
+ * Bootstrap: alert.js v3.3.7
  * http://getbootstrap.com/javascript/#alerts
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -489,7 +489,7 @@ require('../../js/affix.js')
     $(el).on('click', dismiss, this.close)
   }
 
-  Alert.VERSION = '3.3.6'
+  Alert.VERSION = '3.3.7'
 
   Alert.TRANSITION_DURATION = 150
 
@@ -502,7 +502,7 @@ require('../../js/affix.js')
       selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = $(selector)
+    var $parent = $(selector === '#' ? [] : selector)
 
     if (e) e.preventDefault()
 
@@ -566,10 +566,10 @@ require('../../js/affix.js')
 
 },{}],6:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: button.js v3.3.6
+ * Bootstrap: button.js v3.3.7
  * http://getbootstrap.com/javascript/#buttons
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -586,7 +586,7 @@ require('../../js/affix.js')
     this.isLoading = false
   }
 
-  Button.VERSION  = '3.3.6'
+  Button.VERSION  = '3.3.7'
 
   Button.DEFAULTS = {
     loadingText: 'loading...'
@@ -608,10 +608,10 @@ require('../../js/affix.js')
 
       if (state == 'loadingText') {
         this.isLoading = true
-        $el.addClass(d).attr(d, d)
+        $el.addClass(d).attr(d, d).prop(d, true)
       } else if (this.isLoading) {
         this.isLoading = false
-        $el.removeClass(d).removeAttr(d)
+        $el.removeClass(d).removeAttr(d).prop(d, false)
       }
     }, this), 0)
   }
@@ -675,10 +675,15 @@ require('../../js/affix.js')
 
   $(document)
     .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      var $btn = $(e.target)
-      if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
+      var $btn = $(e.target).closest('.btn')
       Plugin.call($btn, 'toggle')
-      if (!($(e.target).is('input[type="radio"]') || $(e.target).is('input[type="checkbox"]'))) e.preventDefault()
+      if (!($(e.target).is('input[type="radio"], input[type="checkbox"]'))) {
+        // Prevent double click on radios, and the double selections (so cancellation) on checkboxes
+        e.preventDefault()
+        // The target component still receive the focus
+        if ($btn.is('input,button')) $btn.trigger('focus')
+        else $btn.find('input:visible,button:visible').first().trigger('focus')
+      }
     })
     .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
       $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
@@ -688,10 +693,10 @@ require('../../js/affix.js')
 
 },{}],7:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: carousel.js v3.3.6
+ * Bootstrap: carousel.js v3.3.7
  * http://getbootstrap.com/javascript/#carousel
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -719,7 +724,7 @@ require('../../js/affix.js')
       .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
   }
 
-  Carousel.VERSION  = '3.3.6'
+  Carousel.VERSION  = '3.3.7'
 
   Carousel.TRANSITION_DURATION = 600
 
@@ -927,13 +932,14 @@ require('../../js/affix.js')
 
 },{}],8:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: collapse.js v3.3.6
+ * Bootstrap: collapse.js v3.3.7
  * http://getbootstrap.com/javascript/#collapse
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
+/* jshint latedef: false */
 
 +function ($) {
   'use strict';
@@ -957,7 +963,7 @@ require('../../js/affix.js')
     if (this.options.toggle) this.toggle()
   }
 
-  Collapse.VERSION  = '3.3.6'
+  Collapse.VERSION  = '3.3.7'
 
   Collapse.TRANSITION_DURATION = 350
 
@@ -1140,10 +1146,10 @@ require('../../js/affix.js')
 
 },{}],9:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.6
+ * Bootstrap: dropdown.js v3.3.7
  * http://getbootstrap.com/javascript/#dropdowns
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1160,7 +1166,7 @@ require('../../js/affix.js')
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.6'
+  Dropdown.VERSION = '3.3.7'
 
   function getParent($this) {
     var selector = $this.attr('data-target')
@@ -1307,10 +1313,10 @@ require('../../js/affix.js')
 
 },{}],10:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: modal.js v3.3.6
+ * Bootstrap: modal.js v3.3.7
  * http://getbootstrap.com/javascript/#modals
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1341,7 +1347,7 @@ require('../../js/affix.js')
     }
   }
 
-  Modal.VERSION  = '3.3.6'
+  Modal.VERSION  = '3.3.7'
 
   Modal.TRANSITION_DURATION = 300
   Modal.BACKDROP_TRANSITION_DURATION = 150
@@ -1448,7 +1454,9 @@ require('../../js/affix.js')
     $(document)
       .off('focusin.bs.modal') // guard against infinite focus loop
       .on('focusin.bs.modal', $.proxy(function (e) {
-        if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+        if (document !== e.target &&
+            this.$element[0] !== e.target &&
+            !this.$element.has(e.target).length) {
           this.$element.trigger('focus')
         }
       }, this))
@@ -1646,10 +1654,10 @@ require('../../js/affix.js')
 
 },{}],11:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: popover.js v3.3.6
+ * Bootstrap: popover.js v3.3.7
  * http://getbootstrap.com/javascript/#popovers
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1666,7 +1674,7 @@ require('../../js/affix.js')
 
   if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
 
-  Popover.VERSION  = '3.3.6'
+  Popover.VERSION  = '3.3.7'
 
   Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
     placement: 'right',
@@ -1756,10 +1764,10 @@ require('../../js/affix.js')
 
 },{}],12:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: scrollspy.js v3.3.6
+ * Bootstrap: scrollspy.js v3.3.7
  * http://getbootstrap.com/javascript/#scrollspy
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1785,7 +1793,7 @@ require('../../js/affix.js')
     this.process()
   }
 
-  ScrollSpy.VERSION  = '3.3.6'
+  ScrollSpy.VERSION  = '3.3.7'
 
   ScrollSpy.DEFAULTS = {
     offset: 10
@@ -1930,10 +1938,10 @@ require('../../js/affix.js')
 
 },{}],13:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: tab.js v3.3.6
+ * Bootstrap: tab.js v3.3.7
  * http://getbootstrap.com/javascript/#tabs
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1950,7 +1958,7 @@ require('../../js/affix.js')
     // jscs:enable requireDollarBeforejQueryAssignment
   }
 
-  Tab.VERSION = '3.3.6'
+  Tab.VERSION = '3.3.7'
 
   Tab.TRANSITION_DURATION = 150
 
@@ -2087,11 +2095,11 @@ require('../../js/affix.js')
 
 },{}],14:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: tooltip.js v3.3.6
+ * Bootstrap: tooltip.js v3.3.7
  * http://getbootstrap.com/javascript/#tooltip
  * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -2114,7 +2122,7 @@ require('../../js/affix.js')
     this.init('tooltip', element, options)
   }
 
-  Tooltip.VERSION  = '3.3.6'
+  Tooltip.VERSION  = '3.3.7'
 
   Tooltip.TRANSITION_DURATION = 150
 
@@ -2405,9 +2413,11 @@ require('../../js/affix.js')
 
     function complete() {
       if (that.hoverState != 'in') $tip.detach()
-      that.$element
-        .removeAttr('aria-describedby')
-        .trigger('hidden.bs.' + that.type)
+      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
+        that.$element
+          .removeAttr('aria-describedby')
+          .trigger('hidden.bs.' + that.type)
+      }
       callback && callback()
     }
 
@@ -2450,7 +2460,10 @@ require('../../js/affix.js')
       // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
       elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
     }
-    var elOffset  = isBody ? { top: 0, left: 0 } : $element.offset()
+    var isSvg = window.SVGElement && el instanceof window.SVGElement
+    // Avoid using $.offset() on SVGs since it gives incorrect results in jQuery 3.
+    // See https://github.com/twbs/bootstrap/issues/20280
+    var elOffset  = isBody ? { top: 0, left: 0 } : (isSvg ? null : $element.offset())
     var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
     var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
 
@@ -2566,6 +2579,7 @@ require('../../js/affix.js')
       that.$tip = null
       that.$arrow = null
       that.$viewport = null
+      that.$element = null
     })
   }
 
@@ -2603,10 +2617,10 @@ require('../../js/affix.js')
 
 },{}],15:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: transition.js v3.3.6
+ * Bootstrap: transition.js v3.3.7
  * http://getbootstrap.com/javascript/#transitions
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -22245,6 +22259,307 @@ Promise.disableSynchronous = function() {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],33:[function(require,module,exports){
+var Vue // late bind
+var map = Object.create(null)
+var shimmed = false
+var isBrowserify = false
+
+/**
+ * Determine compatibility and apply patch.
+ *
+ * @param {Function} vue
+ * @param {Boolean} browserify
+ */
+
+exports.install = function (vue, browserify) {
+  if (shimmed) return
+  shimmed = true
+
+  Vue = vue
+  isBrowserify = browserify
+
+  exports.compatible = !!Vue.internalDirectives
+  if (!exports.compatible) {
+    console.warn(
+      '[HMR] vue-loader hot reload is only compatible with ' +
+      'Vue.js 1.0.0+.'
+    )
+    return
+  }
+
+  // patch view directive
+  patchView(Vue.internalDirectives.component)
+  console.log('[HMR] Vue component hot reload shim applied.')
+  // shim router-view if present
+  var routerView = Vue.elementDirective('router-view')
+  if (routerView) {
+    patchView(routerView)
+    console.log('[HMR] vue-router <router-view> hot reload shim applied.')
+  }
+}
+
+/**
+ * Shim the view directive (component or router-view).
+ *
+ * @param {Object} View
+ */
+
+function patchView (View) {
+  var unbuild = View.unbuild
+  View.unbuild = function (defer) {
+    if (!this.hotUpdating) {
+      var prevComponent = this.childVM && this.childVM.constructor
+      removeView(prevComponent, this)
+      // defer = true means we are transitioning to a new
+      // Component. Register this new component to the list.
+      if (defer) {
+        addView(this.Component, this)
+      }
+    }
+    // call original
+    return unbuild.call(this, defer)
+  }
+}
+
+/**
+ * Add a component view to a Component's hot list
+ *
+ * @param {Function} Component
+ * @param {Directive} view - view directive instance
+ */
+
+function addView (Component, view) {
+  var id = Component && Component.options.hotID
+  if (id) {
+    if (!map[id]) {
+      map[id] = {
+        Component: Component,
+        views: [],
+        instances: []
+      }
+    }
+    map[id].views.push(view)
+  }
+}
+
+/**
+ * Remove a component view from a Component's hot list
+ *
+ * @param {Function} Component
+ * @param {Directive} view - view directive instance
+ */
+
+function removeView (Component, view) {
+  var id = Component && Component.options.hotID
+  if (id) {
+    map[id].views.$remove(view)
+  }
+}
+
+/**
+ * Create a record for a hot module, which keeps track of its construcotr,
+ * instnaces and views (component directives or router-views).
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+exports.createRecord = function (id, options) {
+  if (typeof options === 'function') {
+    options = options.options
+  }
+  if (typeof options.el !== 'string' && typeof options.data !== 'object') {
+    makeOptionsHot(id, options)
+    map[id] = {
+      Component: null,
+      views: [],
+      instances: []
+    }
+  }
+}
+
+/**
+ * Make a Component options object hot.
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+function makeOptionsHot (id, options) {
+  options.hotID = id
+  injectHook(options, 'created', function () {
+    var record = map[id]
+    if (!record.Component) {
+      record.Component = this.constructor
+    }
+    record.instances.push(this)
+  })
+  injectHook(options, 'beforeDestroy', function () {
+    map[id].instances.$remove(this)
+  })
+}
+
+/**
+ * Inject a hook to a hot reloadable component so that
+ * we can keep track of it.
+ *
+ * @param {Object} options
+ * @param {String} name
+ * @param {Function} hook
+ */
+
+function injectHook (options, name, hook) {
+  var existing = options[name]
+  options[name] = existing
+    ? Array.isArray(existing)
+      ? existing.concat(hook)
+      : [existing, hook]
+    : [hook]
+}
+
+/**
+ * Update a hot component.
+ *
+ * @param {String} id
+ * @param {Object|null} newOptions
+ * @param {String|null} newTemplate
+ */
+
+exports.update = function (id, newOptions, newTemplate) {
+  var record = map[id]
+  // force full-reload if an instance of the component is active but is not
+  // managed by a view
+  if (!record || (record.instances.length && !record.views.length)) {
+    console.log('[HMR] Root or manually-mounted instance modified. Full reload may be required.')
+    if (!isBrowserify) {
+      window.location.reload()
+    } else {
+      // browserify-hmr somehow sends incomplete bundle if we reload here
+      return
+    }
+  }
+  if (!isBrowserify) {
+    // browserify-hmr already logs this
+    console.log('[HMR] Updating component: ' + format(id))
+  }
+  var Component = record.Component
+  // update constructor
+  if (newOptions) {
+    // in case the user exports a constructor
+    Component = record.Component = typeof newOptions === 'function'
+      ? newOptions
+      : Vue.extend(newOptions)
+    makeOptionsHot(id, Component.options)
+  }
+  if (newTemplate) {
+    Component.options.template = newTemplate
+  }
+  // handle recursive lookup
+  if (Component.options.name) {
+    Component.options.components[Component.options.name] = Component
+  }
+  // reset constructor cached linker
+  Component.linker = null
+  // reload all views
+  record.views.forEach(function (view) {
+    updateView(view, Component)
+  })
+  // flush devtools
+  if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+    window.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit('flush')
+  }
+}
+
+/**
+ * Update a component view instance
+ *
+ * @param {Directive} view
+ * @param {Function} Component
+ */
+
+function updateView (view, Component) {
+  if (!view._bound) {
+    return
+  }
+  view.Component = Component
+  view.hotUpdating = true
+  // disable transitions
+  view.vm._isCompiled = false
+  // save state
+  var state = extractState(view.childVM)
+  // remount, make sure to disable keep-alive
+  var keepAlive = view.keepAlive
+  view.keepAlive = false
+  view.mountComponent()
+  view.keepAlive = keepAlive
+  // restore state
+  restoreState(view.childVM, state, true)
+  // re-eanble transitions
+  view.vm._isCompiled = true
+  view.hotUpdating = false
+}
+
+/**
+ * Extract state from a Vue instance.
+ *
+ * @param {Vue} vm
+ * @return {Object}
+ */
+
+function extractState (vm) {
+  return {
+    cid: vm.constructor.cid,
+    data: vm.$data,
+    children: vm.$children.map(extractState)
+  }
+}
+
+/**
+ * Restore state to a reloaded Vue instance.
+ *
+ * @param {Vue} vm
+ * @param {Object} state
+ */
+
+function restoreState (vm, state, isRoot) {
+  var oldAsyncConfig
+  if (isRoot) {
+    // set Vue into sync mode during state rehydration
+    oldAsyncConfig = Vue.config.async
+    Vue.config.async = false
+  }
+  // actual restore
+  if (isRoot || !vm._props) {
+    vm.$data = state.data
+  } else {
+    Object.keys(state.data).forEach(function (key) {
+      if (!vm._props[key]) {
+        // for non-root, only restore non-props fields
+        vm.$data[key] = state.data[key]
+      }
+    })
+  }
+  // verify child consistency
+  var hasSameChildren = vm.$children.every(function (c, i) {
+    return state.children[i] && state.children[i].cid === c.constructor.cid
+  })
+  if (hasSameChildren) {
+    // rehydrate children
+    vm.$children.forEach(function (c, i) {
+      restoreState(c, state.children[i])
+    })
+  }
+  if (isRoot) {
+    Vue.config.async = oldAsyncConfig
+  }
+}
+
+function format (id) {
+  var match = id.match(/[^\/]+\.vue$/)
+  return match ? match[0] : id
+}
+
+},{}],34:[function(require,module,exports){
 /*!
  * vue-resource v0.7.4
  * https://github.com/vuejs/vue-resource
@@ -23621,7 +23936,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.26
@@ -33698,7 +34013,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":19}],35:[function(require,module,exports){
+},{"_process":19}],36:[function(require,module,exports){
 'use strict';
 
 require('./filters');
@@ -33711,7 +34026,7 @@ var app = new Vue({
     mixins: [require('spark')]
 });
 
-},{"./components/bootstrap":37,"./filters":40,"spark":157,"spark-bootstrap":156}],36:[function(require,module,exports){
+},{"./components/bootstrap":41,"./filters":45,"spark":162,"spark-bootstrap":161}],37:[function(require,module,exports){
 'use strict';
 
 var _moment = require('moment');
@@ -33762,7 +34077,126 @@ Vue.component('activity', {
     }
 });
 
-},{"./../spark/mixins/tab-state":93,"moment":18}],37:[function(require,module,exports){
+},{"./../spark/mixins/tab-state":98,"moment":18}],38:[function(require,module,exports){
+'use strict';
+
+var _step = require('./registration/step-1.vue');
+
+var _step2 = _interopRequireDefault(_step);
+
+var _step3 = require('./registration/step-2.vue');
+
+var _step4 = _interopRequireDefault(_step3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+Vue.component('registration', {
+
+    components: { Step1: _step2.default, Step2: _step4.default },
+
+    data: function data() {
+        return {
+            component: 'step-1',
+            website: null,
+            registerForm: $.extend(true, new SparkForm({
+                stripe_token: '',
+                organization: '',
+                website: '',
+                name: '',
+                email: '',
+                password: '',
+                plan: 'connect',
+                terms: false
+            }), Spark.forms.register)
+        };
+    }
+});
+
+},{"./registration/step-1.vue":39,"./registration/step-2.vue":40}],39:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
+
+    methods: {
+        nextStep: function nextStep() {
+            this.component = 'step-2';
+        }
+    }
+
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"col-md-8 col-md-offset-2 text-center\">\n        <h1>Create Your Free Account</h1>\n        <p>Find out why the world's most nimble sales teams prefer Midbound</p>\n        <div class=\"alert alert-success\">\n            Join now to take advantage of <strong>60 days of Midbound Plus</strong> ($159.98 value)\n        </div>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-1 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li class=\"active\">1. Your Information</li>\n                    <li>2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Name -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('name')}\">\n                        <label class=\"col-md-4 control-label\">Full Name</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"name\" v-model=\"registerForm.name\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('name')\">\n                            {{ registerForm.errors.get('name') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- E-Mail Address -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('email')}\">\n                        <label class=\"col-md-4 control-label\">Email Address</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"email\" class=\"form-control\" name=\"email\" v-model=\"registerForm.email\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('email')\">\n                            {{ registerForm.errors.get('email') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- Password -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('password')}\">\n                        <label class=\"col-md-4 control-label\">Password</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"password\" class=\"form-control\" name=\"password\" v-model=\"registerForm.password\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('password')\">\n                            {{ registerForm.errors.get('password') }}\n                        </span>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"nextStep\">\n                                Continue&nbsp;<i class=\"fa fa-btn fa-arrow-right\"></i>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-b5c6a6fe", module.exports)
+  } else {
+    hotAPI.update("_v-b5c6a6fe", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":35,"vue-hot-reload-api":33}],40:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+
+    props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
+
+    methods: {
+        /**
+         * Attempt to register with the application.
+         */
+
+        register: function register() {
+            this.registerForm.busy = true;
+            this.registerForm.errors.forget();
+
+            this.sendRegistration();
+        },
+
+
+        /*
+         * After obtaining the Stripe token, send the registration to Spark.
+         */
+        sendRegistration: function sendRegistration() {
+            var _this = this;
+
+            Spark.post('/register', this.registerForm).then(function (response) {
+                window.location = response.redirectUrl;
+            }).catch(function (errors) {
+                _this.busy = false;
+                _this.errors = errors.data;
+                if (_this.registerForm.errors.has('email') || _this.registerForm.errors.has('name') || _this.registerForm.errors.has('password')) {
+
+                    _this.component = 'step-1';
+                }
+            });
+        }
+    }
+
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"col-md-8 col-md-offset-2 text-center\">\n        <h1>Create Your Free Account</h1>\n        <p>Find out why the world's most nimble sales teams prefer Midbound</p>\n        <div class=\"alert alert-success\">\n            Join now to take advantage of <strong>60 days of Midbound Plus</strong> ($159.98 value)\n        </div>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-2 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li>1. Your Information</li>\n                    <li class=\"active\">2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Organization -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('team')}\">\n                        <label class=\"col-md-4 control-label\">Organization</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"team\" v-model=\"registerForm.team\" placeholder=\"My Company Inc.\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('team')\">\n                                {{ registerForm.errors.get('team') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <!-- Website -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('website')}\">\n                        <label class=\"col-md-4 control-label\">Website</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"website\" v-model=\"registerForm.website\" placeholder=\"http://www.mywebsite.com\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('website')\">\n                                {{ registerForm.errors.get('website') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('terms')}\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <div class=\"checkbox\">\n                                <label>\n                                    <input type=\"checkbox\" name=\"terms\" v-model=\"registerForm.terms\"> I Accept The\n                                    <a href=\"/terms\" target=\"_blank\">Terms Of Service</a>\n                                </label>\n\n                                <span class=\"help-block\" v-show=\"registerForm.errors.has('terms')\">\n                                    {{ registerForm.errors.get('terms') }}\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"register\" :disabled=\"registerForm.busy\">\n                                <span v-if=\"registerForm.busy\">\n                                    <i class=\"fa fa-btn fa-spinner fa-spin\"></i>Creating account...\n                                </span>\n\n                                <span v-else=\"\">\n                                    Create account\n                                </span>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-b5aa77fc", module.exports)
+  } else {
+    hotAPI.update("_v-b5aa77fc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":35,"vue-hot-reload-api":33}],41:[function(require,module,exports){
 'use strict';
 
 /*
@@ -33780,10 +34214,16 @@ require('./../spark-components/bootstrap');
 require('./home');
 require('./modal');
 
+// Registration
+require('./auth/registration');
+
+// Websites
+require('./websites/install-website');
+
 // Activity
 require('./activity');
 
-},{"./../spark-components/bootstrap":43,"./activity":36,"./home":38,"./modal":39}],38:[function(require,module,exports){
+},{"./../spark-components/bootstrap":48,"./activity":37,"./auth/registration":38,"./home":42,"./modal":43,"./websites/install-website":44}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('home', {
@@ -33794,7 +34234,7 @@ Vue.component('home', {
     }
 });
 
-},{}],39:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -34104,7 +34544,62 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   });
 }(jQuery);
 
-},{}],40:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
+'use strict';
+
+Vue.component('install-website', {
+
+    props: ['user', 'websiteUrl'],
+
+    data: function data() {
+        return {
+            website: null,
+            emailDeveloperForm: new SparkForm({
+                email: ''
+            })
+        };
+    },
+    ready: function ready() {
+        var _this = this;
+
+        this.$http.get(this.websiteUrl).then(function (_ref) {
+            var website = _ref.data;
+
+            _this.website = website;
+        });
+        $('#email-developer').on('hidden.bs.modal', function () {
+            _this.emailDeveloperForm.success = false;
+            _this.emailDeveloperForm.busy = false;
+            _this.emailDeveloperForm.errors.forget();
+            _this.emailDeveloperForm.email = '';
+        });
+    },
+
+
+    methods: {
+        showEmailDeveloperForm: function showEmailDeveloperForm() {
+            $('#email-developer').modal('show');
+        },
+        showMoreInformation: function showMoreInformation($event) {
+            $($event.target).popover();
+        },
+        sendEmail: function sendEmail() {
+            var _this2 = this;
+
+            this.emailDeveloperForm.busy = true;
+            this.emailDeveloperForm.errors.forget();
+
+            Spark.post('/api/email-developer/' + this.website.id, this.emailDeveloperForm).then(function (response) {
+                _this2.busy = false;
+                _this2.success = true;
+                $('#email-developer').modal('hide');
+            });
+        }
+    }
+
+});
+
+},{}],45:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -34123,7 +34618,7 @@ _vue2.default.filter('human', function (value) {
     return (0, _moment2.default)(value, format).fromNow();
 });
 
-},{"moment":18,"vue":34}],41:[function(require,module,exports){
+},{"moment":18,"vue":35}],46:[function(require,module,exports){
 'use strict';
 
 var base = require('auth/register-braintree');
@@ -34132,7 +34627,7 @@ Vue.component('spark-register-braintree', {
     mixins: [base]
 });
 
-},{"auth/register-braintree":94}],42:[function(require,module,exports){
+},{"auth/register-braintree":99}],47:[function(require,module,exports){
 'use strict';
 
 var base = require('auth/register-stripe');
@@ -34141,7 +34636,7 @@ Vue.component('spark-register-stripe', {
     mixins: [base]
 });
 
-},{"auth/register-stripe":95}],43:[function(require,module,exports){
+},{"auth/register-stripe":100}],48:[function(require,module,exports){
 'use strict';
 
 /**
@@ -34243,7 +34738,7 @@ require('./kiosk/users');
 require('./kiosk/profile');
 require('./kiosk/add-discount');
 
-},{"./auth/register-braintree":41,"./auth/register-stripe":42,"./kiosk/add-discount":44,"./kiosk/announcements":45,"./kiosk/kiosk":46,"./kiosk/metrics":47,"./kiosk/profile":48,"./kiosk/users":49,"./navbar/navbar":50,"./notifications/notifications":51,"./settings/api":52,"./settings/api/create-token":53,"./settings/api/tokens":54,"./settings/invoices":55,"./settings/invoices/invoice-list":56,"./settings/invoices/update-extra-billing-information":57,"./settings/payment-method-braintree":58,"./settings/payment-method-stripe":59,"./settings/payment-method/redeem-coupon":60,"./settings/payment-method/update-payment-method-braintree":61,"./settings/payment-method/update-payment-method-stripe":62,"./settings/payment-method/update-vat-id":63,"./settings/profile":64,"./settings/profile/update-contact-information":65,"./settings/profile/update-profile-photo":66,"./settings/security":67,"./settings/security/disable-two-factor-auth":68,"./settings/security/enable-two-factor-auth":69,"./settings/security/update-password":70,"./settings/settings":71,"./settings/subscription":72,"./settings/subscription/cancel-subscription":73,"./settings/subscription/resume-subscription":74,"./settings/subscription/subscribe-braintree":75,"./settings/subscription/subscribe-stripe":76,"./settings/subscription/update-subscription":77,"./settings/teams":78,"./settings/teams/create-team":79,"./settings/teams/current-teams":80,"./settings/teams/mailed-invitations":81,"./settings/teams/pending-invitations":82,"./settings/teams/send-invitation":83,"./settings/teams/team-members":84,"./settings/teams/team-membership":85,"./settings/teams/team-profile":86,"./settings/teams/team-settings":87,"./settings/teams/update-team-name":88,"./settings/teams/update-team-photo":89,"./settings/websites":90,"./settings/websites/create-website":91,"./settings/websites/list":92}],44:[function(require,module,exports){
+},{"./auth/register-braintree":46,"./auth/register-stripe":47,"./kiosk/add-discount":49,"./kiosk/announcements":50,"./kiosk/kiosk":51,"./kiosk/metrics":52,"./kiosk/profile":53,"./kiosk/users":54,"./navbar/navbar":55,"./notifications/notifications":56,"./settings/api":57,"./settings/api/create-token":58,"./settings/api/tokens":59,"./settings/invoices":60,"./settings/invoices/invoice-list":61,"./settings/invoices/update-extra-billing-information":62,"./settings/payment-method-braintree":63,"./settings/payment-method-stripe":64,"./settings/payment-method/redeem-coupon":65,"./settings/payment-method/update-payment-method-braintree":66,"./settings/payment-method/update-payment-method-stripe":67,"./settings/payment-method/update-vat-id":68,"./settings/profile":69,"./settings/profile/update-contact-information":70,"./settings/profile/update-profile-photo":71,"./settings/security":72,"./settings/security/disable-two-factor-auth":73,"./settings/security/enable-two-factor-auth":74,"./settings/security/update-password":75,"./settings/settings":76,"./settings/subscription":77,"./settings/subscription/cancel-subscription":78,"./settings/subscription/resume-subscription":79,"./settings/subscription/subscribe-braintree":80,"./settings/subscription/subscribe-stripe":81,"./settings/subscription/update-subscription":82,"./settings/teams":83,"./settings/teams/create-team":84,"./settings/teams/current-teams":85,"./settings/teams/mailed-invitations":86,"./settings/teams/pending-invitations":87,"./settings/teams/send-invitation":88,"./settings/teams/team-members":89,"./settings/teams/team-membership":90,"./settings/teams/team-profile":91,"./settings/teams/team-settings":92,"./settings/teams/update-team-name":93,"./settings/teams/update-team-photo":94,"./settings/websites":95,"./settings/websites/create-website":96,"./settings/websites/list":97}],49:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/add-discount');
@@ -34252,7 +34747,7 @@ Vue.component('spark-kiosk-add-discount', {
     mixins: [base]
 });
 
-},{"kiosk/add-discount":102}],45:[function(require,module,exports){
+},{"kiosk/add-discount":107}],50:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/announcements');
@@ -34261,7 +34756,7 @@ Vue.component('spark-kiosk-announcements', {
     mixins: [base]
 });
 
-},{"kiosk/announcements":103}],46:[function(require,module,exports){
+},{"kiosk/announcements":108}],51:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/kiosk');
@@ -34270,7 +34765,7 @@ Vue.component('spark-kiosk', {
     mixins: [base]
 });
 
-},{"kiosk/kiosk":104}],47:[function(require,module,exports){
+},{"kiosk/kiosk":109}],52:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/metrics');
@@ -34279,7 +34774,7 @@ Vue.component('spark-kiosk-metrics', {
     mixins: [base]
 });
 
-},{"kiosk/metrics":105}],48:[function(require,module,exports){
+},{"kiosk/metrics":110}],53:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/profile');
@@ -34288,7 +34783,7 @@ Vue.component('spark-kiosk-profile', {
     mixins: [base]
 });
 
-},{"kiosk/profile":106}],49:[function(require,module,exports){
+},{"kiosk/profile":111}],54:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/users');
@@ -34297,7 +34792,7 @@ Vue.component('spark-kiosk-users', {
     mixins: [base]
 });
 
-},{"kiosk/users":107}],50:[function(require,module,exports){
+},{"kiosk/users":112}],55:[function(require,module,exports){
 'use strict';
 
 var base = require('navbar/navbar');
@@ -34306,7 +34801,7 @@ Vue.component('spark-navbar', {
     mixins: [base]
 });
 
-},{"navbar/navbar":116}],51:[function(require,module,exports){
+},{"navbar/navbar":121}],56:[function(require,module,exports){
 'use strict';
 
 var base = require('notifications/notifications');
@@ -34315,7 +34810,7 @@ Vue.component('spark-notifications', {
     mixins: [base]
 });
 
-},{"notifications/notifications":117}],52:[function(require,module,exports){
+},{"notifications/notifications":122}],57:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api');
@@ -34324,7 +34819,7 @@ Vue.component('spark-api', {
     mixins: [base]
 });
 
-},{"settings/api":118}],53:[function(require,module,exports){
+},{"settings/api":123}],58:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/create-token');
@@ -34333,7 +34828,7 @@ Vue.component('spark-create-token', {
     mixins: [base]
 });
 
-},{"settings/api/create-token":119}],54:[function(require,module,exports){
+},{"settings/api/create-token":124}],59:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/tokens');
@@ -34342,7 +34837,7 @@ Vue.component('spark-tokens', {
     mixins: [base]
 });
 
-},{"settings/api/tokens":120}],55:[function(require,module,exports){
+},{"settings/api/tokens":125}],60:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices');
@@ -34351,7 +34846,7 @@ Vue.component('spark-invoices', {
     mixins: [base]
 });
 
-},{"settings/invoices":121}],56:[function(require,module,exports){
+},{"settings/invoices":126}],61:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/invoice-list');
@@ -34360,7 +34855,7 @@ Vue.component('spark-invoice-list', {
     mixins: [base]
 });
 
-},{"settings/invoices/invoice-list":122}],57:[function(require,module,exports){
+},{"settings/invoices/invoice-list":127}],62:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/update-extra-billing-information');
@@ -34369,7 +34864,7 @@ Vue.component('spark-update-extra-billing-information', {
     mixins: [base]
 });
 
-},{"settings/invoices/update-extra-billing-information":123}],58:[function(require,module,exports){
+},{"settings/invoices/update-extra-billing-information":128}],63:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-braintree');
@@ -34378,7 +34873,7 @@ Vue.component('spark-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method-braintree":124}],59:[function(require,module,exports){
+},{"settings/payment-method-braintree":129}],64:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-stripe');
@@ -34387,7 +34882,7 @@ Vue.component('spark-payment-method-stripe', {
     mixins: [base]
 });
 
-},{"settings/payment-method-stripe":125}],60:[function(require,module,exports){
+},{"settings/payment-method-stripe":130}],65:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/redeem-coupon');
@@ -34396,7 +34891,7 @@ Vue.component('spark-redeem-coupon', {
     mixins: [base]
 });
 
-},{"settings/payment-method/redeem-coupon":126}],61:[function(require,module,exports){
+},{"settings/payment-method/redeem-coupon":131}],66:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-braintree');
@@ -34405,7 +34900,7 @@ Vue.component('spark-update-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-payment-method-braintree":127}],62:[function(require,module,exports){
+},{"settings/payment-method/update-payment-method-braintree":132}],67:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-stripe');
@@ -34414,7 +34909,7 @@ Vue.component('spark-update-payment-method-stripe', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-payment-method-stripe":128}],63:[function(require,module,exports){
+},{"settings/payment-method/update-payment-method-stripe":133}],68:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-vat-id');
@@ -34423,7 +34918,7 @@ Vue.component('spark-update-vat-id', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-vat-id":129}],64:[function(require,module,exports){
+},{"settings/payment-method/update-vat-id":134}],69:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile');
@@ -34432,7 +34927,7 @@ Vue.component('spark-profile', {
     mixins: [base]
 });
 
-},{"settings/profile":130}],65:[function(require,module,exports){
+},{"settings/profile":135}],70:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-contact-information');
@@ -34441,7 +34936,7 @@ Vue.component('spark-update-contact-information', {
     mixins: [base]
 });
 
-},{"settings/profile/update-contact-information":131}],66:[function(require,module,exports){
+},{"settings/profile/update-contact-information":136}],71:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-profile-photo');
@@ -34450,7 +34945,7 @@ Vue.component('spark-update-profile-photo', {
     mixins: [base]
 });
 
-},{"settings/profile/update-profile-photo":132}],67:[function(require,module,exports){
+},{"settings/profile/update-profile-photo":137}],72:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security');
@@ -34459,7 +34954,7 @@ Vue.component('spark-security', {
     mixins: [base]
 });
 
-},{"settings/security":133}],68:[function(require,module,exports){
+},{"settings/security":138}],73:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/disable-two-factor-auth');
@@ -34468,7 +34963,7 @@ Vue.component('spark-disable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/disable-two-factor-auth":134}],69:[function(require,module,exports){
+},{"settings/security/disable-two-factor-auth":139}],74:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/enable-two-factor-auth');
@@ -34477,7 +34972,7 @@ Vue.component('spark-enable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/enable-two-factor-auth":135}],70:[function(require,module,exports){
+},{"settings/security/enable-two-factor-auth":140}],75:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/update-password');
@@ -34486,7 +34981,7 @@ Vue.component('spark-update-password', {
     mixins: [base]
 });
 
-},{"settings/security/update-password":136}],71:[function(require,module,exports){
+},{"settings/security/update-password":141}],76:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/settings');
@@ -34495,7 +34990,7 @@ Vue.component('spark-settings', {
     mixins: [base]
 });
 
-},{"settings/settings":137}],72:[function(require,module,exports){
+},{"settings/settings":142}],77:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription');
@@ -34504,7 +34999,7 @@ Vue.component('spark-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription":138}],73:[function(require,module,exports){
+},{"settings/subscription":143}],78:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/cancel-subscription');
@@ -34513,7 +35008,7 @@ Vue.component('spark-cancel-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/cancel-subscription":139}],74:[function(require,module,exports){
+},{"settings/subscription/cancel-subscription":144}],79:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/resume-subscription');
@@ -34522,7 +35017,7 @@ Vue.component('spark-resume-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/resume-subscription":140}],75:[function(require,module,exports){
+},{"settings/subscription/resume-subscription":145}],80:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-braintree');
@@ -34531,7 +35026,7 @@ Vue.component('spark-subscribe-braintree', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-braintree":141}],76:[function(require,module,exports){
+},{"settings/subscription/subscribe-braintree":146}],81:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-stripe');
@@ -34540,7 +35035,7 @@ Vue.component('spark-subscribe-stripe', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-stripe":142}],77:[function(require,module,exports){
+},{"settings/subscription/subscribe-stripe":147}],82:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/update-subscription');
@@ -34549,7 +35044,7 @@ Vue.component('spark-update-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/update-subscription":143}],78:[function(require,module,exports){
+},{"settings/subscription/update-subscription":148}],83:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams');
@@ -34558,7 +35053,7 @@ Vue.component('spark-teams', {
     mixins: [base]
 });
 
-},{"settings/teams":144}],79:[function(require,module,exports){
+},{"settings/teams":149}],84:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/create-team');
@@ -34567,7 +35062,7 @@ Vue.component('spark-create-team', {
     mixins: [base]
 });
 
-},{"settings/teams/create-team":145}],80:[function(require,module,exports){
+},{"settings/teams/create-team":150}],85:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/current-teams');
@@ -34576,7 +35071,7 @@ Vue.component('spark-current-teams', {
     mixins: [base]
 });
 
-},{"settings/teams/current-teams":146}],81:[function(require,module,exports){
+},{"settings/teams/current-teams":151}],86:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/mailed-invitations');
@@ -34585,7 +35080,7 @@ Vue.component('spark-mailed-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/mailed-invitations":147}],82:[function(require,module,exports){
+},{"settings/teams/mailed-invitations":152}],87:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/pending-invitations');
@@ -34594,7 +35089,7 @@ Vue.component('spark-pending-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/pending-invitations":148}],83:[function(require,module,exports){
+},{"settings/teams/pending-invitations":153}],88:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/send-invitation');
@@ -34603,7 +35098,7 @@ Vue.component('spark-send-invitation', {
     mixins: [base]
 });
 
-},{"settings/teams/send-invitation":149}],84:[function(require,module,exports){
+},{"settings/teams/send-invitation":154}],89:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-members');
@@ -34612,7 +35107,7 @@ Vue.component('spark-team-members', {
     mixins: [base]
 });
 
-},{"settings/teams/team-members":150}],85:[function(require,module,exports){
+},{"settings/teams/team-members":155}],90:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-membership');
@@ -34621,7 +35116,7 @@ Vue.component('spark-team-membership', {
     mixins: [base]
 });
 
-},{"settings/teams/team-membership":151}],86:[function(require,module,exports){
+},{"settings/teams/team-membership":156}],91:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-profile');
@@ -34630,7 +35125,7 @@ Vue.component('spark-team-profile', {
     mixins: [base]
 });
 
-},{"settings/teams/team-profile":152}],87:[function(require,module,exports){
+},{"settings/teams/team-profile":157}],92:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-settings');
@@ -34639,7 +35134,7 @@ Vue.component('spark-team-settings', {
     mixins: [base]
 });
 
-},{"settings/teams/team-settings":153}],88:[function(require,module,exports){
+},{"settings/teams/team-settings":158}],93:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-name');
@@ -34648,7 +35143,7 @@ Vue.component('spark-update-team-name', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-name":154}],89:[function(require,module,exports){
+},{"settings/teams/update-team-name":159}],94:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-photo');
@@ -34657,7 +35152,7 @@ Vue.component('spark-update-team-photo', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-photo":155}],90:[function(require,module,exports){
+},{"settings/teams/update-team-photo":160}],95:[function(require,module,exports){
 'use strict';
 
 Vue.component('spark-websites', {
@@ -34703,7 +35198,7 @@ Vue.component('spark-websites', {
     }
 });
 
-},{}],91:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 'use strict';
 
 Vue.component('spark-create-website', {
@@ -34761,7 +35256,7 @@ Vue.component('spark-create-website', {
     }
 });
 
-},{}],92:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 'use strict';
 
 Vue.component('spark-websites-list', {
@@ -34821,7 +35316,7 @@ Vue.component('spark-websites-list', {
     }
 });
 
-},{}],93:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -34919,7 +35414,7 @@ module.exports = {
     }
 };
 
-},{}],94:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35039,7 +35534,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/braintree":109,"./../mixins/plans":111,"./../mixins/register":112}],95:[function(require,module,exports){
+},{"./../mixins/braintree":114,"./../mixins/plans":116,"./../mixins/register":117}],100:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35268,7 +35763,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":111,"./../mixins/register":112,"./../mixins/vat":115}],96:[function(require,module,exports){
+},{"./../mixins/plans":116,"./../mixins/register":117,"./../mixins/vat":120}],101:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35310,7 +35805,7 @@ Vue.filter('relative', function (value) {
     return moment.utc(value).local().fromNow();
 });
 
-},{}],97:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35337,7 +35832,7 @@ require('./errors');
  */
 $.extend(Spark, require('./http'));
 
-},{"./errors":98,"./form":99,"./http":100}],98:[function(require,module,exports){
+},{"./errors":103,"./form":104,"./http":105}],103:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -35404,7 +35899,7 @@ window.SparkFormErrors = function () {
     };
 };
 
-},{}],99:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 "use strict";
 
 /**
@@ -35458,7 +35953,7 @@ window.SparkForm = function (data) {
   };
 };
 
-},{}],100:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35510,7 +36005,7 @@ module.exports = {
     }
 };
 
-},{}],101:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35548,7 +36043,7 @@ module.exports = {
     }
 };
 
-},{}],102:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict';
 
 function kioskAddDiscountForm() {
@@ -35614,7 +36109,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":110}],103:[function(require,module,exports){
+},{"./../mixins/discounts":115}],108:[function(require,module,exports){
 'use strict';
 
 var announcementsCreateForm = function announcementsCreateForm() {
@@ -35736,7 +36231,7 @@ module.exports = {
     }
 };
 
-},{}],104:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35772,7 +36267,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":114}],105:[function(require,module,exports){
+},{"./../mixins/tab-state":119}],110:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36056,7 +36551,7 @@ module.exports = {
     }
 };
 
-},{}],106:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36206,7 +36701,7 @@ module.exports = {
     }
 };
 
-},{}],107:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36341,7 +36836,7 @@ module.exports = {
     }
 };
 
-},{}],108:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36376,7 +36871,7 @@ module.exports = {
     }
 };
 
-},{}],109:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 'use strict';
 
 window.braintreeCheckout = [];
@@ -36432,7 +36927,7 @@ module.exports = {
     }
 };
 
-},{}],110:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36530,7 +37025,7 @@ module.exports = {
     }
 };
 
-},{}],111:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 'use strict';
 
 /*
@@ -36661,7 +37156,7 @@ module.exports = {
     }
 };
 
-},{}],112:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36777,7 +37272,7 @@ module.exports = {
     }
 };
 
-},{}],113:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict';
 
 /*
@@ -36946,9 +37441,9 @@ module.exports = {
     }
 };
 
-},{}],114:[function(require,module,exports){
-arguments[4][93][0].apply(exports,arguments)
-},{"dup":93}],115:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
+arguments[4][98][0].apply(exports,arguments)
+},{"dup":98}],120:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36991,7 +37486,7 @@ module.exports = {
     }
 };
 
-},{}],116:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37016,7 +37511,7 @@ module.exports = {
     }
 };
 
-},{}],117:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37102,7 +37597,7 @@ module.exports = {
     }
 };
 
-},{}],118:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37160,7 +37655,7 @@ module.exports = {
     }
 };
 
-},{}],119:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37289,7 +37784,7 @@ module.exports = {
     }
 };
 
-},{}],120:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37398,7 +37893,7 @@ module.exports = {
     }
 };
 
-},{}],121:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37449,7 +37944,7 @@ module.exports = {
 	}
 };
 
-},{}],122:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37466,7 +37961,7 @@ module.exports = {
     }
 };
 
-},{}],123:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37513,7 +38008,7 @@ module.exports = {
     }
 };
 
-},{}],124:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37589,7 +38084,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":110}],125:[function(require,module,exports){
+},{"./../mixins/discounts":115}],130:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37632,7 +38127,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":110}],126:[function(require,module,exports){
+},{"./../mixins/discounts":115}],131:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37677,7 +38172,7 @@ module.exports = {
     }
 };
 
-},{}],127:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37775,7 +38270,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":109}],128:[function(require,module,exports){
+},{"./../../mixins/braintree":114}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37962,7 +38457,7 @@ module.exports = {
     }
 };
 
-},{}],129:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38007,14 +38502,14 @@ module.exports = {
     }
 };
 
-},{}],130:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user']
 };
 
-},{}],131:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38057,7 +38552,7 @@ module.exports = {
     }
 };
 
-},{}],132:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38119,7 +38614,7 @@ module.exports = {
     }
 };
 
-},{}],133:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38148,7 +38643,7 @@ module.exports = {
     }
 };
 
-},{}],134:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38179,7 +38674,7 @@ module.exports = {
 	}
 };
 
-},{}],135:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38224,7 +38719,7 @@ module.exports = {
 	}
 };
 
-},{}],136:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38254,7 +38749,7 @@ module.exports = {
     }
 };
 
-},{}],137:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38283,7 +38778,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":114}],138:[function(require,module,exports){
+},{"./../mixins/tab-state":119}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38347,7 +38842,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":111,"./../mixins/subscriptions":113}],139:[function(require,module,exports){
+},{"./../mixins/plans":116,"./../mixins/subscriptions":118}],144:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38399,7 +38894,7 @@ module.exports = {
     }
 };
 
-},{}],140:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38441,7 +38936,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":111,"./../../mixins/subscriptions":113}],141:[function(require,module,exports){
+},{"./../../mixins/plans":116,"./../../mixins/subscriptions":118}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38540,7 +39035,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":109,"./../../mixins/plans":111,"./../../mixins/subscriptions":113}],142:[function(require,module,exports){
+},{"./../../mixins/braintree":114,"./../../mixins/plans":116,"./../../mixins/subscriptions":118}],147:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38745,7 +39240,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":111,"./../../mixins/subscriptions":113,"./../../mixins/vat":115}],143:[function(require,module,exports){
+},{"./../../mixins/plans":116,"./../../mixins/subscriptions":118,"./../../mixins/vat":120}],148:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38840,14 +39335,14 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":111,"./../../mixins/subscriptions":113}],144:[function(require,module,exports){
+},{"./../../mixins/plans":116,"./../../mixins/subscriptions":118}],149:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'teams']
 };
 
-},{}],145:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38898,7 +39393,7 @@ module.exports = {
     }
 };
 
-},{}],146:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38989,7 +39484,7 @@ module.exports = {
     }
 };
 
-},{}],147:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39012,7 +39507,7 @@ module.exports = {
     }
 };
 
-},{}],148:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39090,7 +39585,7 @@ module.exports = {
     }
 };
 
-},{}],149:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39125,7 +39620,7 @@ module.exports = {
     }
 };
 
-},{}],150:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39276,7 +39771,7 @@ module.exports = {
     }
 };
 
-},{}],151:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39325,14 +39820,14 @@ module.exports = {
     }
 };
 
-},{}],152:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'team']
 };
 
-},{}],153:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39395,7 +39890,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/tab-state":114}],154:[function(require,module,exports){
+},{"./../../mixins/tab-state":119}],159:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39437,7 +39932,7 @@ module.exports = {
     }
 };
 
-},{}],155:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39510,7 +40005,7 @@ module.exports = {
     }
 };
 
-},{}],156:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 /*
@@ -39538,7 +40033,7 @@ if ($('#spark-app').length > 0) {
   require('vue-bootstrap');
 }
 
-},{"bootstrap/dist/js/npm":3,"jquery":16,"js-cookie":17,"moment":18,"promise":20,"underscore":28,"urijs":31,"vue-bootstrap":158}],157:[function(require,module,exports){
+},{"bootstrap/dist/js/npm":3,"jquery":16,"js-cookie":17,"moment":18,"promise":20,"underscore":28,"urijs":31,"vue-bootstrap":163}],162:[function(require,module,exports){
 'use strict';
 
 /**
@@ -39828,7 +40323,7 @@ module.exports = {
     }
 };
 
-},{}],158:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict';
 
 /*
@@ -39866,6 +40361,6 @@ require('./filters');
  */
 require('./forms/bootstrap');
 
-},{"./filters":96,"./forms/bootstrap":97,"./interceptors":101,"./mixin":108,"vue":34,"vue-resource":33}]},{},[35]);
+},{"./filters":101,"./forms/bootstrap":102,"./interceptors":106,"./mixin":113,"vue":35,"vue-resource":34}]},{},[36]);
 
 //# sourceMappingURL=app.js.map

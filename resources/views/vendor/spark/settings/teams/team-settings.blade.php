@@ -10,7 +10,7 @@
 
 @section('content')
 <spark-team-settings :user="user" :team-id="{{ $team->id }}" inline-template>
-    <div class="spark-screen container">
+    <div class="spark-screen container" v-if="team">
         <div class="row">
             <div class="col-sm-3 col-md-2 spark-settings-tabs">
                 <ul class="list-group" role="tablist">

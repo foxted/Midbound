@@ -1,8 +1,8 @@
 @charset "UTF-8";
-@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,700,900|Montserrat:700';
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,900,900i");
 /*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
@@ -1073,7 +1073,6 @@ a {
     color: #2d8abb;
     text-decoration: underline; }
   a:focus {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
 
@@ -2285,7 +2284,6 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
 
@@ -2790,7 +2788,6 @@ select[multiple].input-lg,
   -ms-user-select: none;
   user-select: none; }
   .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
-    outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
   .btn:hover, .btn:focus, .btn.focus {
@@ -6295,6 +6292,28 @@ body {
     margin-left: auto;
     margin-right: auto; }
 
+.registration .panel-heading ul {
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0; }
+  .registration .panel-heading ul li {
+    -ms-flex: 1 1;
+    flex: 1 1;
+    padding: 0;
+    color: #999999;
+    text-align: center; }
+    .registration .panel-heading ul li.active {
+      font-weight: bold;
+      color: #222; }
+
+.registration .panel-body .checkbox input[type="checkbox"] {
+  position: static;
+  margin-right: .3em; }
+
+.registration .panel-footer p {
+  margin: 0;
+  color: #999999; }
+
 body {
   -webkit-font-smoothing: antialiased;
   font-weight: 400; }
@@ -6313,7 +6332,8 @@ h3 {
   font-weight: 700;
   text-transform: uppercase;
   color: #777777;
-  font-size: 13px; }
+  font-size: 13px;
+  padding: 1em 0 .3em; }
 
 .list-group .list-group-item {
   border-radius: 0;

@@ -50,17 +50,29 @@ class SparkServiceProvider extends ServiceProvider
      */
     public function booted()
     {
-        Spark::useStripe()->noCardUpFront()->teamTrialDays(10);
+        Spark::useStripe()->noCardUpFront()->teamTrialDays(60);
 
         Spark::freeTeamPlan()
             ->features([
-                'First', 'Second', 'Third'
+                'Tracking script', 'Prospect activity', 'Awesomeness!'
             ]);
 
-        Spark::teamPlan('Basic', 'provider-id-1')
-            ->price(10)
+        Spark::teamPlan('Connect', 'connect')
+            ->price(4.99)
             ->features([
-                'First', 'Second', 'Third'
+                'Tracking script', 'Prospect activity', 'Awesomeness!'
+            ]);
+
+        Spark::teamPlan('Plus', 'plus')
+            ->price(79.99)
+            ->features([
+                'Tracking script', 'Prospect activity', 'Awesomeness!'
+            ]);
+
+        Spark::teamPlan('Premium', 'premium')
+            ->price(129.99)
+            ->features([
+                'Tracking script', 'Prospect activity', 'Awesomeness!'
             ]);
     }
 
