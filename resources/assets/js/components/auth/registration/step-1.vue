@@ -76,7 +76,7 @@
 
     export default {
 
-        props: ['component', 'registerForm'],
+        props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
 
         methods: {
             nextStep() {

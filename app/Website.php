@@ -41,4 +41,20 @@ class Website extends Model
     {
         return view('websites.snippet', ['website' => $this])->render();
     }
+
+    /**
+     * @return string
+     */
+    public function getInstallUrlAttribute()
+    {
+        return route('app.websites.install');
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceUrlAttribute()
+    {
+        return route('api.websites.show', $this);
+    }
 }

@@ -38,6 +38,15 @@ class WebsitesController extends Controller
      * @param Website $website
      * @return mixed
      */
+    public function show(Website $website)
+    {
+        return response()->json($website);
+    }
+
+    /**
+     * @param Website $website
+     * @return mixed
+     */
     public function destroy(Website $website)
     {
         $website->delete();

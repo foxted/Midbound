@@ -5,7 +5,8 @@
         <registration inline-template>
             <div>
                 <component :is="component" :component.sync="component"
-                           :register-form.sync="registerForm"></component>
+                           :register-form.sync="registerForm" :email-developer-form.sync="emailDeveloperForm"
+                           :website.sync="website"></component>
             </div>
         </registration>
     </div>

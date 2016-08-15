@@ -34026,7 +34026,7 @@ var app = new Vue({
     mixins: [require('spark')]
 });
 
-},{"./components/bootstrap":42,"./filters":45,"spark":162,"spark-bootstrap":161}],37:[function(require,module,exports){
+},{"./components/bootstrap":41,"./filters":45,"spark":162,"spark-bootstrap":161}],37:[function(require,module,exports){
 'use strict';
 
 var _moment = require('moment');
@@ -34088,19 +34088,16 @@ var _step3 = require('./registration/step-2.vue');
 
 var _step4 = _interopRequireDefault(_step3);
 
-var _step5 = require('./registration/step-3.vue');
-
-var _step6 = _interopRequireDefault(_step5);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 Vue.component('registration', {
 
-    components: { Step1: _step2.default, Step2: _step4.default, Step3: _step6.default },
+    components: { Step1: _step2.default, Step2: _step4.default },
 
     data: function data() {
         return {
             component: 'step-1',
+            website: null,
             registerForm: $.extend(true, new SparkForm({
                 stripe_token: '',
                 organization: '',
@@ -34115,7 +34112,7 @@ Vue.component('registration', {
     }
 });
 
-},{"./registration/step-1.vue":39,"./registration/step-2.vue":40,"./registration/step-3.vue":41}],39:[function(require,module,exports){
+},{"./registration/step-1.vue":39,"./registration/step-2.vue":40}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34123,7 +34120,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-    props: ['component', 'registerForm'],
+    props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
 
     methods: {
         nextStep: function nextStep() {
@@ -34152,7 +34149,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-    props: ['component', 'registerForm'],
+    props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
 
     methods: {
         /**
@@ -34174,9 +34171,10 @@ exports.default = {
             var _this = this;
 
             Spark.post('/register', this.registerForm).then(function (response) {
-                alert('Form submitted');
-                _this.component = 'step-3';
-            }).catch(function (response) {
+                window.location = response.redirectUrl;
+            }).catch(function (errors) {
+                _this.busy = false;
+                _this.errors = errors.data;
                 if (_this.registerForm.errors.has('email') || _this.registerForm.errors.has('name') || _this.registerForm.errors.has('password')) {
 
                     _this.component = 'step-1';
@@ -34187,7 +34185,7 @@ exports.default = {
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"col-md-8 col-md-offset-2 text-center\">\n        <h1>Create Your Free Account</h1>\n        <p>Find out why the world's most nimble sales teams prefer Midbound</p>\n        <div class=\"alert alert-success\">\n            Join now to take advantage of <strong>60 days of Midbound Plus</strong> ($159.98 value)\n        </div>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-2 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li>1. Your Information</li>\n                    <li class=\"active\">2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Organization -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('team')}\">\n                        <label class=\"col-md-4 control-label\">Organization</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"team\" v-model=\"registerForm.team\" placeholder=\"My Company Inc.\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('team')\">\n                                {{ registerForm.errors.get('team') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <!-- Website -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('website')}\">\n                        <label class=\"col-md-4 control-label\">Website</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"website\" v-model=\"registerForm.website\" placeholder=\"http://www.mywebsite.com\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('website')\">\n                                {{ registerForm.errors.get('website') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('terms')}\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <div class=\"checkbox\">\n                                <label>\n                                    <input type=\"checkbox\" name=\"terms\" v-model=\"registerForm.terms\"> I Accept The\n                                    <a href=\"/terms\" target=\"_blank\">Terms Of Service</a>\n                                </label>\n\n                                <span class=\"help-block\" v-show=\"registerForm.errors.has('terms')\">\n                                    {{ registerForm.errors.get('terms') }}\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"register\">\n                                Create account\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"col-md-8 col-md-offset-2 text-center\">\n        <h1>Create Your Free Account</h1>\n        <p>Find out why the world's most nimble sales teams prefer Midbound</p>\n        <div class=\"alert alert-success\">\n            Join now to take advantage of <strong>60 days of Midbound Plus</strong> ($159.98 value)\n        </div>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-2 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li>1. Your Information</li>\n                    <li class=\"active\">2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Organization -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('team')}\">\n                        <label class=\"col-md-4 control-label\">Organization</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"team\" v-model=\"registerForm.team\" placeholder=\"My Company Inc.\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('team')\">\n                                {{ registerForm.errors.get('team') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <!-- Website -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('website')}\">\n                        <label class=\"col-md-4 control-label\">Website</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"website\" v-model=\"registerForm.website\" placeholder=\"http://www.mywebsite.com\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('website')\">\n                                {{ registerForm.errors.get('website') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('terms')}\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <div class=\"checkbox\">\n                                <label>\n                                    <input type=\"checkbox\" name=\"terms\" v-model=\"registerForm.terms\"> I Accept The\n                                    <a href=\"/terms\" target=\"_blank\">Terms Of Service</a>\n                                </label>\n\n                                <span class=\"help-block\" v-show=\"registerForm.errors.has('terms')\">\n                                    {{ registerForm.errors.get('terms') }}\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"register\" :disabled=\"registerForm.busy\">\n                                <span v-if=\"registerForm.busy\">\n                                    <i class=\"fa fa-btn fa-spinner fa-spin\"></i>Creating account...\n                                </span>\n\n                                <span v-else=\"\">\n                                    Create account\n                                </span>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -34199,35 +34197,6 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":35,"vue-hot-reload-api":33}],41:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-
-    props: ['component', 'registerForm'],
-
-    methods: {
-        nextStep: function nextStep() {
-            this.component = 'step-3';
-        }
-    }
-
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"col-md-8 col-md-offset-2 text-center\">\n        <h1>Nice to meet you, Bob</h1>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-3 panel panel-default\">\n            <main class=\"panel-body\">\n                <div class=\"alert alert-warning\">\n                    <p>\n                        To get started, add the Midbound Tracker to your website.\n                        <i class=\"fa fa-question-circle\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-html=\"true\" title=\"The Midbound Tracker\" data-content=\"The Midbound Tracker provides you with real-time prospect data from your website. <br><a href='#'>Learn More</a>\"></i>\n                    </p>\n\n                    <p>\n                        <strong>Instructions:</strong>\n                        </p><ul>\n                            <li>Add the tag below to public-facing pages of your website.</li>\n                            <li>Place the tag before the closing <code>&lt;body&gt;</code> tag.</li>\n                        </ul>\n                    <p></p>\n                </div>\n                <pre>something</pre>\n                <button class=\"btn btn-primary\"><i class=\"fa fa-send\"></i>&nbsp;Email to a developer</button>\n                <button class=\"btn btn-default\"><i class=\"fa fa-check\"></i>&nbsp;This is done</button>\n                <button class=\"btn btn-ghost pull-right\">Do this later</button>\n            </main>\n        </section>\n    </div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-b58e48fa", module.exports)
-  } else {
-    hotAPI.update("_v-b58e48fa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":35,"vue-hot-reload-api":33}],42:[function(require,module,exports){
 'use strict';
 
 /*
@@ -34248,10 +34217,13 @@ require('./modal');
 // Registration
 require('./auth/registration');
 
+// Websites
+require('./websites/install-website');
+
 // Activity
 require('./activity');
 
-},{"./../spark-components/bootstrap":48,"./activity":37,"./auth/registration":38,"./home":43,"./modal":44}],43:[function(require,module,exports){
+},{"./../spark-components/bootstrap":48,"./activity":37,"./auth/registration":38,"./home":42,"./modal":43,"./websites/install-website":44}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('home', {
@@ -34262,7 +34234,7 @@ Vue.component('home', {
     }
 });
 
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -34571,6 +34543,61 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     Plugin.call($target, option, this);
   });
 }(jQuery);
+
+},{}],44:[function(require,module,exports){
+'use strict';
+
+Vue.component('install-website', {
+
+    props: ['user', 'websiteUrl'],
+
+    data: function data() {
+        return {
+            website: null,
+            emailDeveloperForm: new SparkForm({
+                email: ''
+            })
+        };
+    },
+    ready: function ready() {
+        var _this = this;
+
+        this.$http.get(this.websiteUrl).then(function (_ref) {
+            var website = _ref.data;
+
+            _this.website = website;
+        });
+        $('#email-developer').on('hidden.bs.modal', function () {
+            _this.emailDeveloperForm.success = false;
+            _this.emailDeveloperForm.busy = false;
+            _this.emailDeveloperForm.errors.forget();
+            _this.emailDeveloperForm.email = '';
+        });
+    },
+
+
+    methods: {
+        showEmailDeveloperForm: function showEmailDeveloperForm() {
+            $('#email-developer').modal('show');
+        },
+        showMoreInformation: function showMoreInformation($event) {
+            $($event.target).popover();
+        },
+        sendEmail: function sendEmail() {
+            var _this2 = this;
+
+            this.emailDeveloperForm.busy = true;
+            this.emailDeveloperForm.errors.forget();
+
+            Spark.post('/api/email-developer/' + this.website.id, this.emailDeveloperForm).then(function (response) {
+                _this2.busy = false;
+                _this2.success = true;
+                $('#email-developer').modal('hide');
+            });
+        }
+    }
+
+});
 
 },{}],45:[function(require,module,exports){
 'use strict';

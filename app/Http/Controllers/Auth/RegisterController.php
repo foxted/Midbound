@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Spark\Events\Auth\UserRegistered;
 use Midbound\Http\Requests\Auth\RegisterRequest;
 use Midbound\Interactions\Auth\Register;
+use Midbound\Website;
 use Spark;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Midbound\Http\Controllers\Controller;
@@ -61,12 +62,15 @@ class RegisterController extends Controller
             Register::class, [$request]
         ));
 
-        return response($user->currentTeam, 500);
-
         event(new UserRegistered($user));
 
+        // Create website
+        $website = Website::create([
+            'url' => $request->get('website')
+        ]);
+
         return response()->json([
-            'redirect' => $this->redirectPath()
+            'redirectUrl' => $website->installUrl
         ]);
     }
 }

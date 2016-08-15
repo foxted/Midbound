@@ -63,8 +63,14 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button class="btn btn-primary" @click.prevent="register">
-                                    Create account
+                                <button class="btn btn-primary" @click.prevent="register" :disabled="registerForm.busy">
+                                    <span v-if="registerForm.busy">
+                                        <i class="fa fa-btn fa-spinner fa-spin"></i>Creating account...
+                                    </span>
+
+                                    <span v-else>
+                                        Create account
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -82,7 +88,7 @@
 
     export default {
 
-        props: ['component', 'registerForm'],
+        props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
 
         methods: {
             /**
@@ -101,15 +107,15 @@
             sendRegistration() {
                 Spark.post('/register', this.registerForm)
                         .then(response => {
-                            alert('Form submitted');
-                            this.component = 'step-3'
-                        }).catch(response => {
+                            window.location = response.redirectUrl;
+                        }).catch(errors => {
+                            this.busy = false;
+                            this.errors = errors.data;
                             if(this.registerForm.errors.has('email')
                                 || this.registerForm.errors.has('name')
                                 || this.registerForm.errors.has('password')) {
 
                                 this.component = 'step-1';
-
                             }
                         });
             }

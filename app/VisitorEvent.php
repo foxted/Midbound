@@ -32,7 +32,7 @@ class VisitorEvent extends Model
     /**
      * @var array
      */
-    protected $fillable = ['action', 'resource', 'meta'];
+    protected $fillable = ['action', 'url', 'resource', 'meta'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

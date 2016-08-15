@@ -16,8 +16,8 @@ class CreateVisitorEventsTable extends Migration
             $table->increments('id');
             $table->integer('visitor_id')->unsigned()->index();
             $table->string('action')->index();
-            $table->string('resource')->index();
-            $table->json('meta')->nullable();
+            $table->string('url')->index();
+            $table->string('resource')->nullable()->index();
             $table->timestampsTz();
             $table->softDeletes();
 
