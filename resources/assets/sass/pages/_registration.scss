@@ -1,0 +1,35 @@
+.registration {
+    .panel-heading {
+        ul {
+            display: flex;
+            margin: 0;
+            li {
+                flex: 1 1;
+                padding: 0;
+                color: $gray-light;
+                text-align: center;
+
+                &.active {
+                    font-weight: bold;
+                    color: $text-color;
+                }
+            }
+        }
+    }
+
+    .panel-body {
+        .checkbox {
+            input[type="checkbox"] {
+                position: static;
+                margin-right: .3em;
+            }
+        }
+    }
+
+    .panel-footer {
+        p {
+            margin: 0;
+            color: $gray-light;
+        }
+    }
+}

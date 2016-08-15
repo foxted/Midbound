@@ -1,3 +1,6 @@
+// Font
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,900,900i");
+
 // Config
 @import "spark/variables";
 @import "variables";
@@ -10,6 +13,7 @@
 
 // Pages
 @import "pages/home";
+@import "pages/registration";
 
 // Components (sitewide components styles)
 @import "elements/typography";

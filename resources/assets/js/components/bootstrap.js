@@ -14,5 +14,8 @@ require('./../spark-components/bootstrap');
 require('./home');
 require('./modal');
 
+// Registration
+require('./auth/registration');
+
 // Activity
 require('./activity');
