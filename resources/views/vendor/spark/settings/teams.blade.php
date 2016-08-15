@@ -1,8 +1,5 @@
 <spark-teams :user="user" :teams="teams" inline-template>
     <div>
-        
-       
-
         <!-- Pending Invitations -->
         @include('spark::settings.teams.pending-invitations')
 

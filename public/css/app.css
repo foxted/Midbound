@@ -6332,7 +6332,8 @@ h3 {
   font-weight: 700;
   text-transform: uppercase;
   color: #777777;
-  font-size: 13px; }
+  font-size: 13px;
+  padding: 1em 0 .3em; }
 
 .list-group .list-group-item {
   border-radius: 0;
