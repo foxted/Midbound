@@ -20,7 +20,7 @@ class ProspectProfile extends Model
      */
     protected $casts = [
         'names' => 'array',
-        'email' => 'array',
+        'emails' => 'array',
         'phones' => 'array',
         'companies' => 'array',
         'customs' => 'array',

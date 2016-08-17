@@ -7,19 +7,6 @@
 
             <div class="panel-body">
                 <form class="form-horizontal" role="form">
-                    <!-- Website Name -->
-                    <div class="form-group" :class="{'has-error': form.errors.has('name')}">
-                        <label class="col-md-4 control-label">Website name</label>
-
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" name="name" v-model="form.name">
-
-                            <span class="help-block" v-show="form.errors.has('name')">
-                                @{{ form.errors.get('name') }}
-                            </span>
-                        </div>
-                    </div>
-
                     <!-- Website URL -->
                     <div class="form-group" :class="{'has-error': form.errors.has('url')}">
                         <label class="col-md-4 control-label">Website URL</label>
@@ -56,7 +43,7 @@
                         <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
-                            Website
+                            Website (@{{ showingWebsite.url }})
                         </h4>
                     </div>
 

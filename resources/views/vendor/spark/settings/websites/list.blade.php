@@ -7,7 +7,6 @@
                 <div class="panel-body">
                     <table class="table table-borderless m-b-none">
                         <thead>
-                            <th>Name</th>
                             <th>URL</th>
                             <th>Last Used</th>
                             <th></th>
@@ -16,13 +15,6 @@
 
                         <tbody>
                             <tr v-for="website in websites">
-                                <!-- Name -->
-                                <td>
-                                    <div class="btn-table-align">
-                                        @{{ website.name }}
-                                    </div>
-                                </td>
-
                                 <!-- URL -->
                                 <td>
                                     <div class="btn-table-align">
@@ -71,7 +63,7 @@
                         <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
-                            View website (@{{ showingWebsite.name }})
+                            View website (@{{ showingWebsite.url }})
                         </h4>
                     </div>
 
@@ -99,7 +91,7 @@
                         <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
-                            Delete website (@{{ deletingWebsite.name }})
+                            Delete website (@{{ deletingWebsite.url }})
                         </h4>
                     </div>
 

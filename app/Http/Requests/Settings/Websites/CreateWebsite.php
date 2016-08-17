@@ -28,7 +28,6 @@ class CreateWebsite extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
             'url' => 'required|url'
         ];
     }

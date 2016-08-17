@@ -7,7 +7,6 @@ Vue.component('spark-create-website', {
             showingWebsite: null,
 
             form: new SparkForm({
-                name: '',
                 url: ''
             })
         };
@@ -43,7 +42,6 @@ Vue.component('spark-create-website', {
          * Reset the website form back to its default state.
          */
         resetForm() {
-            this.form.name = '';
             this.form.url = '';
         }
     }

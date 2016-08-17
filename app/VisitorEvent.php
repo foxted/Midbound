@@ -18,7 +18,6 @@ class VisitorEvent extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'array',
         'created_at' => 'date',
         'updated_at' => 'date',
         'deleted_at' => 'date',
@@ -32,7 +31,7 @@ class VisitorEvent extends Model
     /**
      * @var array
      */
-    protected $fillable = ['action', 'url', 'resource', 'meta'];
+    protected $fillable = ['action', 'url', 'resource'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

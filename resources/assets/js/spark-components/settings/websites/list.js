@@ -9,10 +9,6 @@ Vue.component('spark-websites-list', {
             showingWebsite: null,
             deletingWebsite: null,
 
-            updateWebsiteForm: new SparkForm({
-                name: '',
-            }),
-
             deleteWebsiteForm: new SparkForm({})
         }
     },

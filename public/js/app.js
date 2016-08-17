@@ -35211,7 +35211,6 @@ Vue.component('spark-create-website', {
             showingWebsite: null,
 
             form: new SparkForm({
-                name: '',
                 url: ''
             })
         };
@@ -35250,7 +35249,6 @@ Vue.component('spark-create-website', {
          * Reset the website form back to its default state.
          */
         resetForm: function resetForm() {
-            this.form.name = '';
             this.form.url = '';
         }
     }
@@ -35269,10 +35267,6 @@ Vue.component('spark-websites-list', {
         return {
             showingWebsite: null,
             deletingWebsite: null,
-
-            updateWebsiteForm: new SparkForm({
-                name: ''
-            }),
 
             deleteWebsiteForm: new SparkForm({})
         };

@@ -19,7 +19,7 @@ return [
     | URL to the tracking scripts midbound.js
     |
     */
-    'url' => 'https://cdn.midbound.io/midbound.js',
+    'url' => 'https://cdn.midbound.com/midbound.js',
 
     /*
     |--------------------------------------------------------------------------
