@@ -32,4 +32,20 @@ return [
     'allowed-events' => [
         'pageview', 'download', 'subscribe', 'click', 'capture'
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Verbs
+    |--------------------------------------------------------------------------
+    |
+    | List of events translated into verbs to display
+    |
+    */
+    'verbs' => [
+        'pageview' => 'Visited',
+        'download' => 'Downloaded',
+        'subscribe' => 'Subscribed to',
+        'click' => 'Clicked on',
+        'capture' => 'Typed'
+    ],
 ];

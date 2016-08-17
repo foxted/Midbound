@@ -34613,9 +34613,9 @@ var _moment2 = _interopRequireDefault(_moment);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.filter('human', function (value) {
-    var format = arguments.length <= 1 || arguments[1] === undefined ? 'YYYY-MM-DD HH:ii:ss.SSSSSS' : arguments[1];
+    var format = arguments.length <= 1 || arguments[1] === undefined ? 'YYYY-MM-DD HH:mm:ss' : arguments[1];
 
-    return (0, _moment2.default)(value, format).fromNow();
+    return (0, _moment2.default)(value, format).fromNow(false);
 });
 
 },{"moment":18,"vue":35}],46:[function(require,module,exports){
