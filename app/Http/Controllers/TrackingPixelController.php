@@ -48,8 +48,8 @@ class TrackingPixelController extends Controller
             if(in_array($request->get('midac'), config('tracking.allowed-events'))) {
                 $event = new VisitorEvent([
                     'action' => $request->get('midac'),
-                    'resource' => $request->get('midrc'),
-                    'meta' => $request->get('midmeta', [])
+                    'url' => $request->get('midurl'),
+                    'resource' => $request->get('midrc')
                 ]);
                 $event->visitor()->associate($visitor);
                 $event->save();

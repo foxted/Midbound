@@ -19,7 +19,7 @@ return [
     | URL to the tracking scripts midbound.js
     |
     */
-    'url' => 'https://cdn.midbound.io/midbound.js',
+    'url' => 'https://cdn.midbound.com/midbound.js',
 
     /*
     |--------------------------------------------------------------------------
@@ -31,5 +31,21 @@ return [
     */
     'allowed-events' => [
         'pageview', 'download', 'subscribe', 'click', 'capture'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Verbs
+    |--------------------------------------------------------------------------
+    |
+    | List of events translated into verbs to display
+    |
+    */
+    'verbs' => [
+        'pageview' => 'Visited',
+        'download' => 'Downloaded',
+        'subscribe' => 'Subscribed to',
+        'click' => 'Clicked on',
+        'capture' => 'Typed'
     ],
 ];

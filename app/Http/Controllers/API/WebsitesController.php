@@ -29,7 +29,7 @@ class WebsitesController extends Controller
      */
     public function store(CreateWebsite $request)
     {
-        $website = Website::create($request->only('name', 'url'));
+        $website = Website::create($request->only('url'));
 
         return response()->json($website);
     }

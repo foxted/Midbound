@@ -48,9 +48,9 @@
                                     </div>
                                     <div class="prospect-info">
                                         <h4 class="name">
-                                            <a :href="event.prospect.url">@{{ event.prospect.name }}</a>
+                                            <a :href="event.prospect.url">@{{ event.prospect.profile.names[0] || event.prospect.profile.name  }}</a>
                                         </h4>
-                                        <a href="mailto:@{{ event.prospect.email }}" class="email">@{{ event.prospect.email }}</a>
+                                        <a href="mailto:@{{ event.prospect.profile.emails[0] || event.prospect.email }}" class="email">@{{ event.prospect.profile.emails[0] || event.prospect.email }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -62,11 +62,11 @@
                         </div>
                         <div class="prospect-event">
                             <p class="event">
-                                @{{ event.action }} <a href="">@{{ event.resource }}</a>
+                                @{{ event.actionVerb }} <a href="">@{{ event.resource }}</a>
                             </p>
                            <time class="event-date">
                                 &mdash;
-                                @{{ event.created_at.date | human }}
+                                @{{ event.created_at | human }}
                             </time>
                         </div>
                     </div>

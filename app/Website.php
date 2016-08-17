@@ -19,7 +19,7 @@ class Website extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'url', 'hash'];
+    protected $fillable = ['url', 'hash'];
 
     /**
      * @var array

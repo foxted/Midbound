@@ -18,7 +18,6 @@ class VisitorEvent extends Model
      * @var array
      */
     protected $casts = [
-        'meta' => 'array',
         'created_at' => 'date',
         'updated_at' => 'date',
         'deleted_at' => 'date',
@@ -27,12 +26,12 @@ class VisitorEvent extends Model
     /**
      * @var array
      */
-    protected $appends = ['prospect'];
+    protected $appends = ['prospect', 'actionVerb'];
 
     /**
      * @var array
      */
-    protected $fillable = ['action', 'url', 'resource', 'meta'];
+    protected $fillable = ['action', 'url', 'resource'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -48,5 +47,17 @@ class VisitorEvent extends Model
     public function getProspectAttribute()
     {
         return $this->visitor->prospect;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActionVerbAttribute()
+    {
+        if(array_key_exists($this->action, config('tracking.verbs'))) {
+            return config("tracking.verbs.{$this->action}");
+        }
+
+        return $this->action;
     }
 }
