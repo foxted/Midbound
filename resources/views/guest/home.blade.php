@@ -10,9 +10,9 @@
     <h1>Turn prospects into leads, faster</h1>
     <p class="lead">Midbound tells you which sales prospects matter and when to make your move.</p>
     <div class="cta">
-    		<a class="btn btn-primary btn-lg">Start 60-Day Free Trial</a>
+    		<a href="{{ route('auth.register') }}" class="btn btn-primary btn-lg">Start 60-Day Free Trial</a>
     	 <!-- <form class="form-inline" method="POST" action="">
-        {{ csrf_field() }}
+        {{--{{ csrf_field() }}--}}
         <div class="form-group">
             <input type="text" name="email" id="inputemail" class="form-control" value="" placeholder="Enter your email">
         </div>
