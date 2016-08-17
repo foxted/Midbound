@@ -90,6 +90,10 @@
 
         props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
 
+        ready() {
+            $('input').first().focus();
+        },
+
         methods: {
             /**
              * Attempt to register with the application.
