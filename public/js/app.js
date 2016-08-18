@@ -306,10 +306,10 @@ require('../../js/tab.js')
 require('../../js/affix.js')
 },{"../../js/affix.js":4,"../../js/alert.js":5,"../../js/button.js":6,"../../js/carousel.js":7,"../../js/collapse.js":8,"../../js/dropdown.js":9,"../../js/modal.js":10,"../../js/popover.js":11,"../../js/scrollspy.js":12,"../../js/tab.js":13,"../../js/tooltip.js":14,"../../js/transition.js":15}],4:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: affix.js v3.3.7
+ * Bootstrap: affix.js v3.3.6
  * http://getbootstrap.com/javascript/#affix
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -335,7 +335,7 @@ require('../../js/affix.js')
     this.checkPosition()
   }
 
-  Affix.VERSION  = '3.3.7'
+  Affix.VERSION  = '3.3.6'
 
   Affix.RESET    = 'affix affix-top affix-bottom'
 
@@ -470,10 +470,10 @@ require('../../js/affix.js')
 
 },{}],5:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: alert.js v3.3.7
+ * Bootstrap: alert.js v3.3.6
  * http://getbootstrap.com/javascript/#alerts
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -489,7 +489,7 @@ require('../../js/affix.js')
     $(el).on('click', dismiss, this.close)
   }
 
-  Alert.VERSION = '3.3.7'
+  Alert.VERSION = '3.3.6'
 
   Alert.TRANSITION_DURATION = 150
 
@@ -502,7 +502,7 @@ require('../../js/affix.js')
       selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = $(selector === '#' ? [] : selector)
+    var $parent = $(selector)
 
     if (e) e.preventDefault()
 
@@ -566,10 +566,10 @@ require('../../js/affix.js')
 
 },{}],6:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: button.js v3.3.7
+ * Bootstrap: button.js v3.3.6
  * http://getbootstrap.com/javascript/#buttons
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -586,7 +586,7 @@ require('../../js/affix.js')
     this.isLoading = false
   }
 
-  Button.VERSION  = '3.3.7'
+  Button.VERSION  = '3.3.6'
 
   Button.DEFAULTS = {
     loadingText: 'loading...'
@@ -608,10 +608,10 @@ require('../../js/affix.js')
 
       if (state == 'loadingText') {
         this.isLoading = true
-        $el.addClass(d).attr(d, d).prop(d, true)
+        $el.addClass(d).attr(d, d)
       } else if (this.isLoading) {
         this.isLoading = false
-        $el.removeClass(d).removeAttr(d).prop(d, false)
+        $el.removeClass(d).removeAttr(d)
       }
     }, this), 0)
   }
@@ -675,15 +675,10 @@ require('../../js/affix.js')
 
   $(document)
     .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      var $btn = $(e.target).closest('.btn')
+      var $btn = $(e.target)
+      if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
       Plugin.call($btn, 'toggle')
-      if (!($(e.target).is('input[type="radio"], input[type="checkbox"]'))) {
-        // Prevent double click on radios, and the double selections (so cancellation) on checkboxes
-        e.preventDefault()
-        // The target component still receive the focus
-        if ($btn.is('input,button')) $btn.trigger('focus')
-        else $btn.find('input:visible,button:visible').first().trigger('focus')
-      }
+      if (!($(e.target).is('input[type="radio"]') || $(e.target).is('input[type="checkbox"]'))) e.preventDefault()
     })
     .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
       $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
@@ -693,10 +688,10 @@ require('../../js/affix.js')
 
 },{}],7:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: carousel.js v3.3.7
+ * Bootstrap: carousel.js v3.3.6
  * http://getbootstrap.com/javascript/#carousel
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -724,7 +719,7 @@ require('../../js/affix.js')
       .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
   }
 
-  Carousel.VERSION  = '3.3.7'
+  Carousel.VERSION  = '3.3.6'
 
   Carousel.TRANSITION_DURATION = 600
 
@@ -932,14 +927,13 @@ require('../../js/affix.js')
 
 },{}],8:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: collapse.js v3.3.7
+ * Bootstrap: collapse.js v3.3.6
  * http://getbootstrap.com/javascript/#collapse
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
-/* jshint latedef: false */
 
 +function ($) {
   'use strict';
@@ -963,7 +957,7 @@ require('../../js/affix.js')
     if (this.options.toggle) this.toggle()
   }
 
-  Collapse.VERSION  = '3.3.7'
+  Collapse.VERSION  = '3.3.6'
 
   Collapse.TRANSITION_DURATION = 350
 
@@ -1146,10 +1140,10 @@ require('../../js/affix.js')
 
 },{}],9:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.7
+ * Bootstrap: dropdown.js v3.3.6
  * http://getbootstrap.com/javascript/#dropdowns
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1166,7 +1160,7 @@ require('../../js/affix.js')
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.7'
+  Dropdown.VERSION = '3.3.6'
 
   function getParent($this) {
     var selector = $this.attr('data-target')
@@ -1313,10 +1307,10 @@ require('../../js/affix.js')
 
 },{}],10:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: modal.js v3.3.7
+ * Bootstrap: modal.js v3.3.6
  * http://getbootstrap.com/javascript/#modals
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1347,7 +1341,7 @@ require('../../js/affix.js')
     }
   }
 
-  Modal.VERSION  = '3.3.7'
+  Modal.VERSION  = '3.3.6'
 
   Modal.TRANSITION_DURATION = 300
   Modal.BACKDROP_TRANSITION_DURATION = 150
@@ -1454,9 +1448,7 @@ require('../../js/affix.js')
     $(document)
       .off('focusin.bs.modal') // guard against infinite focus loop
       .on('focusin.bs.modal', $.proxy(function (e) {
-        if (document !== e.target &&
-            this.$element[0] !== e.target &&
-            !this.$element.has(e.target).length) {
+        if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
           this.$element.trigger('focus')
         }
       }, this))
@@ -1654,10 +1646,10 @@ require('../../js/affix.js')
 
 },{}],11:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: popover.js v3.3.7
+ * Bootstrap: popover.js v3.3.6
  * http://getbootstrap.com/javascript/#popovers
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1674,7 +1666,7 @@ require('../../js/affix.js')
 
   if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
 
-  Popover.VERSION  = '3.3.7'
+  Popover.VERSION  = '3.3.6'
 
   Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
     placement: 'right',
@@ -1764,10 +1756,10 @@ require('../../js/affix.js')
 
 },{}],12:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: scrollspy.js v3.3.7
+ * Bootstrap: scrollspy.js v3.3.6
  * http://getbootstrap.com/javascript/#scrollspy
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1793,7 +1785,7 @@ require('../../js/affix.js')
     this.process()
   }
 
-  ScrollSpy.VERSION  = '3.3.7'
+  ScrollSpy.VERSION  = '3.3.6'
 
   ScrollSpy.DEFAULTS = {
     offset: 10
@@ -1938,10 +1930,10 @@ require('../../js/affix.js')
 
 },{}],13:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: tab.js v3.3.7
+ * Bootstrap: tab.js v3.3.6
  * http://getbootstrap.com/javascript/#tabs
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -1958,7 +1950,7 @@ require('../../js/affix.js')
     // jscs:enable requireDollarBeforejQueryAssignment
   }
 
-  Tab.VERSION = '3.3.7'
+  Tab.VERSION = '3.3.6'
 
   Tab.TRANSITION_DURATION = 150
 
@@ -2095,11 +2087,11 @@ require('../../js/affix.js')
 
 },{}],14:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: tooltip.js v3.3.7
+ * Bootstrap: tooltip.js v3.3.6
  * http://getbootstrap.com/javascript/#tooltip
  * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -2122,7 +2114,7 @@ require('../../js/affix.js')
     this.init('tooltip', element, options)
   }
 
-  Tooltip.VERSION  = '3.3.7'
+  Tooltip.VERSION  = '3.3.6'
 
   Tooltip.TRANSITION_DURATION = 150
 
@@ -2413,11 +2405,9 @@ require('../../js/affix.js')
 
     function complete() {
       if (that.hoverState != 'in') $tip.detach()
-      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
-        that.$element
-          .removeAttr('aria-describedby')
-          .trigger('hidden.bs.' + that.type)
-      }
+      that.$element
+        .removeAttr('aria-describedby')
+        .trigger('hidden.bs.' + that.type)
       callback && callback()
     }
 
@@ -2460,10 +2450,7 @@ require('../../js/affix.js')
       // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
       elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
     }
-    var isSvg = window.SVGElement && el instanceof window.SVGElement
-    // Avoid using $.offset() on SVGs since it gives incorrect results in jQuery 3.
-    // See https://github.com/twbs/bootstrap/issues/20280
-    var elOffset  = isBody ? { top: 0, left: 0 } : (isSvg ? null : $element.offset())
+    var elOffset  = isBody ? { top: 0, left: 0 } : $element.offset()
     var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
     var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
 
@@ -2579,7 +2566,6 @@ require('../../js/affix.js')
       that.$tip = null
       that.$arrow = null
       that.$viewport = null
-      that.$element = null
     })
   }
 
@@ -2617,10 +2603,10 @@ require('../../js/affix.js')
 
 },{}],15:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: transition.js v3.3.7
+ * Bootstrap: transition.js v3.3.6
  * http://getbootstrap.com/javascript/#transitions
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -16843,6 +16829,7 @@ return jQuery;
 }));
 },{}],19:[function(require,module,exports){
 // shim for using process in browser
+
 var process = module.exports = {};
 
 // cached from whatever global is present so that test runners that stub it
@@ -16854,63 +16841,21 @@ var cachedSetTimeout;
 var cachedClearTimeout;
 
 (function () {
-    try {
-        cachedSetTimeout = setTimeout;
-    } catch (e) {
-        cachedSetTimeout = function () {
-            throw new Error('setTimeout is not defined');
-        }
+  try {
+    cachedSetTimeout = setTimeout;
+  } catch (e) {
+    cachedSetTimeout = function () {
+      throw new Error('setTimeout is not defined');
     }
-    try {
-        cachedClearTimeout = clearTimeout;
-    } catch (e) {
-        cachedClearTimeout = function () {
-            throw new Error('clearTimeout is not defined');
-        }
+  }
+  try {
+    cachedClearTimeout = clearTimeout;
+  } catch (e) {
+    cachedClearTimeout = function () {
+      throw new Error('clearTimeout is not defined');
     }
+  }
 } ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
 var queue = [];
 var draining = false;
 var currentQueue;
@@ -16935,7 +16880,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = runTimeout(cleanUpNextTick);
+    var timeout = cachedSetTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -16952,7 +16897,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    runClearTimeout(timeout);
+    cachedClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -16964,7 +16909,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
+        cachedSetTimeout(drainQueue, 0);
     }
 };
 
@@ -34171,15 +34116,15 @@ exports.default = {
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"col-md-8 col-md-offset-2 text-center\">\n        <h1>Create Your Free Account</h1>\n        <p>Find out why the world's most nimble sales teams prefer Midbound</p>\n        <div class=\"alert alert-success\">\n            Join now to take advantage of <strong>60 days of Midbound Plus</strong> ($159.98 value)\n        </div>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-1 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li class=\"active\">1. Your Information</li>\n                    <li>2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Name -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('name')}\">\n                        <label class=\"col-md-4 control-label\">Full Name</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"name\" v-model=\"registerForm.name\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('name')\">\n                            {{ registerForm.errors.get('name') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- E-Mail Address -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('email')}\">\n                        <label class=\"col-md-4 control-label\">Email Address</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"email\" class=\"form-control\" name=\"email\" v-model=\"registerForm.email\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('email')\">\n                            {{ registerForm.errors.get('email') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- Password -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('password')}\">\n                        <label class=\"col-md-4 control-label\">Password</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"password\" class=\"form-control\" name=\"password\" v-model=\"registerForm.password\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('password')\">\n                            {{ registerForm.errors.get('password') }}\n                        </span>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"nextStep\">\n                                Continue&nbsp;<i class=\"fa fa-btn fa-arrow-right\"></i>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"page-header\">\n        <h2>Create Your Free Account</h2>\n        <p>Find out why the world's most nimble sales teams prefer Midbound.</p>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-1 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li class=\"active\">1. Your Information</li>\n                    <li>2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Name -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('name')}\">\n                        <label class=\"col-md-4 control-label\">Full Name</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"name\" v-model=\"registerForm.name\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('name')\">\n                            {{ registerForm.errors.get('name') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- E-Mail Address -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('email')}\">\n                        <label class=\"col-md-4 control-label\">Email Address</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"email\" class=\"form-control\" name=\"email\" v-model=\"registerForm.email\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('email')\">\n                            {{ registerForm.errors.get('email') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- Password -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('password')}\">\n                        <label class=\"col-md-4 control-label\">Password</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"password\" class=\"form-control\" name=\"password\" v-model=\"registerForm.password\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('password')\">\n                            {{ registerForm.errors.get('password') }}\n                        </span>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"nextStep\">\n                                Continue&nbsp;<i class=\"fa fa-btn fa-arrow-right\"></i>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4726b360", module.exports)
+    hotAPI.createRecord("_v-7dae0bca", module.exports)
   } else {
-    hotAPI.update("_v-4726b360", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7dae0bca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":35,"vue-hot-reload-api":33}],40:[function(require,module,exports){
@@ -34201,6 +34146,7 @@ exports.default = {
         /**
          * Attempt to register with the application.
          */
+
         register: function register() {
             this.registerForm.busy = true;
             this.registerForm.errors.forget();
@@ -34230,15 +34176,15 @@ exports.default = {
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"col-md-8 col-md-offset-2 text-center\">\n        <h1>Create Your Free Account</h1>\n        <p>Find out why the world's most nimble sales teams prefer Midbound</p>\n        <div class=\"alert alert-success\">\n            Join now to take advantage of <strong>60 days of Midbound Plus</strong> ($159.98 value)\n        </div>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-2 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li>1. Your Information</li>\n                    <li class=\"active\">2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Organization -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('team')}\">\n                        <label class=\"col-md-4 control-label\">Organization</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"team\" v-model=\"registerForm.team\" placeholder=\"My Company Inc.\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('team')\">\n                                {{ registerForm.errors.get('team') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <!-- Website -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('website')}\">\n                        <label class=\"col-md-4 control-label\">Website</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"website\" v-model=\"registerForm.website\" placeholder=\"http://www.mywebsite.com\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('website')\">\n                                {{ registerForm.errors.get('website') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('terms')}\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <div class=\"checkbox\">\n                                <label>\n                                    <input type=\"checkbox\" name=\"terms\" v-model=\"registerForm.terms\"> I Accept The\n                                    <a href=\"/terms\" target=\"_blank\">Terms Of Service</a>\n                                </label>\n\n                                <span class=\"help-block\" v-show=\"registerForm.errors.has('terms')\">\n                                    {{ registerForm.errors.get('terms') }}\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"register\" :disabled=\"registerForm.busy\">\n                                <span v-if=\"registerForm.busy\">\n                                    <i class=\"fa fa-btn fa-spinner fa-spin\"></i>Creating account...\n                                </span>\n\n                                <span v-else=\"\">\n                                    Create account\n                                </span>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"page-header\">\n        <h2>Create Your Free Account</h2>\n        <p>Find out why the world's most nimble sales teams prefer Midbound.</p>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-2 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li>1. Your Information</li>\n                    <li class=\"active\">2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Organization -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('team')}\">\n                        <label class=\"col-md-4 control-label\">Organization</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"team\" v-model=\"registerForm.team\" placeholder=\"My Company Inc.\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('team')\">\n                                {{ registerForm.errors.get('team') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <!-- Website -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('website')}\">\n                        <label class=\"col-md-4 control-label\">Website</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"website\" v-model=\"registerForm.website\" placeholder=\"http://www.mywebsite.com\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('website')\">\n                                {{ registerForm.errors.get('website') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('terms')}\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <div class=\"checkbox\">\n                                <label>\n                                    <input type=\"checkbox\" name=\"terms\" v-model=\"registerForm.terms\"> I Accept The\n                                    <a href=\"/terms\" target=\"_blank\">Terms Of Service</a>\n                                </label>\n\n                                <span class=\"help-block\" v-show=\"registerForm.errors.has('terms')\">\n                                    {{ registerForm.errors.get('terms') }}\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"register\" :disabled=\"registerForm.busy\">\n                                <span v-if=\"registerForm.busy\">\n                                    <i class=\"fa fa-btn fa-spinner fa-spin\"></i>Creating account...\n                                </span>\n\n                                <span v-else=\"\">\n                                    Create account\n                                </span>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4734cae1", module.exports)
+    hotAPI.createRecord("_v-7d91dcc8", module.exports)
   } else {
-    hotAPI.update("_v-4734cae1", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7d91dcc8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":35,"vue-hot-reload-api":33}],41:[function(require,module,exports){
@@ -35204,6 +35150,7 @@ Vue.component('spark-websites', {
     /**
      * The component's data.
      */
+
     data: function data() {
         return {
             websites: []
@@ -35223,6 +35170,7 @@ Vue.component('spark-websites', {
         /**
          * Broadcast that child components should update their websites.
          */
+
         updateWebsites: function updateWebsites() {
             this.getWebsites();
         }
@@ -35232,6 +35180,7 @@ Vue.component('spark-websites', {
         /**
          * Get the current websites for the user.
          */
+
         getWebsites: function getWebsites() {
             this.$http.get('/api/websites').then(function (response) {
                 this.websites = response.data;
@@ -35247,6 +35196,7 @@ Vue.component('spark-create-website', {
     /**
      * The component's data.
      */
+
     data: function data() {
         return {
             showingWebsite: null,
@@ -35262,6 +35212,7 @@ Vue.component('spark-create-website', {
         /**
          * Create a new website.
          */
+
         create: function create() {
             var _this = this;
 
@@ -35317,6 +35268,7 @@ Vue.component('spark-websites-list', {
         /**
          * Show the edit website modal.
          */
+
         viewWebsite: function viewWebsite(website) {
             this.showingWebsite = website;
 
@@ -35359,6 +35311,7 @@ module.exports = {
         /**
          * Initialize push state handling for tabs.
          */
+
         usePushStateForTabs: function usePushStateForTabs(selector) {
             var _this = this;
 
@@ -35557,6 +35510,7 @@ module.exports = {
         /**
          * Get the displayable discount for the coupon.
          */
+
         discount: function discount() {
             if (this.coupon) {
                 return Vue.filter('currency')(this.coupon.amount_off, Spark.currencySymbol);
@@ -35669,6 +35623,7 @@ module.exports = {
         /**
          * Attempt to guess the user's country.
          */
+
         guessCountry: function guessCountry() {
             var _this = this;
 
@@ -35762,6 +35717,7 @@ module.exports = {
         /**
          * Determine if the selected country collects European VAT.
          */
+
         countryCollectsVat: function countryCollectsVat() {
             return this.collectsVat(this.registerForm.country);
         },
@@ -35989,6 +35945,7 @@ module.exports = {
     /**
      * Helper method for making POST HTTP requests.
      */
+
     post: function post(uri, form) {
         return Spark.sendForm('post', uri, form);
     },
@@ -36042,6 +35999,7 @@ module.exports = {
      *
      * Set common headers on the request.
      */
+
     request: function request(_request) {
         _request.headers['X-XSRF-TOKEN'] = Cookies.get('XSRF-TOKEN');
 
@@ -36103,6 +36061,7 @@ module.exports = {
         /**
          * Confirm the discount for the given user.
          */
+
         addDiscount: function addDiscount(user) {
             this.form = new SparkForm(kioskAddDiscountForm());
 
@@ -36116,6 +36075,7 @@ module.exports = {
         /**
          * Set the user receiving teh discount.
          */
+
         setUser: function setUser(user) {
             this.discountingUser = user;
 
@@ -36149,6 +36109,7 @@ module.exports = {
     /**
      * The component's data.
      */
+
     data: function data() {
         return {
             announcements: [],
@@ -36178,6 +36139,7 @@ module.exports = {
         /**
          * Get all of the announcements.
          */
+
         getAnnouncements: function getAnnouncements() {
             var _this = this;
 
@@ -36277,6 +36239,7 @@ module.exports = {
         /**
          * Handle the Spark tab changed event.
          */
+
         sparkHashChanged: function sparkHashChanged(hash) {
             if (hash == 'users') {
                 setTimeout(function () {
@@ -36332,6 +36295,7 @@ module.exports = {
         /**
          * Get the revenue information for the application.
          */
+
         getRevenue: function getRevenue() {
             var _this = this;
 
@@ -36489,6 +36453,7 @@ module.exports = {
         /**
          * Calculate the monthly change in monthly recurring revenue.
          */
+
         monthlyChangeInMonthlyRecurringRevenue: function monthlyChangeInMonthlyRecurringRevenue() {
             if (!this.lastMonthsIndicators || !this.indicators) {
                 return false;
@@ -36605,6 +36570,7 @@ module.exports = {
         /**
          * Watch the current profile user for changes.
          */
+
         showUserProfile: function showUserProfile(id) {
             this.getUserProfile(id);
         }
@@ -36614,6 +36580,7 @@ module.exports = {
         /**
          * Get the profile user.
          */
+
         getUserProfile: function getUserProfile(id) {
             var _this2 = this;
 
@@ -36757,6 +36724,7 @@ module.exports = {
         /**
          * Show the search results and hide the user profile.
          */
+
         showSearch: function showSearch() {
             this.navigateToSearch();
         },
@@ -36784,6 +36752,7 @@ module.exports = {
         /**
          * Get all of the available subscription plans.
          */
+
         getPlans: function getPlans() {
             this.$http.get('/spark/plans').then(function (response) {
                 this.plans = response.data;
@@ -36860,6 +36829,7 @@ module.exports = {
         /**
          * Get the billable entity.
          */
+
         billable: function billable() {
             if (this.billableType) {
                 return this.billableType == 'user' ? this.user : this.team;
@@ -36896,6 +36866,7 @@ module.exports = {
         /**
          * Configure the Braintree container.
          */
+
         braintree: function (_braintree) {
             function braintree(_x, _x2) {
                 return _braintree.apply(this, arguments);
@@ -36949,6 +36920,7 @@ module.exports = {
         /**
          * Get the current discount for the given billable entity.
          */
+
         getCurrentDiscountForBillable: function getCurrentDiscountForBillable(type, billable) {
             if (type === 'user') {
                 return this.getCurrentDiscountForUser(billable);
@@ -37062,6 +37034,7 @@ module.exports = {
         /**
          * Switch to showing monthly plans.
          */
+
         showMonthlyPlans: function showMonthlyPlans() {
             this.showingMonthlyPlans = true;
 
@@ -37093,6 +37066,7 @@ module.exports = {
         /**
          * Get the active "interval" being displayed.
          */
+
         activeInterval: function activeInterval() {
             return this.showingMonthlyPlans ? 'monthly' : 'yearly';
         },
@@ -37174,6 +37148,7 @@ module.exports = {
     /**
      * The mixin's data.
      */
+
     data: function data() {
         return {
             plans: [],
@@ -37189,6 +37164,7 @@ module.exports = {
         /**
          * Get the active plans for the application.
          */
+
         getPlans: function getPlans() {
             if (!Spark.cardUpFront) {
                 return;
@@ -37293,6 +37269,7 @@ module.exports = {
     /**
      * The mixin's data.
      */
+
     data: function data() {
         return {
             selectingPlan: null,
@@ -37308,6 +37285,7 @@ module.exports = {
          *
          * Used when updating or resuming the subscription plan.
          */
+
         updateSubscription: function updateSubscription(plan) {
             var _this = this;
 
@@ -37341,6 +37319,7 @@ module.exports = {
         /**
          * Get the active plan instance.
          */
+
         activePlan: function activePlan() {
             var _this2 = this;
 
@@ -37457,6 +37436,7 @@ module.exports = {
         /**
          * Determine if the given country collects European VAT.
          */
+
         collectsVat: function collectsVat(country) {
             return Spark.collectsEuropeanVat ? _.contains(['BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'EL', 'ES', 'FR', 'HR', 'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL', 'PT', 'RO', 'SI', 'SK', 'FI', 'SE', 'GB'], country) : false;
         },
@@ -37501,6 +37481,7 @@ module.exports = {
         /**
          * Show the user's notifications.
          */
+
         showNotifications: function showNotifications() {
             this.$dispatch('showNotifications');
         },
@@ -37536,6 +37517,7 @@ module.exports = {
         /**
          * Show the user notifications.
          */
+
         showNotifications: function showNotifications() {
             this.showingNotifications = true;
             this.showingAnnouncements = false;
@@ -37569,6 +37551,7 @@ module.exports = {
         /**
          * Get the active notifications or announcements.
          */
+
         activeNotifications: function activeNotifications() {
             if (!this.notifications) {
                 return [];
@@ -37606,6 +37589,7 @@ module.exports = {
     /**
      * The component's data.
      */
+
     data: function data() {
         return {
             tokens: [],
@@ -37627,6 +37611,7 @@ module.exports = {
         /**
          * Broadcast that child components should update their tokens.
          */
+
         updateTokens: function updateTokens() {
             this.getTokens();
         }
@@ -37636,6 +37621,7 @@ module.exports = {
         /**
          * Get the current API tokens for the user.
          */
+
         getTokens: function getTokens() {
             this.$http.get('/settings/api/tokens').then(function (response) {
                 this.tokens = response.data;
@@ -37680,6 +37666,7 @@ module.exports = {
         /**
          * Watch the available abilities for changes.
          */
+
         availableAbilities: function availableAbilities() {
             if (this.availableAbilities.length > 0) {
                 this.assignDefaultAbilities();
@@ -37691,6 +37678,7 @@ module.exports = {
         /**
          * Assign all of the default abilities.
          */
+
         assignDefaultAbilities: function assignDefaultAbilities() {
             var defaults = _.filter(this.availableAbilities, function (a) {
                 return a.default;
@@ -37809,6 +37797,7 @@ module.exports = {
         /**
          * Show the edit token modal.
          */
+
         editToken: function editToken(token) {
             this.updatingToken = token;
 
@@ -37917,6 +37906,7 @@ module.exports = {
 		/**
    * Get the user's billing invoices
    */
+
 		getInvoices: function getInvoices() {
 			var _this = this;
 
@@ -37932,6 +37922,7 @@ module.exports = {
 		/**
    * Get the URL for retrieving the invoices.
    */
+
 		urlForInvoices: function urlForInvoices() {
 			return this.billingUser ? '/settings/invoices' : '/settings/teams/' + this.team.id + '/invoices';
 		}
@@ -37948,6 +37939,7 @@ module.exports = {
         /**
          * Get the URL for downloading a given invoice.
          */
+
         downloadUrlFor: function downloadUrlFor(invoice) {
             return this.billingUser ? '/settings/invoice/' + invoice.id : '/settings/teams/' + this.team.id + '/invoice/' + invoice.id;
         }
@@ -37984,6 +37976,7 @@ module.exports = {
         /**
          * Update the extra billing information.
          */
+
         update: function update() {
             Spark.put(this.urlForUpdate, this.form);
         }
@@ -37993,6 +37986,7 @@ module.exports = {
         /**
          * Get the URL for the extra billing information method update.
          */
+
         urlForUpdate: function urlForUpdate() {
             return this.billingUser ? '/settings/extra-billing-information' : '/settings/teams/' + this.team.id + '/extra-billing-information';
         }
@@ -38033,6 +38027,7 @@ module.exports = {
         /**
          * Update the discount for the current entity.
          */
+
         updateDiscount: function updateDiscount() {
             this.getCurrentDiscountForBillable(this.billableType, this.billable);
 
@@ -38044,6 +38039,7 @@ module.exports = {
         /**
          * Calculate the amount off for the given discount amount.
          */
+
         calculateAmountOff: function calculateAmountOff(amount) {
             return amount;
         },
@@ -38107,6 +38103,7 @@ module.exports = {
         /**
          * Update the discount for the current user.
          */
+
         updateDiscount: function updateDiscount() {
             this.getCurrentDiscountForBillable(this.billableType, this.billable);
 
@@ -38137,6 +38134,7 @@ module.exports = {
         /**
          * Redeem the given coupon code.
          */
+
         redeem: function redeem() {
             var _this = this;
 
@@ -38152,6 +38150,7 @@ module.exports = {
         /**
          * Get the URL for redeeming a coupon.
          */
+
         urlForRedemption: function urlForRedemption() {
             return this.billingUser ? '/settings/payment-method/coupon' : '/settings/teams/' + this.team.id + '/payment-method/coupon';
         }
@@ -38194,6 +38193,7 @@ module.exports = {
         /**
          * Update the entity's card information.
          */
+
         update: function update() {
             var _this = this;
 
@@ -38221,6 +38221,7 @@ module.exports = {
         /**
          * Get the URL for the payment method update.
          */
+
         urlForUpdate: function urlForUpdate() {
             return this.billingUser ? '/settings/payment-method' : '/settings/teams/' + this.team.id + '/payment-method';
         },
@@ -38300,6 +38301,7 @@ module.exports = {
         /**
          * Initialize the billing address form for the billable entity.
          */
+
         initializeBillingAddress: function initializeBillingAddress() {
             if (!Spark.collectsBillingAddress) {
                 return;
@@ -38386,6 +38388,7 @@ module.exports = {
         /**
          * Get the billable entity's "billable" name.
          */
+
         billableName: function billableName() {
             return this.billingUser ? this.user.name : this.team.owner.name;
         },
@@ -38467,6 +38470,7 @@ module.exports = {
         /**
          * Update the customer's VAT ID.
          */
+
         update: function update() {
             Spark.put(this.urlForUpdate, this.form);
         }
@@ -38476,6 +38480,7 @@ module.exports = {
         /**
          * Get the URL for the VAT ID update.
          */
+
         urlForUpdate: function urlForUpdate() {
             return this.billingUser ? '/settings/payment-method/vat-id' : '/settings/teams/' + this.team.id + '/payment-method/vat-id';
         }
@@ -38521,6 +38526,7 @@ module.exports = {
         /**
          * Update the user's contact information.
          */
+
         update: function update() {
             var _this = this;
 
@@ -38551,6 +38557,7 @@ module.exports = {
         /**
          * Update the user's profile photo.
          */
+
         update: function update(e) {
             e.preventDefault();
 
@@ -38585,6 +38592,7 @@ module.exports = {
         /**
          * Calculate the style attribute for the photo preview.
          */
+
         previewStyle: function previewStyle() {
             return 'background-image: url(' + this.user.photo_url + ')';
         }
@@ -38611,6 +38619,7 @@ module.exports = {
         /**
          * Display the received two-factor authentication code.
          */
+
         receivedTwoFactorResetCode: function receivedTwoFactorResetCode(code) {
             this.twoFactorResetCode = code;
 
@@ -38639,6 +38648,7 @@ module.exports = {
 		/**
    * Disable two-factor authentication for the user.
    */
+
 		disable: function disable() {
 			var _this = this;
 
@@ -38681,6 +38691,7 @@ module.exports = {
 		/**
    * Enable two-factor authentication for the user.
    */
+
 		enable: function enable() {
 			var _this = this;
 
@@ -38700,6 +38711,7 @@ module.exports = {
     /**
      * The component's data.
      */
+
     data: function data() {
         return {
             form: new SparkForm({
@@ -38715,6 +38727,7 @@ module.exports = {
         /**
          * Update the user's password.
          */
+
         update: function update() {
             Spark.put('/settings/password', this.form);
         }
@@ -38783,6 +38796,7 @@ module.exports = {
         /**
          * Show the details for the given plan.
          */
+
         showPlanDetails: function showPlanDetails(plan) {
             this.showPlanDetails(plan);
         }
@@ -38792,6 +38806,7 @@ module.exports = {
         /**
          * Get the active plans for the application.
          */
+
         getPlans: function getPlans() {
             var _this = this;
 
@@ -38805,6 +38820,7 @@ module.exports = {
         /**
          * Get the URL for retrieving the application's plans.
          */
+
         urlForPlans: function urlForPlans() {
             return this.billingUser ? '/spark/plans' : '/spark/team-plans';
         }
@@ -38831,6 +38847,7 @@ module.exports = {
         /**
          * Confirm the cancellation operation.
          */
+
         confirmCancellation: function confirmCancellation() {
             $('#modal-confirm-cancellation').modal('show');
         },
@@ -38855,6 +38872,7 @@ module.exports = {
         /**
          * Get the URL for the subscription cancellation.
          */
+
         urlForCancellation: function urlForCancellation() {
             return this.billingUser ? '/settings/subscription' : '/settings/teams/' + this.team.id + '/subscription';
         }
@@ -38888,6 +38906,7 @@ module.exports = {
          *
          * We'll ask the parent subscription component to display it.
          */
+
         showPlanDetails: function showPlanDetails(plan) {
             this.$dispatch('showPlanDetails', plan);
         },
@@ -38959,6 +38978,7 @@ module.exports = {
         /**
          * Mark the given plan as selected.
          */
+
         selectPlan: function selectPlan(plan) {
             this.selectedPlan = plan;
 
@@ -38993,6 +39013,7 @@ module.exports = {
         /**
          * Get the URL for subscribing to a plan.
          */
+
         urlForNewSubscription: function urlForNewSubscription() {
             return this.billingUser ? '/settings/subscription' : '/settings/teams/' + this.team.id + '/subscription';
         }
@@ -39078,6 +39099,7 @@ module.exports = {
         /**
          * Initialize the billing address form for the billable entity.
          */
+
         initializeBillingAddress: function initializeBillingAddress() {
             this.form.address = this.billable.billing_address;
             this.form.address_line_2 = this.billable.billing_address_line_2;
@@ -39170,6 +39192,7 @@ module.exports = {
         /**
          * Get the billable entity's "billable" name.
          */
+
         billableName: function billableName() {
             return this.billingUser ? this.user.name : this.team.owner.name;
         },
@@ -39248,6 +39271,7 @@ module.exports = {
         /**
          * Confirm the plan update with the user.
          */
+
         confirmPlanUpdate: function confirmPlanUpdate(plan) {
             this.confirmingPlan = plan;
 
@@ -39310,6 +39334,7 @@ module.exports = {
     /**
      * The component's data.
      */
+
     data: function data() {
         return {
             form: new SparkForm({
@@ -39323,6 +39348,7 @@ module.exports = {
         /**
          * Handle the "activatedTab" event.
          */
+
         activatedTab: function activatedTab(tab) {
             if (tab === 'teams') {
                 Vue.nextTick(function () {
@@ -39338,6 +39364,7 @@ module.exports = {
         /**
          * Create a new team.
          */
+
         create: function create() {
             var _this = this;
 
@@ -39383,6 +39410,7 @@ module.exports = {
         /**
          * Approve leaving the given team.
          */
+
         approveLeavingTeam: function approveLeavingTeam(team) {
             this.leavingTeam = team;
 
@@ -39434,6 +39462,7 @@ module.exports = {
         /**
          * Get the URL for leaving a team.
          */
+
         urlForLeaving: function urlForLeaving() {
             return '/settings/teams/' + this.leavingTeam.id + '/members/' + this.user.id;
         }
@@ -39450,6 +39479,7 @@ module.exports = {
         /**
          * Cancel the sent invitation.
          */
+
         cancel: function cancel(invitation) {
             this.$http.delete('/settings/invitations/' + invitation.id).then(function () {
                 this.$dispatch('updateInvitations');
@@ -39469,6 +39499,7 @@ module.exports = {
     /**
      * The component's data.
      */
+
     data: function data() {
         return {
             invitations: []
@@ -39488,6 +39519,7 @@ module.exports = {
         /**
          * Get the pending invitations for the user.
          */
+
         getPendingInvitations: function getPendingInvitations() {
             var _this = this;
 
@@ -39560,6 +39592,7 @@ module.exports = {
         /**
          * Send a team invitation.
          */
+
         send: function send() {
             var _this = this;
 
@@ -39609,6 +39642,7 @@ module.exports = {
         /**
          * Get the available team member roles.
          */
+
         getRoles: function getRoles() {
             var _this = this;
 
@@ -39750,6 +39784,7 @@ module.exports = {
         /**
          * Update the team's invitations.
          */
+
         updateInvitations: function updateInvitations() {
             this.getInvitations();
         }
@@ -39759,6 +39794,7 @@ module.exports = {
         /**
          * Get all of the invitations for the team.
          */
+
         getInvitations: function getInvitations() {
             var _this = this;
 
@@ -39818,6 +39854,7 @@ module.exports = {
         /**
          * Update the team being managed.
          */
+
         updateTeam: function updateTeam() {
             this.getTeam();
         }
@@ -39827,6 +39864,7 @@ module.exports = {
         /**
          * Get the team being managed.
          */
+
         getTeam: function getTeam() {
             var _this = this;
 
@@ -39867,6 +39905,7 @@ module.exports = {
         /**
          * Update the team name.
          */
+
         update: function update() {
             var _this = this;
 
@@ -39898,6 +39937,7 @@ module.exports = {
         /**
          * Update the team's photo.
          */
+
         update: function update(e) {
             var _this = this;
 
@@ -39935,6 +39975,7 @@ module.exports = {
         /**
          * Get the URL for updating the team photo.
          */
+
         urlForUpdate: function urlForUpdate() {
             return '/settings/teams/' + this.team.id + '/photo';
         },
@@ -40037,6 +40078,7 @@ module.exports = {
         /*
          * Update the current user of the application.
          */
+
         updateUser: function updateUser() {
             this.getUser();
         },
@@ -40080,6 +40122,7 @@ module.exports = {
         /**
          * Finish bootstrapping the application.
          */
+
         whenReady: function whenReady() {
             //
         },
@@ -40232,6 +40275,7 @@ module.exports = {
         /**
          * Determine if the user has any unread notifications.
          */
+
         hasUnreadAnnouncements: function hasUnreadAnnouncements() {
             var _this7 = this;
 
