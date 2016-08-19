@@ -52,6 +52,7 @@ class TrackingPixelController extends Controller
                     'resource' => $request->get('midrc')
                 ]);
                 $event->visitor()->associate($visitor);
+                $event->team()->associate($visitor->team);
                 $event->save();
             }
         } catch(Exception $e) {
