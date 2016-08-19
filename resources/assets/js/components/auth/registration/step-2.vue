@@ -1,11 +1,8 @@
 <template>
     <div>
-        <div class="col-md-8 col-md-offset-2 text-center">
-            <h1>Create Your Free Account</h1>
-            <p>Find out why the world's most nimble sales teams prefer Midbound</p>
-            <div class="alert alert-success">
-                Join now to take advantage of <strong>60 days of Midbound Plus</strong> ($159.98 value)
-            </div>
+        <div class="page-header">
+            <h2>Create Your Free Account</h2>
+            <p>Find out why the world's most nimble sales teams prefer Midbound.</p>
         </div>
         <div class="col-md-8 col-md-offset-2">
             <section class="registration step-2 panel panel-default">

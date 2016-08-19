@@ -33,6 +33,9 @@
     <!-- Main Content -->
     @yield('content')
 
+    <!-- Footer -->
+    @include('guest.footer')
+
     <!-- Application Level Modals -->
     @if (Auth::check())
         @include('spark::modals.notifications')
