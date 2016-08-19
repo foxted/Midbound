@@ -55,7 +55,7 @@ class TrackingPixelController extends Controller
                 $event->save();
             }
         } catch(Exception $e) {
-            //
+            logger($e->getMessage());
         } finally {
             $image = file_get_contents(public_path('img/pixel.gif'));
 
