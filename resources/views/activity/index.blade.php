@@ -61,7 +61,10 @@
                             </div>
                         </div>
                         <div class="prospect-event">
-                            <p class="event">
+                            <p class="event" v-if="event.action === 'pageview'">
+                                @{{ event.actionVerb }} <a href="">@{{ event.url }}</a>
+                            </p>
+                            <p class="event" v-else>
                                 @{{ event.actionVerb }} <a href="">@{{ event.resource }}</a>
                             </p>
                            <time class="event-date">
