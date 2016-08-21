@@ -4,8 +4,8 @@
     <div class="container">
         <install-website :user="user" website-url="{{ $website->resourceUrl }}" inline-template>
             <div class="install-website">
-                <div class="col-md-8 col-md-offset-2 text-center" v-if="user">
-                    <h1>Nice to meet you, @{{ user.name }}</h1>
+                <div class="page-header" v-if="user">
+                    <h2>Nice to meet you, @{{ user.name }}</h2>
                 </div>
                 <div class="col-md-8 col-md-offset-2">
                     <section class="registration panel panel-default">
@@ -54,11 +54,11 @@
                                     <!-- Developer email -->
                                     <div class="form-group"
                                          :class="{'has-error': emailDeveloperForm.errors.has('email')}">
-                                        <label class="col-md-4 control-label">Email address</label>
+                                        <label class="col-md-4 control-label">Send instructions to:</label>
 
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" name="website"
-                                                   v-model="emailDeveloperForm.email">
+                                                   v-model="emailDeveloperForm.email" placeholder="developer@mycompany.com">
 
                                             <span class="help-block" v-show="emailDeveloperForm.errors.has('email')">
                                                     @{{ emailDeveloperForm.errors.get('email') }}

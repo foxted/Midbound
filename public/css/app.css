@@ -6321,11 +6321,18 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 900; }
 
+h1, h2, p.lead {
+  color: #2F4858; }
+
 h3 {
   text-transform: uppercase; }
 
 .text-gray, .text-gray a, .text-gray a:hover, a.text-gray:hover, .text-gray a:focus, a.text-gray:focus {
   color: #222; }
+
+pre {
+  font-size: 13px;
+  line-height: 1.4; }
 
 .list-group .list-header {
   display: block;
@@ -6570,5 +6577,24 @@ nav.navbar-inverse form.search .btn-default {
   left: 0;
   margin: 0;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); }
+
+#spark-app {
+  padding-bottom: 0; }
+
+.page-header {
+  text-align: center;
+  margin: 40px 0;
+  color: #2F4858;
+  border-bottom: 0;
+  padding: 0; }
+
+.footer {
+  margin-top: 40px;
+  padding: 40px 0 20px 0;
+  background-color: #2F4858;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center; }
+  .footer a {
+    color: #fff; }
 
 /*# sourceMappingURL=app.css.map */

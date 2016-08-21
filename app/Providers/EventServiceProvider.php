@@ -4,6 +4,7 @@ namespace Midbound\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Midbound\Listeners\Auth\SendWelcomeEmail;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class EventServiceProvider extends ServiceProvider
         // User Related Events...
         'Laravel\Spark\Events\Auth\UserRegistered' => [
             'Laravel\Spark\Listeners\Subscription\CreateTrialEndingNotification',
+            SendWelcomeEmail::class
         ],
 
         'Laravel\Spark\Events\Subscription\UserSubscribed' => [

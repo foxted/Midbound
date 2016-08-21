@@ -7,10 +7,19 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 900;
 }
 
+h1, h2, p.lead {
+	color: $dark-blue;
+}
+
 h3 {
 	text-transform: uppercase;
 }
 
 .text-gray, .text-gray a, .text-gray a:hover, a.text-gray:hover, .text-gray a:focus, a.text-gray:focus {
 	color: $gray-base;
+}
+
+pre {
+    font-size: $font-size-smaller;
+    line-height: 1.4;
 }
