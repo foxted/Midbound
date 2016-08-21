@@ -1,6 +1,6 @@
 <spark-update-password inline-template>
     <div class="panel panel-default">
-        <div class="panel-heading">Update Password</div>
+        <div class="panel-heading">Update Your Password</div>
 
         <div class="panel-body">
             <!-- Success Message -->
@@ -21,10 +21,10 @@
                         </span>
                     </div>
                 </div>
-
+                <hr>
                 <!-- New Password -->
                 <div class="form-group" :class="{'has-error': form.errors.has('password')}">
-                    <label class="col-md-4 control-label">Password</label>
+                    <label class="col-md-4 control-label">New Password</label>
 
                     <div class="col-md-6">
                         <input type="password" class="form-control" name="password" v-model="form.password">
@@ -37,7 +37,7 @@
 
                 <!-- New Password Confirmation -->
                 <div class="form-group" :class="{'has-error': form.errors.has('password_confirmation')}">
-                    <label class="col-md-4 control-label">Confirm Password</label>
+                    <label class="col-md-4 control-label">Confirm New Password</label>
 
                     <div class="col-md-6">
                         <input type="password" class="form-control" name="password_confirmation" v-model="form.password_confirmation">

@@ -11,6 +11,7 @@
                         <th>Owner</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </thead>
 
                     <tbody>
@@ -40,11 +41,10 @@
                                 </div>
                             </td>
 
-
                             <!-- Edit Button -->
                             <td>
                                 <a href="/settings/teams/@{{ team.id }}">
-                                    <button class="btn btn-primary">
+                                    <button class="btn btn-default">
                                         <i class="fa fa-cog"></i> Settings
                                     </button>
                                 </a>
@@ -55,14 +55,14 @@
                                 <button class="btn btn-warning" @click="approveLeavingTeam(team)"
                                     data-toggle="tooltip" title="Leave Team"
                                     v-if="user.id !== team.owner_id">
-                                    <i class="fa fa-sign-out"></i>
+                                    <i class="fa fa-sign-out"></i>&nbsp;Leave Team
                                 </button>
                             </td>
 
                             <!-- Delete Button -->
                             <td>
                                 <button class="btn btn-danger-outline" @click="approveTeamDelete(team)" v-if="user.id === team.owner_id">
-                                    <i class="fa fa-times"></i>
+                                    <i class="fa fa-times"></i>&nbsp;Delete Team
                                 </button>
                             </td>
                         </tr>

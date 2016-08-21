@@ -2,7 +2,7 @@
     <div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                Create API Token
+                Create an API Token
             </div>
 
             <div class="panel-body">
@@ -12,7 +12,7 @@
                         <label class="col-md-4 control-label">Token Name</label>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="name" v-model="form.name">
+                            <input type="text" class="form-control" name="name" v-model="form.name" placeholder="(e.g. 'Salesforce')">
 
                             <span class="help-block" v-show="form.errors.has('name')">
                                 @{{ form.errors.get('name') }}
@@ -65,7 +65,7 @@
                                     @click.prevent="create"
                                     :disabled="form.busy">
 
-                                Create
+                                Create Token
                             </button>
                         </div>
                     </div>

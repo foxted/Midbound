@@ -2,7 +2,7 @@
     <div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                Create websites
+                Add a Website to Track
             </div>
 
             <div class="panel-body">
@@ -12,7 +12,7 @@
                         <label class="col-md-4 control-label">Website URL</label>
 
                         <div class="col-md-6">
-                            <input type="url" class="form-control" name="url" v-model="form.url">
+                            <input type="url" class="form-control" name="url" v-model="form.url" placeholder="(e.g. 'http://www.myleadgenmachine.io')">
 
                             <span class="help-block" v-show="form.errors.has('url')">
                                 @{{ form.errors.get('url') }}
@@ -27,7 +27,7 @@
                                     @click.prevent="create"
                                     :disabled="form.busy">
 
-                                Create
+                                Get Tracking Script
                             </button>
                         </div>
                     </div>

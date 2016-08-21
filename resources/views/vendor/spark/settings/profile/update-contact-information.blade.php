@@ -1,6 +1,6 @@
 <spark-update-contact-information :user="user" inline-template>
     <div class="panel panel-default">
-        <div class="panel-heading">Contact Information</div>
+        <div class="panel-heading">Your Information</div>
 
         <div class="panel-body">
             <!-- Success Message -->
@@ -24,7 +24,7 @@
 
                 <!-- E-Mail Address -->
                 <div class="form-group" :class="{'has-error': form.errors.has('email')}">
-                    <label class="col-md-4 control-label">E-Mail Address</label>
+                    <label class="col-md-4 control-label">Email Address</label>
 
                     <div class="col-md-6">
                         <input type="email" class="form-control" name="email" v-model="form.email">
