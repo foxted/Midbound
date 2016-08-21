@@ -20,7 +20,7 @@ Vue.component('install-website', {
             this.emailDeveloperForm.busy = false;
             this.emailDeveloperForm.errors.forget();
             this.emailDeveloperForm.email = '';
-        })
+        });
     },
 
     methods: {

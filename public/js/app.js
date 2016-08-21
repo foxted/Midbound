@@ -34023,7 +34023,14 @@ require('spark-bootstrap');
 require('./components/bootstrap');
 
 var app = new Vue({
-    mixins: [require('spark')]
+    mixins: [require('spark')],
+
+    ready: function ready() {
+        $('[data-toggle="popover"]').popover({
+            container: 'body',
+            trigger: 'focus hover'
+        });
+    }
 });
 
 },{"./components/bootstrap":41,"./filters":45,"spark":162,"spark-bootstrap":161}],37:[function(require,module,exports){

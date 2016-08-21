@@ -14,8 +14,6 @@ class User extends SparkUser
     use CanJoinTeams;
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -24,8 +22,6 @@ class User extends SparkUser
     ];
 
     /**
-     * The attributes excluded from the model's JSON form.
-     *
      * @var array
      */
     protected $hidden = [
@@ -46,12 +42,25 @@ class User extends SparkUser
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
      * @var array
      */
     protected $casts = [
         'trial_ends_at' => 'date',
         'uses_two_factor_auth' => 'boolean',
     ];
+
+    /**
+     * @var array
+     */
+    protected $appends = ['firstname'];
+
+    /**
+     * @return mixed
+     */
+    public function getFirstnameAttribute()
+    {
+        $firstname = explode(' ', $this->name);
+
+        return $firstname[0];
+    }
 }
