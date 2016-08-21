@@ -1,0 +1,27 @@
+.dropdown-menu > li {
+	display: block;
+	padding: 3px 20px;
+	clear: both;
+	font-weight: normal;
+	line-height: 1.6;
+	white-space: nowrap;
+}
+
+.dropdown-menu > a {
+	margin: 3px 20px;
+	display: block;
+}
+
+.dropdown-menu .divider {
+	padding: 0;
+}
+
+@media (max-width: 767px) {
+	.navbar .dropdown-menu > li > a i {
+    		color: #fff;
+	}
+	.navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
+		color: #dfe3e5;
+	}
+}
+

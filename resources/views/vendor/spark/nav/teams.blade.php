@@ -1,10 +1,8 @@
-<!-- <li class="divider"></li> -->
-
 <!-- Teams -->
-<li class="dropdown-header">Switch Teams</li>
+<li v-if="teams.length > 1" class="dropdown-header">Switch Teams</li>
 
 <!-- Switch Current Team -->
-<li v-for="team in teams">
+<li v-if="teams.length > 1" v-for="team in teams">
     <a href="/teams/@{{ team.id }}/switch">
         <span v-if="user.current_team_id == team.id">
             <i class="fa fa-fw fa-btn fa-check text-success"></i>@{{ team.name }}
@@ -16,9 +14,4 @@
     </a>
 </li>
 
-<!-- Create Team -->
-<!-- <li>
-    <a href="/settings#/teams">
-        <i class="fa fa-fw fa-btn fa-plus"></i>Create Team
-    </a>
-</li> -->
+<li v-if="teams.length > 1" class="divider"></li>
