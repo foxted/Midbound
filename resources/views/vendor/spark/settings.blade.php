@@ -15,11 +15,18 @@
             <!-- Tabs -->
             <div class="col-sm-3 col-md-2 spark-settings-tabs">
                 <ul class="list-group" role="tablist">
-                    <li class="list-header">Settings</li>
+                    <li class="list-header">My Account</li>
                     <!-- Profile Link -->
                     <li role="presentation" class="list-group-item active">
                         <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
                             <i class="fa fa-fw fa-btn fa-user"></i>Profile
+                        </a>
+                    </li>
+
+                    <!-- Security Link -->
+                    <li role="presentation" class="list-group-item">
+                        <a href="#password" aria-controls="security" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-btn fa-lock"></i>Password
                         </a>
                     </li>
 
@@ -32,10 +39,10 @@
                         </li>
                     @endif
 
-                <!-- Security Link -->
+                    <!-- Websites -->
                     <li role="presentation" class="list-group-item">
-                        <a href="#password" aria-controls="security" role="tab" data-toggle="tab">
-                            <i class="fa fa-fw fa-btn fa-lock"></i>Password
+                        <a href="#websites" aria-controls="websites" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-btn fa-cubes"></i>Websites
                         </a>
                     </li>
 
@@ -48,12 +55,7 @@
                         </li>
                     @endif
 
-                    <!-- Websites -->
-                    <li role="presentation" class="list-group-item">
-                        <a href="#websites" aria-controls="websites" role="tab" data-toggle="tab">
-                            <i class="fa fa-fw fa-btn fa-cubes"></i>Websites
-                        </a>
-                    </li>
+                    
                 </ul>
             </div>
             <div class="col-md-4">

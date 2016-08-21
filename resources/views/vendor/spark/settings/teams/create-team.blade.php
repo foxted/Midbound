@@ -1,6 +1,6 @@
 <spark-create-team inline-template>
     <div class="panel panel-default">
-        <div class="panel-heading">Create Team</div>
+        <div class="panel-heading">Create a New Team</div>
 
         <div class="panel-body">
             <form class="form-horizontal" role="form">
@@ -9,7 +9,7 @@
                     <label class="col-md-4 control-label">Team Name</label>
 
                     <div class="col-md-6">
-                        <input type="text" id="create-team-name" class="form-control" name="name" v-model="form.name">
+                        <input type="text" id="create-team-name" class="form-control" name="name" v-model="form.name" placeholder="(e.g. 'Acme B2B Inc.')">
 
                         <span class="help-block" v-show="form.errors.has('name')">
                             @{{ form.errors.get('name') }}
@@ -24,7 +24,7 @@
                                 @click.prevent="create"
                                 :disabled="form.busy">
 
-                            Create
+                            Create Team
                         </button>
                     </div>
                 </div>
