@@ -4,10 +4,10 @@
         Activity
     </a>
 </li>
-<form class="navbar-form navbar-left search"> 
-	<div class="form-group"> 
-		<input class="form-control" placeholder="Search for anything..." value="Lead"> 
-	</div> 
+{{--<form class="navbar-form navbar-left search">--}}
+	{{--<div class="form-group">--}}
+		{{--<input class="form-control" placeholder="Search for anything..." value="">--}}
+	{{--</div>--}}
 	<!-- Default Search Panel -->
        {{--<div class="panel search">--}}
           {{--<div class="panel-body">--}}
@@ -61,6 +61,6 @@
             {{--<a class="btn btn-ghost pull-right">Cancel</a>--}}
           {{--</div>--}}
        {{--</div>--}}
-</form>
+{{--</form>--}}
 
 
