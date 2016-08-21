@@ -5,7 +5,7 @@
         <install-website :user="user" website-url="{{ $website->resourceUrl }}" inline-template>
             <div class="install-website">
                 <div class="page-header" v-if="user">
-                    <h2>Nice to meet you, @{{ user.name }}</h2>
+                    <h2>Nice to meet you, @{{ user.firstname }}</h2>
                 </div>
                 <div class="col-md-8 col-md-offset-2">
                     <section class="registration panel panel-default">

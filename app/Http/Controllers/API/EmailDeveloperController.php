@@ -24,7 +24,7 @@ class EmailDeveloperController extends Controller
         $email = $request->get('email');
 
         Mail::send('emails.install-website', ['website' => $website, 'user' => $currentUser], function ($m) use ($currentUser, $email) {
-            $m->to($email)->subject("{$currentUser->name} needs your help!");
+            $m->to($email)->subject("{$currentUser->name} has requested your help!");
         });
 
         return response()->json([]);

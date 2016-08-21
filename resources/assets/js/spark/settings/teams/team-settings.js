@@ -31,7 +31,10 @@ module.exports = {
      * Prepare the component.
      */
     ready() {
-        this.usePushStateForTabs('.spark-settings-tabs');
+        setTimeout(() => {
+            alert('Will now active tabs');
+            this.usePushStateForTabs('.spark-settings-tabs');
+        }, 2000);
     },
 
 
