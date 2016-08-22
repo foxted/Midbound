@@ -14,7 +14,7 @@ class SparkServiceProvider extends ServiceProvider
      * @var array
      */
     protected $details = [
-        'vendor' => 'Projet Secondaire',
+        'vendor' => 'Midbound',
         'product' => 'Midbound',
         'street' => '',
         'location' => 'Vancouver, BC',
@@ -74,6 +74,11 @@ class SparkServiceProvider extends ServiceProvider
             ->features([
                 'Tracking script', 'Prospect activity', 'Awesomeness!'
             ]);
+
+        Spark::useRoles([
+            'member' => 'Member',
+            'owner' => 'Owner',
+        ]);
     }
 
     /**

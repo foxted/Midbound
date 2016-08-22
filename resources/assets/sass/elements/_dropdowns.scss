@@ -5,6 +5,10 @@
 	font-weight: normal;
 	line-height: 1.6;
 	white-space: nowrap;
+
+	& > .dropdown-btn {
+		padding: .5em 0;
+	}
 }
 
 .dropdown-menu > a {
@@ -18,7 +22,7 @@
 
 @media (max-width: 767px) {
 	.navbar .dropdown-menu > li > a i {
-    		color: #fff;
+    		color: white;
 	}
 	.navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
 		color: #dfe3e5;

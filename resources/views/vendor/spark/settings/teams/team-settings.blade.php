@@ -12,8 +12,8 @@
 <spark-team-settings :user="user" :team-id="{{ $team->id }}" inline-template>
     <div class="spark-screen container">
         <div class="row">
-            <div class="col-sm-3 col-md-2">
-                <ul class="list-group spark-settings-tabs" role="tablist">
+            <div class="col-sm-3 col-md-2 spark-settings-tabs">
+                <ul class="list-group" role="tablist">
                     <!-- View All Teams -->
                     <li role="presentation" class="list-group-item cta">
                         <a href="/settings#/teams">
