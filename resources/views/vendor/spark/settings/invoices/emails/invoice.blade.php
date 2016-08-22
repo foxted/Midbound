@@ -1,15 +1,8 @@
-Hi {{ explode(' ', $billable->name)[0] }}!
+<p>Hi {{ explode(' ', $billable->name)[0] }},</p>
 
-<br><br>
+<p>Thank you for being a loyal Midbound customer. We've attached a copy of your invoice for your records. Please let us know if you have any questions.</p>
 
-Thanks for your continued support. We've attached a copy of your invoice for your records.
-Please let us know if you have any questions or concerns!
-
-<br><br>
-
-Thanks!
-
-<br>
+@include('partials.email-footer')
 
 {{ $invoiceData['product'] }}
 
