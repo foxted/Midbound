@@ -1,14 +1,10 @@
-Hi!
+<p>Hi there,</p>
 
-<br><br>
+<p>{{ $invitation->team->owner->name }} has invited you to join their team on Midbound!</p>
 
-{{ $invitation->team->owner->name }} has invited you to join their team!
+<p>Since you already have a Midbound account, you may accept the invitation from your
+account settings screen.</p>
 
-<br><br>
+<p>Login and Accept: <a href="https://midbound.com/login">https://midbound.com/login</a></p>
 
-Since you already have an account, you may accept the invitation from your
-account settings screen.
-
-<br><br>
-
-See you soon!
+@include('partials.email-footer')
