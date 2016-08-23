@@ -17,7 +17,7 @@
 
     <!-- Scripts -->
 @yield('scripts', '')
-
+@include('partials.scripts-header')
 <!-- Global Spark Object -->
     <script>
         window.Spark = <?php echo json_encode(array_merge(
@@ -46,6 +46,7 @@
     <!-- JavaScript -->
     <script src="/js/app.js"></script>
     <script src="/js/sweetalert.min.js"></script>
+    @include('partials.scripts-footer')
 </div>
 </body>
 </html>
