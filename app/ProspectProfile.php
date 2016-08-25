@@ -35,20 +35,36 @@ class ProspectProfile extends Model
     }
 
     /**
-     * @param $type
-     * @param $value
+     * @param string $type
+     * @param string $value
      * @return $this
      */
-    public function capture($type, $value)
+    public function capture(string $type, string $value = '')
     {
-        $type = str_plural($type);
+        $type = str_plural(strtolower($type));
+        $value = strtolower($value);
 
-        if(array_key_exists($type, $this->attributesToArray()) && !is_null($value)) {
-            $tmp = $this->{$type} ?? [];
-            array_push($tmp, $value);
-            $this->{$type} = $tmp;
+        if(empty($value) || !$this->isValidDataType($type)) {
+            return $this;
         }
 
+        $tmp = $this->{$type} ?? [];
+
+        if(!in_array($value, $tmp, true)){
+            array_push($tmp, $value);
+        }
+
+        $this->{$type} = $tmp;
+
         return $this;
+    }
+
+    /**
+     * @param $type
+     * @return bool
+     */
+    private function isValidDataType($type)
+    {
+        return array_key_exists($type, $this->attributesToArray());
     }
 }
