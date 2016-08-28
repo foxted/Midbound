@@ -4,24 +4,29 @@ namespace Midbound\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Midbound\Http\Requests;
 use Midbound\Http\Controllers\Controller;
 use Midbound\Prospect;
 use Midbound\VisitorEvent;
 
 /**
- * Class VisitorEventsController
+ * Class ActivityController
  * @package Midbound\Http\Controllers\API
  */
-class VisitorEventsController extends Controller
+class ActivityController extends Controller
 {
     /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $events = VisitorEvent::currentTeam()->latest()->paginate(25);
+        $activity = VisitorEvent::currentTeam()->latest()->paginate(25);
 
-        return response()->json($events);
+//        $activity->setCollection($activity->getCollection()->groupBy('action'));
+
+        dd($activity->toArray());
+
+        return response()->json($activity);
     }
 }

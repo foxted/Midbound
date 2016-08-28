@@ -34050,6 +34050,7 @@ Vue.component('activity', {
 
     data: function data() {
         return {
+            loading: true,
             pagination: null,
             events: []
         };
@@ -34058,10 +34059,11 @@ Vue.component('activity', {
         var _this = this;
 
         this.usePushStateForTabs('.filter-tabs');
-        this.$http.get('/api/events').then(function (response) {
+        this.$http.get('/api/activity').then(function (response) {
             _this.events = response.data.data;
             delete response.data.data;
             _this.pagination = response.data;
+            _this.loading = false;
         });
     },
 
