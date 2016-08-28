@@ -8,6 +8,7 @@ Vue.component('activity', {
 
     data() {
         return {
+            loading: true,
             pagination: null,
             events: []
         }
@@ -15,10 +16,11 @@ Vue.component('activity', {
 
     ready() {
         this.usePushStateForTabs('.filter-tabs');
-        this.$http.get('/api/events').then((response) => {
+        this.$http.get('/api/activity').then((response) => {
             this.events = response.data.data;
             delete response.data.data;
             this.pagination = response.data;
+            this.loading = false;
         });
     },
 

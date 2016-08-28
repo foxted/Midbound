@@ -1,25 +1,53 @@
-@if (Auth::user()->onTrial())
-    <!-- Trial Reminder -->
-    <li class="dropdown-header">Trial</li>
-
+<li class="dropdown-header">{{Auth::user()->currentTeam()->name}}</li>
+<li>
+    <a href="/settings/teams/{{ Auth::user()->currentTeam()->id }}#/membership">
+        <i class="fa fa-fw fa-btn fa-users"></i>3 Members
+    </a>
+</li>
+<li>
+    <a href="/settings/teams/{{ Auth::user()->currentTeam()->id }}">
+        <i class="fa fa-fw fa-btn fa-cog"></i>Settings
+    </a>
+</li>
+<!-- Team Trial Reminder -->
+@if (Spark::usesTeams() && Auth::user()->ownsTeam(Auth::user()->currentTeam()))
+    @if(Auth::user()->currentTeamOnTrial())
     <li>
-        <a href="/settings#/subscription">
-            <i class="fa fa-fw fa-btn fa-shopping-bag"></i>Subscribe
+        <small class="text-danger">
+            Free trial ends <strong>{{ Auth::user()->currentTeam()->trialEndDateInDaysFormatted }}</strong>
+        </small>
+        <a class="dropdown-btn" href="/settings/teams/{{ Auth::user()->currentTeam()->id }}#/subscription">
+            <button class="btn btn-block btn-primary">
+                Upgrade
+            </button>
         </a>
     </li>
-
-    <li class="divider"></li>
-@endif
-
-@if (Spark::usesTeams() && Auth::user()->currentTeamOnTrial())
-    <!-- Team Trial Reminder -->
-    <li class="dropdown-header">Team Trial</li>
-
+    @elseif(Auth::user()->currentTeam()->subscribed())
+        @if(Auth::user()->currentTeam()->subscription() && Auth::user()->currentTeam()->subscription()->onGracePeriod())
+            <li>
+                <small class="text-muted">
+                    Grace period ends <strong>{{ Auth::user()->currentTeam()->gracePeriodEndDateInDaysFormatted }}</strong>
+                </small>
+            </li>
+        @else
+            <li>
+                <small class="text-muted">
+                    Currently on Midbound {{ Auth::user()->currentTeam()->sparkPlan()->name }} Plan
+                </small>
+            </li>
+        @endif
+    @else
     <li>
-        <a href="/settings/teams/{{ Auth::user()->currentTeam()->id }}#/subscription">
-            <i class="fa fa-fw fa-btn fa-shopping-bag"></i>Subscribe
+        <small class="text-muted">
+            Currently on Midbound {{ Auth::user()->currentTeam()->sparkPlan('free')->name }} Plan
+        </small>
+        <a class="dropdown-btn" href="/settings/teams/{{ Auth::user()->currentTeam()->id }}#/subscription">
+            <button class="btn btn-block btn-primary">
+                Upgrade
+            </button>
         </a>
     </li>
-
-    <li class="divider"></li>
+    @endif
 @endif
+<li class="divider"></li>
+

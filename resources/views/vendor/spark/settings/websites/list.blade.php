@@ -8,7 +8,7 @@
                     <table class="table table-borderless m-b-none">
                         <thead>
                             <th>URL</th>
-                            <th>Last Used</th>
+                            <th>Latest Activity</th>
                             <th></th>
                             <th></th>
                         </thead>
@@ -37,8 +37,8 @@
 
                                 <!-- Edit Button -->
                                 <td>
-                                    <button class="btn btn-info-outline" @click="viewWebsite(website)">
-                                        <i class="fa fa-eye"></i>
+                                    <button class="btn btn-primary-outline" @click="viewWebsite(website)">
+                                        <i class="fa fa-code"></i> Tracking Script
                                     </button>
                                 </td>
 
@@ -63,14 +63,29 @@
                         <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
-                            View website (@{{ showingWebsite.url }})
+                            Tracking Script for @{{ showingWebsite.url }}
                         </h4>
                     </div>
 
                     <div class="modal-body">
-                        <p>
-                            Here is the snippet that you need to copy and paste in your website code:
-                        </p>
+                       <div class="alert alert-warning">
+                                <p>
+                                    To capture prospect activity, add the Midbound Tracker to your website.
+                                    <i class="fa fa-question-circle"
+                                       @click="showMoreInformation"
+                                       data-container="body" data-toggle="popover" data-placement="right"
+                                       data-html="true" title="The Midbound Tracker"
+                                       data-content="The Midbound Tracker provides you with real-time prospect data from your website. <br><a href='#'>Learn More</a>"></i>
+                                </p>
+
+                                <p>
+                                    <strong>Instructions:</strong>
+                                <ul>
+                                    <li>Add the tag below to public-facing pages of your website.</li>
+                                    <li>Place the tag before the closing <code>&lt;body&gt;</code> tag.</li>
+                                </ul>
+                                </p>
+                            </div>
 
                         <pre>@{{ showingWebsite.snippet }}</pre>
                     </div>

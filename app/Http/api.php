@@ -1,7 +1,7 @@
 <?php
 
 // Activity
-Route::resource('events', 'VisitorEventsController', ['only' => ['index']]);
+Route::resource('activity', 'ActivityController', ['only' => ['index']]);
 
 // Settings
 Route::resource('websites', 'WebsitesController', ['only' => ['index', 'show', 'store', 'destroy']]);

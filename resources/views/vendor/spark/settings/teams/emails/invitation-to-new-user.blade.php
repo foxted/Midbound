@@ -1,14 +1,7 @@
-Hi!
+Hi there,
 
-<br><br>
+<p>{{ $invitation->team->owner->name }} has invited you to join their team on Midbound!</p>
 
-{{ $invitation->team->owner->name }} has invited you to join their team! If you do not already have an account,
-you may click the following link to get started:
+<p>Click here to accept their invitation: <a href="{{ url('register?invitation='.$invitation->token) }}">{{ url('register?invitation='.$invitation->token) }}</a></p>
 
-<br><br>
-
-<a href="{{ url('register?invitation='.$invitation->token) }}">{{ url('register?invitation='.$invitation->token) }}</a>
-
-<br><br>
-
-See you soon!
+@include('partials.email-footer')
