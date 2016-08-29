@@ -14,4 +14,4 @@ Route::get('install', 'InstallWebsiteController@index')->name('websites.install'
 Route::get('search', 'SearchController@index');
 
 // Authentication
-$router->get('/logout', 'Auth\LoginController@logout');
+Route::get('/logout', 'Auth\LoginController@logout');
