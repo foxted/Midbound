@@ -6629,4 +6629,10 @@ nav.navbar-inverse form.search .btn-default {
   .footer a {
     color: #fff; }
 
+.cursor-pointer {
+  cursor: pointer; }
+
+.cursor-help {
+  cursor: help; }
+
 /*# sourceMappingURL=app.css.map */

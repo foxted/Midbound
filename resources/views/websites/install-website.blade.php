@@ -13,7 +13,7 @@
                             <div class="alert alert-warning">
                                 <p>
                                     To get started, add the Midbound Tracker to your website.
-                                    <i class="fa fa-question-circle"
+                                    <i class="fa fa-question-circle cursor-help"
                                        @hover="showMoreInformation"
                                        data-container="body" data-toggle="popover" data-placement="right"
                                        data-html="true" title="The Midbound Tracker"
