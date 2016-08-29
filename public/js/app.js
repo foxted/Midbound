@@ -34103,20 +34103,12 @@ Vue.component('registration', {
 
     components: { Step1: _step2.default, Step2: _step4.default },
 
+    props: ['registerForm', 'invitation'],
+
     data: function data() {
         return {
             component: 'step-1',
-            website: null,
-            registerForm: $.extend(true, new SparkForm({
-                stripe_token: '',
-                organization: '',
-                website: '',
-                name: '',
-                email: '',
-                password: '',
-                plan: 'connect',
-                terms: false
-            }), Spark.forms.register)
+            website: null
         };
     }
 });
@@ -34129,17 +34121,51 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
 
-    props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
+    props: ['component', 'invitation', 'registerForm', 'emailDeveloperForm', 'website'],
+
+    watch: {
+        invitation: function invitation(value) {
+            if (value) {
+                this.registerForm.email = this.invitation.email;
+            }
+        }
+    },
 
     methods: {
         nextStep: function nextStep() {
             this.component = 'step-2';
+        },
+
+
+        /**
+         * Attempt to register with the application.
+         */
+        register: function register() {
+            this.registerForm.busy = true;
+            this.registerForm.errors.forget();
+
+            this.sendRegistration();
+        },
+
+
+        /*
+         * After obtaining the Stripe token, send the registration to Spark.
+         */
+        sendRegistration: function sendRegistration() {
+            var _this = this;
+
+            Spark.post('/register', this.registerForm).then(function (response) {
+                window.location = response.redirectUrl;
+            }).catch(function (errors) {
+                _this.busy = false;
+                _this.errors = errors.data;
+            });
         }
     }
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"page-header\">\n        <h2>Create Your Free Account</h2>\n        <p>Find out why the world's most nimble sales teams prefer Midbound.</p>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-1 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li class=\"active\">1. Your Information</li>\n                    <li>2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Name -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('name')}\">\n                        <label class=\"col-md-4 control-label\">Full Name</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"name\" v-model=\"registerForm.name\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('name')\">\n                            {{ registerForm.errors.get('name') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- E-Mail Address -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('email')}\">\n                        <label class=\"col-md-4 control-label\">Email Address</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"email\" class=\"form-control\" name=\"email\" v-model=\"registerForm.email\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('email')\">\n                            {{ registerForm.errors.get('email') }}\n                        </span>\n                        </div>\n                    </div>\n\n                    <!-- Password -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('password')}\">\n                        <label class=\"col-md-4 control-label\">Password</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"password\" class=\"form-control\" name=\"password\" v-model=\"registerForm.password\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('password')\">\n                            {{ registerForm.errors.get('password') }}\n                        </span>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"nextStep\">\n                                Continue&nbsp;<i class=\"fa fa-btn fa-arrow-right\"></i>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <section class=\"registration step-1 panel panel-default\">\n        <header class=\"panel-heading\">\n            <ul class=\"list-unstyled list-inline\" v-if=\"invitation\">\n                <li class=\"active\">Your Information</li>\n            </ul>\n            <ul class=\"list-unstyled list-inline\" v-else=\"\">\n                <li class=\"active\">1. Your Information</li>\n                <li>2. Your Organization</li>\n            </ul>\n        </header>\n        <main class=\"panel-body\">\n            <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                <!-- Name -->\n                <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('name')}\">\n                    <label class=\"col-md-4 control-label\">Full Name</label>\n\n                    <div class=\"col-md-6\">\n                        <input type=\"text\" class=\"form-control\" name=\"name\" v-model=\"registerForm.name\" autofocus=\"\">\n\n                        <span class=\"help-block\" v-show=\"registerForm.errors.has('name')\">\n                            {{ registerForm.errors.get('name') }}\n                        </span>\n                    </div>\n                </div>\n\n                <!-- E-Mail Address -->\n                <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('email')}\">\n                    <label class=\"col-md-4 control-label\">Email Address</label>\n\n                    <div class=\"col-md-6\">\n                        <input type=\"email\" class=\"form-control\" name=\"email\" v-model=\"registerForm.email\">\n\n                        <span class=\"help-block\" v-show=\"registerForm.errors.has('email')\">\n                            {{ registerForm.errors.get('email') }}\n                        </span>\n                    </div>\n                </div>\n\n                <!-- Password -->\n                <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('password')}\">\n                    <label class=\"col-md-4 control-label\">Password</label>\n\n                    <div class=\"col-md-6\">\n                        <input type=\"password\" class=\"form-control\" name=\"password\" v-model=\"registerForm.password\">\n\n                        <span class=\"help-block\" v-show=\"registerForm.errors.has('password')\">\n                            {{ registerForm.errors.get('password') }}\n                        </span>\n                    </div>\n                </div>\n                <div class=\"form-group\">\n                    <div class=\"col-md-6 col-md-offset-4\">\n                        <button class=\"btn btn-primary\" @click.prevent=\"register\" v-if=\"invitation\">\n                            Register&nbsp;<i class=\"fa fa-btn fa-arrow-right\"></i>\n                        </button>\n                        <button class=\"btn btn-primary\" @click.prevent=\"nextStep\" v-else=\"\">\n                            Continue&nbsp;<i class=\"fa fa-btn fa-arrow-right\"></i>\n                        </button>\n                    </div>\n                </div>\n            </form>\n        </main>\n        <footer class=\"panel-footer text-center\">\n            <p>Already have an account? <a href=\"/login\">Log In</a></p>\n        </footer>\n    </section>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -34199,7 +34225,7 @@ exports.default = {
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <div class=\"page-header\">\n        <h2>Create Your Free Account</h2>\n        <p>Find out why the world's most nimble sales teams prefer Midbound.</p>\n    </div>\n    <div class=\"col-md-8 col-md-offset-2\">\n        <section class=\"registration step-2 panel panel-default\">\n            <header class=\"panel-heading\">\n                <ul class=\"list-unstyled list-inline\">\n                    <li>1. Your Information</li>\n                    <li class=\"active\">2. Your Organization</li>\n                </ul>\n            </header>\n            <main class=\"panel-body\">\n                <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                    <!-- Organization -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('team')}\">\n                        <label class=\"col-md-4 control-label\">Organization</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"team\" v-model=\"registerForm.team\" placeholder=\"My Company Inc.\" autofocus=\"\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('team')\">\n                                {{ registerForm.errors.get('team') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <!-- Website -->\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('website')}\">\n                        <label class=\"col-md-4 control-label\">Website</label>\n\n                        <div class=\"col-md-6\">\n                            <input type=\"text\" class=\"form-control\" name=\"website\" v-model=\"registerForm.website\" placeholder=\"http://www.mywebsite.com\">\n\n                            <span class=\"help-block\" v-show=\"registerForm.errors.has('website')\">\n                                {{ registerForm.errors.get('website') }}\n                            </span>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('terms')}\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <div class=\"checkbox\">\n                                <label>\n                                    <input type=\"checkbox\" name=\"terms\" v-model=\"registerForm.terms\"> I Accept The\n                                    <a href=\"/terms\" target=\"_blank\">Terms Of Service</a>\n                                </label>\n\n                                <span class=\"help-block\" v-show=\"registerForm.errors.has('terms')\">\n                                    {{ registerForm.errors.get('terms') }}\n                                </span>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group\">\n                        <div class=\"col-md-6 col-md-offset-4\">\n                            <button class=\"btn btn-primary\" @click.prevent=\"register\" :disabled=\"registerForm.busy\">\n                                <span v-if=\"registerForm.busy\">\n                                    <i class=\"fa fa-btn fa-spinner fa-spin\"></i>Creating account...\n                                </span>\n\n                                <span v-else=\"\">\n                                    Create account\n                                </span>\n                            </button>\n                        </div>\n                    </div>\n                </form>\n            </main>\n            <footer class=\"panel-footer text-center\">\n                <p>Already have an account? <a href=\"/login\">Log In</a></p>\n            </footer>\n        </section>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n    <section class=\"registration step-2 panel panel-default\">\n        <header class=\"panel-heading\">\n            <ul class=\"list-unstyled list-inline\">\n                <li>1. Your Information</li>\n                <li class=\"active\">2. Your Organization</li>\n            </ul>\n        </header>\n        <main class=\"panel-body\">\n            <form action=\"#\" method=\"POST\" class=\"form-horizontal\">\n                <!-- Organization -->\n                <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('team')}\">\n                    <label class=\"col-md-4 control-label\">Organization</label>\n\n                    <div class=\"col-md-6\">\n                        <input type=\"text\" class=\"form-control\" name=\"team\" v-model=\"registerForm.team\" placeholder=\"My Company Inc.\" autofocus=\"\">\n\n                        <span class=\"help-block\" v-show=\"registerForm.errors.has('team')\">\n                            {{ registerForm.errors.get('team') }}\n                        </span>\n                    </div>\n                </div>\n\n                <!-- Website -->\n                <div class=\"form-group\" :class=\"{'has-error': registerForm.errors.has('website')}\">\n                    <label class=\"col-md-4 control-label\">Website</label>\n\n                    <div class=\"col-md-6\">\n                        <input type=\"text\" class=\"form-control\" name=\"website\" v-model=\"registerForm.website\" placeholder=\"http://www.mywebsite.com\">\n                        <span class=\"help-block\" v-show=\"registerForm.errors.has('website')\">\n                            {{ registerForm.errors.get('website') }}\n                        </span>\n                    </div>\n                </div>\n\n                <div class=\"form-group\">\n                    <div class=\"col-md-6 col-md-offset-4\">\n                        <button class=\"btn btn-primary\" @click.prevent=\"register\" :disabled=\"registerForm.busy\">\n                            <span v-if=\"registerForm.busy\">\n                                <i class=\"fa fa-btn fa-spinner fa-spin\"></i>Creating account...\n                            </span>\n\n                            <span v-else=\"\">\n                                Create account\n                            </span>\n                        </button>\n                    </div>\n                </div>\n            </form>\n        </main>\n        <footer class=\"panel-footer text-center\">\n            <p>Already have an account? <a href=\"/login\">Log In</a></p>\n        </footer>\n    </section>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

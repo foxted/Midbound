@@ -29,9 +29,8 @@ class RegisterRequest extends \Laravel\Spark\Http\Requests\Auth\RegisterRequest 
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'team' => 'required',
-            'website' => 'required',
-            'terms' => 'accepted'
+            'team' => 'sometimes',
+            'website' => 'sometimes'
         ];
     }
 }
