@@ -34027,8 +34027,14 @@ var app = new Vue({
 
     ready: function ready() {
         $('[data-toggle="popover"]').popover({
-            container: 'body',
-            trigger: 'focus click'
+            container: 'body'
+        });
+        $('[data-toggle="popover"]').on('show.bs.popover', function () {
+            var _this = this;
+
+            setTimeout(function () {
+                $(_this).popover('hide');
+            }, 2000);
         });
         $('body').on('click', function (e) {
             $('[data-toggle=popover]').each(function () {

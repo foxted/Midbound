@@ -9,9 +9,13 @@ var app = new Vue({
 
     ready() {
         $('[data-toggle="popover"]').popover({
-            container: 'body',
-            trigger: 'focus click'
-        })
+            container: 'body'
+        });
+        $('[data-toggle="popover"]').on('show.bs.popover', function() {
+            setTimeout(() => {
+                $(this).popover('hide');
+            }, 2000);
+        });
         $('body').on('click', function (e) {
             $('[data-toggle=popover]').each(function () {
                 // hide any open popovers when the anywhere else in the body is clicked
