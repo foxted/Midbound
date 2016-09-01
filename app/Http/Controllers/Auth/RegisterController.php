@@ -27,7 +27,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->redirectTo = route('app.dashboard');
+        $this->redirectTo = route('app.activity');
     }
 
     /**

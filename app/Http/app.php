@@ -1,7 +1,7 @@
 <?php
 
 // Dashboard
-Route::get('dashboard', 'DashboardController@show')->name('dashboard');
+//Route::get('dashboard', 'DashboardController@show')->name('dashboard');
 
 // Activity
 Route::get('activity', 'ActivityController@index')->name('activity');

@@ -1,5 +1,5 @@
  @if (Auth::check())
-	<a class="navbar-brand" href="{{ route('app.dashboard') }}">
+	<a class="navbar-brand" href="{{ route('app.activity') }}">
 		<img src="/img/color-logo-inverse.png" style="height: 18px;">
 	</a>
 @else
