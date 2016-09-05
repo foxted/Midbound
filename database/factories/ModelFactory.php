@@ -1,9 +1,12 @@
 <?php
 
 $factory->define(Midbound\User::class, function (Faker\Generator $faker) {
+    static $password;
+
     return [
         'name' => $faker->name,
-        'email' => $faker->companyEmail
+        'email' => $faker->companyEmail,
+        'password' => $password ?: $password = bcrypt('secret')
     ];
 });
 
@@ -20,7 +23,7 @@ $factory->define(Midbound\Website::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Midbound\Visitor::class, function (Faker\Generator $faker) {
+$factory->define(Midbound\Prospect::class, function (Faker\Generator $faker) {
     return [
         'team_id' => 1,
         'name' => $faker->name,
@@ -30,13 +33,9 @@ $factory->define(Midbound\Visitor::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Midbound\Prospect::class, function (Faker\Generator $faker) {
+$factory->define(Midbound\Visitor::class, function (Faker\Generator $faker) {
     return [
-        'team_id' => 1,
-        'name' => $faker->name,
-        'email' => $faker->safeEmail,
-        'phone' => $faker->phoneNumber,
-        'created_at' => $faker->dateTimeBetween('-3 months')
+        'guid' => $faker->uuid
     ];
 });
 

@@ -38,8 +38,58 @@
                 </div>
             </div>
             <div v-if="!loading">
+                <!-- If events have been tracked -->
+                <div class="col-sm-9 col-md-10" v-if="events && events.length">
+                    <div class="panel panel-prospect" v-for="event in events">
+                        <div class="panel-body">
+                            <div class="prospect-top">
+                                <div class="prospect-left">
+                                    <div class="prospect-header">
+                                        <div class="prospect-avatar">
+                                            <a :href="event.prospect.url"><img :src="event.prospect.avatar" width="40"></a>
+                                        </div>
+                                        <div class="prospect-info">
+                                            <h4 class="name">
+                                                <a :href="event.prospect.url">@{{ event.prospect.profile.names[0] || event.prospect.profile.name  }}</a>
+                                            </h4>
+                                            <a href="mailto:@{{ event.prospect.profile.emails[0] || event.prospect.email }}" class="email">@{{ event.prospect.profile.emails[0] || event.prospect.email }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="prospect-right">
+                                    <div class="engagement"><a :href="event.prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
+                                        9
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="prospect-event">
+                                <p class="event" v-if="event.action === 'pageview'">
+                                    @{{ event.actionVerb }} <a href="">@{{ event.url }}</a>
+                                </p>
+                                <p class="event" v-else>
+                                    @{{ event.actionVerb }} <a href="">@{{ event.resource }}</a>
+                                </p>
+                                <time class="event-date">
+                                    &mdash;
+                                    @{{ event.created_at | human }}
+                                </time>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-user"></i> Assign</a>
+                            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>
+                            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
+                            <div class="pull-right">
+                                <a class="btn btn-ghost btn-sm " href="#"><i class="fa fa-ban"></i> Ignore</a>
+                            </div>
+                        </div>
+                    </div>
+                    <button @click="loadMore" v-if="pagination.current_page < pagination.last_page" type="button" class="btn btn-ghost btn-lg btn-block" data-loading-text="Loading...">
+                    Load more
+                    </button>
+                </div>
                 <!-- If NO events have been tracked -->
-                <div v-if="!events.length">
+                <div class="col-sm-9 col-md-10" v-else>
                     <div class="col-sm-9 col-md-10 text-center empty-message">
                         <h2>No activity...yet</h2>
                         <p>If you <em>just</em> created your account, this is completely normal.</p>
@@ -173,56 +223,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- If events have been tracked -->
-                <div class="col-sm-9 col-md-10" v-else>
-                    <div class="panel panel-prospect" v-for="event in events">
-                        <div class="panel-body">
-                            <div class="prospect-top">
-                                <div class="prospect-left">
-                                    <div class="prospect-header">
-                                        <div class="prospect-avatar">
-                                            <a :href="event.prospect.url"><img :src="event.prospect.avatar" width="40"></a>
-                                        </div>
-                                        <div class="prospect-info">
-                                            <h4 class="name">
-                                                <a :href="event.prospect.url">@{{ event.prospect.profile.names[0] || event.prospect.profile.name  }}</a>
-                                            </h4>
-                                            <a href="mailto:@{{ event.prospect.profile.emails[0] || event.prospect.email }}" class="email">@{{ event.prospect.profile.emails[0] || event.prospect.email }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="prospect-right">
-                                    <div class="engagement"><a :href="event.prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
-                                        9
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="prospect-event">
-                                <p class="event" v-if="event.action === 'pageview'">
-                                    @{{ event.actionVerb }} <a href="">@{{ event.url }}</a>
-                                </p>
-                                <p class="event" v-else>
-                                    @{{ event.actionVerb }} <a href="">@{{ event.resource }}</a>
-                                </p>
-                                <time class="event-date">
-                                    &mdash;
-                                    @{{ event.created_at | human }}
-                                </time>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-user"></i> Assign</a>
-                            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>
-                            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
-                            <div class="pull-right">
-                                <a class="btn btn-ghost btn-sm " href="#"><i class="fa fa-ban"></i> Ignore</a>
-                            </div>
-                        </div>
-                    </div>
-                    <button @click="loadMore" v-if="pagination.current_page < pagination.last_page" type="button" class="btn btn-ghost btn-lg btn-block" data-loading-text="Loading...">
-                    Load more
-                    </button>
                 </div>
             </div>
             <div class="text-center text-muted" v-else>
