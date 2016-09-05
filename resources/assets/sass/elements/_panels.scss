@@ -5,6 +5,9 @@
 	.panel-body {
 		font-weight: $font-weight-normal;
 
+		.checkbox {
+    			padding: 0 10px 0 20px;
+		}
 		.prospect-top {
 			display: flex;
 			justify-content: space-between;
@@ -35,9 +38,6 @@
 				}
 				.name a {
 					color: $gray-base;
-				}
-				.email {
-					font-size: $font-size-small;
 				}
 				p {
 					margin: 0;
@@ -123,6 +123,7 @@
     width: 400px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     border: none;
+    margin-top: 5px;
 
     & .advanced-search {
     		padding: 20px;
@@ -157,6 +158,10 @@
 	}
 	& li a {
 		color: $gray-base;
+		display: block;
+	}
+	& li a:hover {
+		text-decoration: none;
 	}
     .list-group-item {
     		padding: 4px 8px;
