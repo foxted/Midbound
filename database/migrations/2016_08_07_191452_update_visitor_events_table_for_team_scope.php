@@ -14,6 +14,7 @@ class UpdateVisitorEventsTableForTeamScope extends Migration
     {
         Schema::table('visitor_events', function (Blueprint $table) {
             $table->integer('team_id')->nullable()->unsigned()->index();
+
             $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
         });
     }

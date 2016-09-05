@@ -7,8 +7,8 @@ use Midbound\Traits\Belonging\BelongsToTeam;
 
 /**
  * Class Prospect
- * @property string pid
  * @property mixed id
+ * @property mixed captured
  * @package Midbound
  */
 class Prospect extends Model
@@ -19,12 +19,12 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $appends = ['url', 'avatar'];
+    protected $fillable = ['name', 'email', 'phone'];
 
     /**
      * @var array
      */
-    protected $with = ['profile'];
+    protected $appends = ['url', 'avatar'];
 
     /**
      * @return string
@@ -52,6 +52,24 @@ class Prospect extends Model
     }
 
     /**
+     * @param string $type
+     * @param string $value
+     * @return $this
+     */
+    public function capture(string $type, string $value)
+    {
+        $type = str_singular($type);
+
+        if(in_array($type, config('tracking.allowed-fields'))) {
+            if(!$this->{$type}) {
+                $this->{$type} = strtolower($value);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function events()
@@ -65,14 +83,6 @@ class Prospect extends Model
     public function getLatestActivityAttribute()
     {
         return $this->latestEvent->created_at;
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function profile()
-    {
-        return $this->hasOne(ProspectProfile::class);
     }
 
 }

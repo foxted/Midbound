@@ -83,14 +83,15 @@ class ProcessTrackingEvent extends Job implements ShouldQueue
     {
         if ($this->attributes['midac'] == "capture") {
             if (!$prospect = $visitor->prospect) {
-                $prospect = Prospect::create();
+                $prospect = new Prospect();
+                $prospect->team()->associate($visitor->team);
+                $prospect->capture($this->attributes['midtype'], $this->attributes['midrc'])->save();
+
                 $visitor->prospect()->associate($prospect);
                 $visitor->save();
+            } else {
+                $prospect->capture($this->attributes['midtype'], $this->attributes['midrc'])->save();
             }
-
-            $profile = $prospect->profile;
-            $profile->capture($this->attributes['midtype'], $this->attributes['midrc']);
-            $profile->save();
         }
     }
 
