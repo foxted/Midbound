@@ -11,6 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-       factory(Midbound\Prospect::class, 1000)->create();
+        $this->call(DemoSeeder::class);
     }
 }

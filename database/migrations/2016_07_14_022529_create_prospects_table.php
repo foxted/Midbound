@@ -21,6 +21,7 @@ class CreateProspectsTable extends Migration
             $table->string('email')->nullable()->index();
             $table->string('phone')->nullable()->index();
             $table->string('company')->nullable()->index();
+            $table->boolean('is_ignored')->default(0);
             $table->timestampsTz();
             $table->softDeletes();
 
