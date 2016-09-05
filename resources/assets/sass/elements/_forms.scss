@@ -1,0 +1,11 @@
+.form-control {
+	color: $gray-base;
+}
+.form-control:focus {
+	outline-color: $light-blue;
+	outline-width: 4px;
+	outline-style: solid;
+	border-color: transparent;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	transition: outline-width ease-in-out 0.1s;
+}     

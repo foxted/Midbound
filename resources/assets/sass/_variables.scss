@@ -1,3 +1,6 @@
+// Scaffolding 
+$body-bg: #e9ebee;
+
 // Wells
 $well-bg: darken($body-bg, 2%);
 $well-border: darken($well-bg, 20%);
@@ -6,11 +9,6 @@ $well-border: darken($well-bg, 20%);
 $border-radius-base: 3px;
 $border-radius-small: 3px;
 $border-radius-large: 3px;
-
-// Scaffolding 
-$body-bg: #e9ebee;
-$border-radius-base: 3px;
-
 
 // Colors
 $gray-base:              #222;
@@ -143,9 +141,6 @@ $list-group-link-heading-color: $gray;
 $list-group-header-font-size: $font-size-small;
 
 
-
-
-
 // Panels
 
 
@@ -156,3 +151,11 @@ $alert-info-text: $brand-info;
 
 // Buttons
 $btn-primary-bg: $brand-primary;
+
+
+// Inputs
+$input-border-radius:            0;
+$input-border-radius-large:      0;
+$input-border-radius-small:      0;
+
+$input-border-focus:             $light-blue;

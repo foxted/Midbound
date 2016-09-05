@@ -19,7 +19,19 @@ h3 {
 	color: $gray-base;
 }
 
+.text-light-gray {
+	color: $gray-light;
+}
+
 pre {
     font-size: $font-size-smaller;
     line-height: 1.4;
+}
+
+.text-inline {
+	display: inline-block;
+}
+
+.email {
+	font-size: $font-size-small;
 }

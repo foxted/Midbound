@@ -4,5 +4,3 @@
         Activity
     </a>
 </li>
-
-

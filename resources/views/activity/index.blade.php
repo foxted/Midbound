@@ -8,23 +8,13 @@
                 <div class="list-group">
                     <li class="list-header">Filters</li>
                     <li class="list-group-item">
-                        <a href="#most-recent" aria-controls="most-recent" role="tab" data-toggle="tab">
-                            Most Recent
+                        <a href="#all" aria-controls="most-recent" role="tab" data-toggle="tab">
+                            All
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#most-engaged" aria-controls="most-engaged" role="tab" data-toggle="tab">
-                            Most Engaged
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#newly-added" aria-controls="newly-added" role="tab" data-toggle="tab">
-                            Newly Added
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="#recently-viewed" aria-controls="recently-viewed" role="tab" data-toggle="tab">
-                            Recently Viewed
+                        <a href="#my" aria-controls="most-engaged" role="tab" data-toggle="tab">
+                            My Prospects
                         </a>
                     </li>
                 </div>
@@ -226,7 +216,7 @@
                 </div>
             </div>
             <div class="text-center text-muted" v-else>
-                <i class="fa fa-spin fa-spinner fa-3x"></i>
+                <i class="fa fa-pulse fa-spinner fa-3x"></i>
             </div>
         </div>
     </div>
