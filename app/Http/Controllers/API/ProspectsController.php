@@ -3,8 +3,6 @@
 namespace Midbound\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-
-use Midbound\Http\Requests;
 use Midbound\Http\Controllers\Controller;
 use Midbound\Prospect;
 
@@ -15,12 +13,14 @@ use Midbound\Prospect;
 class ProspectsController extends Controller
 {
     /**
+     * @param Request $request
+     * @param Prospect $prospect
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function update(Request $request, Prospect $prospect)
     {
-        $prospects = Prospect::latest()->get();
+        $prospect->update($request->only('is_ignored'));
 
-        return response()->json($prospects);
+        return response()->json($prospect);
     }
 }

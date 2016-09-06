@@ -19,7 +19,7 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'email', 'phone'];
+    protected $fillable = ['name', 'email', 'phone', 'is_ignored'];
 
     /**
      * @var array

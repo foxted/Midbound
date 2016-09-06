@@ -1,7 +1,7 @@
 @extends('spark::layouts.app')
 
 @section('content')
-<activity :user="user" :filter="{{ Request::get('filter') }}" inline-template>
+<activity :user="user" filter="{{ Request::get('filter') }}" inline-template>
     <div class="container">
         <div class="row">
             <div class="col-sm-3 col-md-2">
@@ -82,7 +82,12 @@
                             <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>
                             <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
                             <div class="pull-right">
-                                <a class="btn btn-ghost btn-sm " href="#"><i class="fa fa-ban"></i> Ignore</a>
+                                <button class="btn btn-ghost btn-sm" @click="track(prospect)" v-if="prospect.is_ignored">
+                                    <i class="fa fa-unban"></i> Track again
+                                </button>
+                                <button class="btn btn-ghost btn-sm" @click="ignore(prospect)" v-else>
+                                    <i class="fa fa-ban"></i> Ignore
+                                </button>
                             </div>
                         </div>
                     </div>
