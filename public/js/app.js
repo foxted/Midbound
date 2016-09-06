@@ -12494,23 +12494,18 @@ return jQuery;
 
 },{}],17:[function(require,module,exports){
 /*!
- * JavaScript Cookie v2.1.3
+ * JavaScript Cookie v2.1.2
  * https://github.com/js-cookie/js-cookie
  *
  * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
  * Released under the MIT license
  */
 ;(function (factory) {
-	var registeredInModuleLoader = false;
 	if (typeof define === 'function' && define.amd) {
 		define(factory);
-		registeredInModuleLoader = true;
-	}
-	if (typeof exports === 'object') {
+	} else if (typeof exports === 'object') {
 		module.exports = factory();
-		registeredInModuleLoader = true;
-	}
-	if (!registeredInModuleLoader) {
+	} else {
 		var OldCookies = window.Cookies;
 		var api = window.Cookies = factory();
 		api.noConflict = function () {
@@ -12571,9 +12566,9 @@ return jQuery;
 
 				return (document.cookie = [
 					key, '=', value,
-					attributes.expires ? '; expires=' + attributes.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-					attributes.path ? '; path=' + attributes.path : '',
-					attributes.domain ? '; domain=' + attributes.domain : '',
+					attributes.expires && '; expires=' + attributes.expires.toUTCString(), // use expires attribute, max-age is not supported by IE
+					attributes.path    && '; path=' + attributes.path,
+					attributes.domain  && '; domain=' + attributes.domain,
 					attributes.secure ? '; secure' : ''
 				].join(''));
 			}
@@ -12627,7 +12622,7 @@ return jQuery;
 
 		api.set = api;
 		api.get = function (key) {
-			return api.call(api, key);
+			return api(key);
 		};
 		api.getJSON = function () {
 			return api.apply({
@@ -34071,15 +34066,39 @@ Vue.component('activity', {
         return {
             loading: true,
             pagination: null,
-            events: []
+            prospects: [],
+            filter: null
         };
     },
+
+
+    computed: {
+        endpoint: function endpoint() {
+            var endpoint = '/api/activity';
+
+            if (this.filter) {
+                return endpoint + '?filter=' + this.filter;
+            }
+
+            return endpoint;
+        },
+        paginatedEndpoint: function paginatedEndpoint() {
+            var endpoint = '/api/activity?page=' + (this.pagination.current_page + 1);
+
+            if (this.filter) {
+                return endpoint + '&filter=' + this.filter;
+            }
+
+            return endpoint;
+        }
+    },
+
     ready: function ready() {
         var _this = this;
 
-        this.usePushStateForTabs('.filter-tabs');
-        this.$http.get('/api/activity').then(function (response) {
-            _this.events = response.data.data;
+        this.filter = this.getParameterByName('filter');
+        this.$http.get(this.endpoint).then(function (response) {
+            _this.prospects = response.data.data;
             delete response.data.data;
             _this.pagination = response.data;
             _this.loading = false;
@@ -34095,12 +34114,21 @@ Vue.component('activity', {
             var _this2 = this;
 
             $($event.target).button('loading');
-            this.$http.get('/api/events?page=' + (this.pagination.current_page + 1)).then(function (response) {
-                _this2.events = _this2.events.concat(response.data.data);
+            this.$http.get(this.paginatedEndpoint).then(function (response) {
+                _this2.prospects = _this2.prospects.concat(response.data.data);
                 delete response.data.data;
                 _this2.pagination = response.data;
                 $($event.target).button('reset');
             });
+        },
+        getParameterByName: function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
     }
 });
@@ -34190,9 +34218,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-7dae0bca", module.exports)
+    hotAPI.createRecord("_v-b5c6a6fe", module.exports)
   } else {
-    hotAPI.update("_v-7dae0bca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-b5c6a6fe", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":35,"vue-hot-reload-api":33}],40:[function(require,module,exports){
@@ -34250,9 +34278,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-7d91dcc8", module.exports)
+    hotAPI.createRecord("_v-b5aa77fc", module.exports)
   } else {
-    hotAPI.update("_v-7d91dcc8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-b5aa77fc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":35,"vue-hot-reload-api":33}],41:[function(require,module,exports){

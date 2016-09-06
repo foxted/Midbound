@@ -43,6 +43,6 @@ $factory->define(Midbound\VisitorEvent::class, function (Faker\Generator $faker)
     return [
         'action' => $faker->randomElement(config('tracking.allowed-events')),
         'url' => $faker->url,
-        'resource' => $faker->randomElement([$faker->word.'.'.$faker->fileExtension, ''])
+        'resource' => $faker->word.'.'.$faker->fileExtension
     ];
 });

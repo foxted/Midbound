@@ -24,7 +24,12 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $appends = ['url', 'avatar'];
+    protected $appends = ['url', 'avatar', 'latest_event', 'latest_activity'];
+
+    /**
+     * @var array
+     */
+    protected $with = ['visitors', 'events'];
 
     /**
      * @return string
@@ -44,11 +49,19 @@ class Prospect extends Model
     }
 
     /**
-     * @return mixed
+     * @return VisitorEvent
      */
     public function getLatestEventAttribute()
     {
-        return $this->events()->latest()->first();
+        return $this->events()->first();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLatestActivityAttribute()
+    {
+        return $this->latestEvent->created_at;
     }
 
     /**
@@ -69,20 +82,48 @@ class Prospect extends Model
         return $this;
     }
 
+    public function visitors()
+    {
+        return $this->hasMany(Visitor::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function events()
     {
-        return $this->hasManyThrough(VisitorEvent::class, Visitor::class);
+        return $this->hasManyThrough(
+            'Midbound\VisitorEvent', 'Midbound\Visitor',
+            'prospect_id', 'visitor_id', 'id'
+        );
     }
 
     /**
+     * @param $query
+     * @param User $user
      * @return mixed
      */
-    public function getLatestActivityAttribute()
+    public function scopeAssignedTo($query, User $user)
     {
-        return $this->latestEvent->created_at;
+        return $query->where('assignee_id', $user->id);
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_ignored', 0);
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeIgnored($query)
+    {
+        return $query->where('is_ignored', 1);
     }
 
 }

@@ -26,7 +26,7 @@ class VisitorEvent extends Model
     /**
      * @var array
      */
-    protected $appends = ['prospect', 'actionVerb'];
+    protected $appends = ['actionVerb'];
 
     /**
      * @var array

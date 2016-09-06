@@ -4,24 +4,24 @@
 <activity :user="user" inline-template>
     <div class="container">
         <div class="row">
-            <div class="col-sm-3 col-md-2 filter-tabs">
+            <div class="col-sm-3 col-md-2">
                 <div class="list-group">
                     <li class="list-header">Filters</li>
-                    <li class="list-group-item">
-                        <a href="#all" aria-controls="most-recent" role="tab" data-toggle="tab">
+                    <li class="list-group-item" :class="{'active': !filter}">
+                        <a href="/activity" aria-controls="most-recent">
                             All
                         </a>
                     </li>
-                    <li class="list-group-item">
-                        <a href="#my" aria-controls="most-engaged" role="tab" data-toggle="tab">
+                    <li class="list-group-item" :class="{'active': filter == 'my-prospects'}">
+                        <a href="/activity?filter=my-prospects" aria-controls="most-engaged">
                             My Prospects
                         </a>
                     </li>
                 </div>
                 <hr>
                 <div class="list-group">
-                    <li class="list-group-item">
-                        <a href="#ignored" aria-controls="ignored" role="tab" data-toggle="tab">
+                    <li class="list-group-item" :class="{'active': filter == 'ignored'}">
+                        <a href="/activity?filter=ignored" aria-controls="ignored">
                             Ignored
                         </a>
                     </li>
@@ -29,39 +29,51 @@
             </div>
             <div v-if="!loading">
                 <!-- If events have been tracked -->
-                <div class="col-sm-9 col-md-10" v-if="events && events.length">
-                    <div class="panel panel-prospect" v-for="event in events">
+                <div class="col-sm-9 col-md-10" v-if="prospects && prospects.length">
+                    {{--<div class="container">--}}
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">--}}
+                                {{--<nav class="navbar navbar-default bulk-actions">--}}
+                                    {{--<ul class="nav navbar-nav">--}}
+                                        {{--<li><h4 class="navbar-text">2 selected</h4></li>--}}
+                                        {{--<li><button class="btn btn-default navbar-btn">Ignore</button></li>--}}
+                                    {{--</ul>--}}
+                                {{--</nav>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    <div class="panel panel-prospect" v-for="prospect in prospects">
                         <div class="panel-body">
                             <div class="prospect-top">
                                 <div class="prospect-left">
                                     <div class="prospect-header">
                                         <div class="prospect-avatar">
-                                            <a :href="event.prospect.url"><img :src="event.prospect.avatar" width="40"></a>
+                                            <a :href="prospect.url"><img :src="prospect.avatar" width="40"></a>
                                         </div>
                                         <div class="prospect-info">
                                             <h4 class="name">
-                                                <a :href="event.prospect.url">@{{ event.prospect.profile.names[0] || event.prospect.profile.name  }}</a>
+                                                <a :href="prospect.url">@{{ prospect.name }}</a>
                                             </h4>
-                                            <a href="mailto:@{{ event.prospect.profile.emails[0] || event.prospect.email }}" class="email">@{{ event.prospect.profile.emails[0] || event.prospect.email }}</a>
+                                            <a href="mailto:@{{ prospect.email }}" class="email">@{{ prospect.email }}</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="prospect-right">
-                                    <div class="engagement"><a :href="event.prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
+                                    <div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
                                         9
                                     </div>
                                 </div>
                             </div>
                             <div class="prospect-event">
-                                <p class="event" v-if="event.action === 'pageview'">
-                                    @{{ event.actionVerb }} <a href="">@{{ event.url }}</a>
+                                <p class="event" v-if="prospect.latest_event.action === 'pageview'">
+                                    @{{ prospect.latest_event.actionVerb }} <a href="">@{{ prospect.latest_event.url }}</a>
                                 </p>
                                 <p class="event" v-else>
-                                    @{{ event.actionVerb }} <a href="">@{{ event.resource }}</a>
+                                    @{{ prospect.latest_event.actionVerb }} <a href="">@{{ prospect.latest_event.resource }}</a>
                                 </p>
                                 <time class="event-date">
                                     &mdash;
-                                    @{{ event.created_at | human }}
+                                    @{{ prospect.latest_event.created_at | human }}
                                 </time>
                             </div>
                         </div>

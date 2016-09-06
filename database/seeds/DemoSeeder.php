@@ -36,16 +36,30 @@ class DemoSeeder extends Seeder
         });
 
         // Create visitors with prospect
+        $visitorsWithProspect = factory(\Midbound\Visitor::class)->times(10)->make();
+        $visitorsWithProspect->each(function($visitor) use ($team, $website) {
+            $visitor->team()->associate($team);
+            $visitor->website()->associate($website);
+            $visitor->save();
+        });
+
         $prospects = factory(\Midbound\Prospect::class)->times(10)->make();
         $prospects->each(function($prospect) use ($team) {
             $prospect->team()->associate($team)->save();
         });
-        $visitorsWithProspect = factory(\Midbound\Visitor::class)->times(10)->make();
-        $visitorsWithProspect->each(function($visitor) use ($team, $website, $prospects) {
-            $visitor->team()->associate($team);
-            $visitor->website()->associate($website);
-            $visitor->prospect()->associate($prospects->random(1));
-            $visitor->save();
+
+        $i = 1;
+
+        foreach($visitorsWithProspect as $visitor) {
+            $visitor->prospect()->associate($prospects->find($i))->save();
+            $i++;
+        }
+
+        $events = factory(\Midbound\VisitorEvent::class)->times(50)->make();
+        $events->each(function($event) use ($visitorsWithProspect, $team){
+            $event->visitor()->associate($visitorsWithProspect->random(1));
+            $event->team()->associate($team);
+            $event->save();
         });
 
     }
