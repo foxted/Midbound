@@ -61,6 +61,10 @@ class Prospect extends Model
      */
     public function getLatestActivityAttribute()
     {
+        if(is_null($this->latestEvent)) {
+            return null;
+        }
+
         return $this->latestEvent->created_at;
     }
 

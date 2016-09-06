@@ -36,20 +36,19 @@ class DemoSeeder extends Seeder
         });
 
         // Create visitors with prospect
-        $visitorsWithProspect = factory(\Midbound\Visitor::class)->times(10)->make();
+        $visitorsWithProspect = factory(\Midbound\Visitor::class)->times(50)->make();
         $visitorsWithProspect->each(function($visitor) use ($team, $website) {
             $visitor->team()->associate($team);
             $visitor->website()->associate($website);
             $visitor->save();
         });
 
-        $prospects = factory(\Midbound\Prospect::class)->times(10)->make();
+        $prospects = factory(\Midbound\Prospect::class)->times(50)->make();
         $prospects->each(function($prospect) use ($team) {
             $prospect->team()->associate($team)->save();
         });
 
         $i = 1;
-
         foreach($visitorsWithProspect as $visitor) {
             $visitor->prospect()->associate($prospects->find($i))->save();
             $i++;

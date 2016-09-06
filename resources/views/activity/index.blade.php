@@ -1,7 +1,7 @@
 @extends('spark::layouts.app')
 
 @section('content')
-<activity :user="user" inline-template>
+<activity :user="user" :filter="{{ Request::get('filter') }}" inline-template>
     <div class="container">
         <div class="row">
             <div class="col-sm-3 col-md-2">
