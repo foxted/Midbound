@@ -24,7 +24,7 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $appends = ['url', 'avatar', 'latest_event', 'latest_activity'];
+    protected $appends = ['url', 'avatar', 'latest_event', 'latest_activity', 'linkedin'];
 
     /**
      * @var array
@@ -128,6 +128,19 @@ class Prospect extends Model
     public function scopeIgnored($query)
     {
         return $query->where('is_ignored', 1);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkedInAttribute()
+    {
+        if($this->name) {
+            $query = urlencode($this->name);
+            return "https://www.linkedin.com/vsearch/p?type=people&keywords={$query}";
+        }
+
+        return '';
     }
 
 }

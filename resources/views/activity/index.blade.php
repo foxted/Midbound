@@ -4,29 +4,7 @@
 <activity :user="user" filter="{{ $filter }}" inline-template>
     <div class="container">
         <div class="row">
-            <div class="col-sm-3 col-md-2">
-                <div class="list-group">
-                    <li class="list-header">Filters</li>
-                    <li class="list-group-item" :class="{'active': !filter}">
-                        <a href="/activity" aria-controls="most-recent">
-                            All
-                        </a>
-                    </li>
-                    <li class="list-group-item" :class="{'active': filter == 'prospects'}">
-                        <a href="/activity/prospects" aria-controls="most-engaged">
-                            My Prospects
-                        </a>
-                    </li>
-                </div>
-                <hr>
-                <div class="list-group">
-                    <li class="list-group-item" :class="{'active': filter == 'ignored'}">
-                        <a href="/activity/ignored" aria-controls="ignored">
-                            Ignored
-                        </a>
-                    </li>
-                </div>
-            </div>
+            @include('activity.partials.filters')
             <div v-if="!loading">
                 <!-- If events have been tracked -->
                 <div class="col-sm-9 col-md-10" v-if="prospects && prospects.length">
@@ -80,7 +58,9 @@
                         <div class="panel-footer">
                             <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-user"></i> Assign</a>
                             <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>
-                            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
+                            <a class="btn btn-ghost btn-sm" href="@{{ prospect.linkedin }}">
+                                <i class="fa fa-linkedin-square"></i> LinkedIn
+                            </a>
                             <div class="pull-right">
                                 <button class="btn btn-ghost btn-sm" @click="track(prospect)" v-if="prospect.is_ignored">
                                     <i class="fa fa-unban"></i> Track again
