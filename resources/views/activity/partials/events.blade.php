@@ -47,8 +47,31 @@
             </div>
         </div>
         <div class="panel-footer">
-            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-user"></i> Assign</a>
-            <a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>
+            <div class="btn-group" v-if="team && team.users">
+                <button v-if="prospect.assignee" type="button" class="btn btn-ghost btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img :src="prospect.assignee.photo_url" width="20" :alt="prospect.assignee.name" class="pull-left img-responsive">&nbsp;
+                    @{{ prospect.assignee.name }}
+                    <span class="caret"></span>
+                </button>
+                <button v-else type="button" class="btn btn-ghost btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user"></i> Assign to <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li v-for="user in team.users">
+                        <a href="#" @click.prevent="assign(prospect, user)">
+                            <img :src="user.photo_url" width="25" :alt="user.name" class="pull-left img-responsive">&nbsp;
+                            @{{ user.name }}
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#" @click.prevent="unassign(prospect)">
+                            Un-assign
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            {{--<a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>--}}
             <a class="btn btn-ghost btn-sm" href="@{{ prospect.linkedin }}">
                 <i class="fa fa-linkedin-square"></i> LinkedIn
             </a>

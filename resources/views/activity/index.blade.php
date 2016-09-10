@@ -1,7 +1,7 @@
 @extends('spark::layouts.app')
 
 @section('content')
-<activity :user="user" filter="{{ $filter }}" inline-template>
+<activity :user="user" :team="currentTeam" filter="{{ $filter }}" inline-template>
     <div class="container">
         <div class="row">
             @include('activity.partials.filters')

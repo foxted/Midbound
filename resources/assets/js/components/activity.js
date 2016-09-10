@@ -2,7 +2,7 @@ import moment from 'moment';
 
 Vue.component('activity', {
 
-    props: ['user', 'filter'],
+    props: ['user', 'team', 'filter'],
 
     mixins: [require('./../spark/mixins/tab-state')],
 
@@ -60,6 +60,16 @@ Vue.component('activity', {
             this.$http.put(`/api/prospects/${prospect.id}`, {is_ignored: true}).then(() => {
                 this.prospects.$remove(prospect);
             });
+        },
+
+        assign(prospect, user) {
+            prospect.assignee = user;
+            this.$http.put(`/api/prospects/${prospect.id}`, {assignee_id: user.id});
+        },
+
+        unassign(prospect) {
+            prospect.assignee = null;
+            this.$http.put(`/api/prospects/${prospect.id}`, { assignee_id: 0 });
         }
     }
 });

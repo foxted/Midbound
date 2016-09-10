@@ -34058,7 +34058,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 Vue.component('activity', {
 
-    props: ['user', 'filter'],
+    props: ['user', 'team', 'filter'],
 
     mixins: [require('./../spark/mixins/tab-state')],
 
@@ -34123,6 +34123,14 @@ Vue.component('activity', {
             this.$http.put('/api/prospects/' + prospect.id, { is_ignored: true }).then(function () {
                 _this4.prospects.$remove(prospect);
             });
+        },
+        assign: function assign(prospect, user) {
+            prospect.assignee = user;
+            this.$http.put('/api/prospects/' + prospect.id, { assignee_id: user.id });
+        },
+        unassign: function unassign(prospect) {
+            prospect.assignee = null;
+            this.$http.put('/api/prospects/' + prospect.id, { assignee_id: 0 });
         }
     }
 });
