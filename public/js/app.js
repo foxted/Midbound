@@ -50490,9 +50490,6 @@ Vue.component('activity', {
             }
 
             return endpoint;
-        },
-        paginatedEndpoint: function paginatedEndpoint() {
-            return this.endpoint + '/' + (this.pagination.current_page + 1);
         }
     },
 
@@ -50516,7 +50513,7 @@ Vue.component('activity', {
             var _this2 = this;
 
             $($event.target).button('loading');
-            this.$http.get(this.paginatedEndpoint).then(function (response) {
+            this.$http.get(this.pagination.next_page_url).then(function (response) {
                 _this2.prospects = _this2.prospects.concat(response.data.data);
                 delete response.data.data;
                 _this2.pagination = response.data;

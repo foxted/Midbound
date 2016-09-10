@@ -24,9 +24,6 @@ Vue.component('activity', {
             }
 
             return endpoint;
-        },
-        paginatedEndpoint() {
-            return `${this.endpoint}/${this.pagination.current_page+1}`;
         }
     },
 
@@ -46,7 +43,7 @@ Vue.component('activity', {
 
         loadMore($event) {
             $($event.target).button('loading');
-            this.$http.get(this.paginatedEndpoint).then((response) => {
+            this.$http.get(this.pagination.next_page_url).then((response) => {
                 this.prospects = this.prospects.concat(response.data.data);
                 delete response.data.data;
                 this.pagination = response.data;

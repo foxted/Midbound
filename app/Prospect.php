@@ -36,7 +36,7 @@ class Prospect extends Model
      */
     public function getUrlAttribute()
     {
-        return route('app.prospects.show', $this->pid);
+        return route('app.prospects.show', $this->id);
     }
 
     /**
