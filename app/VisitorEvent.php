@@ -54,7 +54,7 @@ class VisitorEvent extends Model
      */
     public function getActionVerbAttribute()
     {
-        if(array_key_exists($this->action, config('tracking.verbs'))) {
+        if (array_key_exists($this->action, config('tracking.verbs'))) {
             return config("tracking.verbs.{$this->action}");
         }
 

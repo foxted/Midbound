@@ -61,7 +61,7 @@ class Prospect extends Model
      */
     public function getLatestActivityAttribute()
     {
-        if(is_null($this->latestEvent)) {
+        if (is_null($this->latestEvent)) {
             return null;
         }
 
@@ -77,8 +77,8 @@ class Prospect extends Model
     {
         $type = str_singular($type);
 
-        if(in_array($type, config('tracking.allowed-fields'))) {
-            if(!$this->{$type}) {
+        if (in_array($type, config('tracking.allowed-fields'))) {
+            if (!$this->{$type}) {
                 $this->{$type} = strtolower($value);
             }
         }
@@ -97,8 +97,11 @@ class Prospect extends Model
     public function events()
     {
         return $this->hasManyThrough(
-            'Midbound\VisitorEvent', 'Midbound\Visitor',
-            'prospect_id', 'visitor_id', 'id'
+            'Midbound\VisitorEvent',
+            'Midbound\Visitor',
+            'prospect_id',
+            'visitor_id',
+            'id'
         );
     }
 
@@ -135,12 +138,11 @@ class Prospect extends Model
      */
     public function getLinkedInAttribute()
     {
-        if($this->name) {
+        if ($this->name) {
             $query = urlencode($this->name);
             return "https://www.linkedin.com/vsearch/p?type=people&keywords={$query}";
         }
 
         return '';
     }
-
 }

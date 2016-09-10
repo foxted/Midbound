@@ -21,7 +21,7 @@ class GuestController extends Controller
      * GET /styles
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-     public function styles()
+    public function styles()
     {
         return view('guest.styles');
     }

@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private function registerObservers()
     {
-        foreach($this->observers as $model => $observer) {
+        foreach ($this->observers as $model => $observer) {
             $model::observe($observer);
         }
     }

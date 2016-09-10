@@ -132,5 +132,4 @@ class TrackingPixelTest extends AbstractTrackingPixel
                 'company' => '@laravelphp'
             ]);
     }
-
 }

@@ -113,7 +113,7 @@ class RouteServiceProvider extends ServiceProvider
 
     private function registerBindings(Router $router)
     {
-        foreach($this->modelBindings as $parameter => $binding) {
+        foreach ($this->modelBindings as $parameter => $binding) {
             $router->bind($parameter, $binding);
         }
     }

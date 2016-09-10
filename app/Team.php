@@ -16,10 +16,10 @@ class Team extends SparkTeam
      */
     public function getGracePeriodEndDateInDaysFormattedAttribute()
     {
-        if($this->subscription()) {
+        if ($this->subscription()) {
             $endDate = $this->subscription()->ends_at->diffInDays();
 
-            if($endDate > 0)  {
+            if ($endDate > 0) {
                 return sprintf("in %s %s", $endDate, str_plural('day', $endDate));
             }
 
@@ -36,7 +36,7 @@ class Team extends SparkTeam
     {
         $endDate = $this->trial_ends_at->diffInDays();
 
-        if($endDate > 0)  {
+        if ($endDate > 0) {
             return sprintf("in %s %s", $endDate, str_plural('day', $endDate));
         }
 

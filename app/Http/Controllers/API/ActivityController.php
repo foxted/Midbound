@@ -32,11 +32,11 @@ class ActivityController extends Controller
      */
     public function getProspects(Request $request, $filter)
     {
-        if($filter) {
-            if($filter == 'prospects') {
+        if ($filter) {
+            if ($filter == 'prospects') {
                 return Prospect::has('events')->assignedTo(auth()->user())->paginate(25);
             }
-            if($filter == 'ignored') {
+            if ($filter == 'ignored') {
                 return Prospect::has('events')->ignored()->paginate(25);
             }
         }

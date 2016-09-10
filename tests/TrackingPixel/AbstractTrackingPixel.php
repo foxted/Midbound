@@ -61,11 +61,11 @@ class AbstractTrackingPixel extends TestCase
             'midguid' => $this->faker->uuid
         ];
 
-        if($resource) {
+        if ($resource) {
             $query['midrc'] = $resource;
         }
 
-        if($type) {
+        if ($type) {
             $query['midtype'] = $type;
         }
 

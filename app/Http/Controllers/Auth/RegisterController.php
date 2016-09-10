@@ -59,13 +59,14 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         Auth::login($user = Spark::interact(
-            Register::class, [$request]
+            Register::class,
+            [$request]
         ));
 
         event(new UserRegistered($user));
 
         // Create website
-        if($request->has('website')) {
+        if ($request->has('website')) {
             $website = Website::create([
                 'url' => $request->get('website')
             ]);
