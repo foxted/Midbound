@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { reject } from 'lodash';
 
 Vue.component('activity', {
 
@@ -53,13 +52,13 @@ Vue.component('activity', {
 
         track(prospect) {
             this.$http.put(`/api/prospects/${prospect.id}`, {is_ignored: false}).then(() => {
-                reject(this.prospects, prospect);
+                this.prospects.$remove(prospect);
             });
         },
 
         ignore(prospect) {
             this.$http.put(`/api/prospects/${prospect.id}`, {is_ignored: true}).then(() => {
-                reject(this.prospects, prospect);
+                this.prospects.$remove(prospect);
             });
         }
     }
