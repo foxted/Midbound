@@ -8,6 +8,20 @@
                     <div class="panel">
                         <div class="panel-body">
                             <img class="img-rounded img-responsive center-block" src="{{ $prospect->avatar }}" style="margin-bottom: 2em;">
+
+                            @if($prospect->assignee)
+                            <small><span class="text-uppercase text-muted">Assigned to</span></small>
+                            <h4 class="text-capitalize" style="margin-top: 0;">
+                                <strong>
+                                    @if($prospect->assignee->id == auth()->id())
+                                        Me
+                                    @else
+                                        {{ $prospect->assignee->name }}
+                                    @endif
+                                </strong>
+                            </h4>
+                            @endif
+
                             <small><span class="text-uppercase text-muted">Name</span></small>
                             <h4 class="text-capitalize" style="margin-top: 0;"><strong>{{ $prospect->name }}</strong></h4>
 
@@ -29,7 +43,7 @@
                             <small><span class="text-uppercase text-muted">Created</span></small>
                             <p>{{ $prospect->created_at->format(config('app.date_format')) }}</p>
 
-                            <a href="#" class="btn btn-default">Edit</a>
+                            <a href="#" class="btn btn-ghost btn-block">Edit prospect</a>
                         </div>
                     </div>
                 </div>

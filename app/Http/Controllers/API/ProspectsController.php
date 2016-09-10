@@ -5,6 +5,7 @@ namespace Midbound\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Midbound\Http\Controllers\Controller;
 use Midbound\Prospect;
+use Midbound\User;
 
 /**
  * Class ProspectsController
@@ -20,6 +21,11 @@ class ProspectsController extends Controller
     public function update(Request $request, Prospect $prospect)
     {
         $prospect->update($request->only('is_ignored'));
+
+        if($request->has('assignee_id')) {
+            $prospect->assignee()->associate(User::find($request->get('assignee_id')));
+            $prospect->save();
+        }
 
         return response()->json($prospect);
     }

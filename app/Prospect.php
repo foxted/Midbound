@@ -29,7 +29,7 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $with = ['visitors', 'events'];
+    protected $with = ['visitors', 'events', 'assignee'];
 
     /**
      * @return string
@@ -86,6 +86,17 @@ class Prospect extends Model
         return $this;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'assignee_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function visitors()
     {
         return $this->hasMany(Visitor::class);
