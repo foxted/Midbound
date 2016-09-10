@@ -20,19 +20,13 @@ Vue.component('activity', {
             let endpoint = '/api/activity';
 
             if(this.filter) {
-                return `${endpoint}?filter=${this.filter}`;
+                return `${endpoint}/${this.filter}`;
             }
 
             return endpoint;
         },
         paginatedEndpoint() {
-            let endpoint = `/api/activity?page=${this.pagination.current_page+1}`;
-
-            if(this.filter) {
-                return `${endpoint}&filter=${this.filter}`;
-            }
-
-            return endpoint;
+            return `${this.endpoint}/${this.pagination.current_page+1}`;
         }
     },
 

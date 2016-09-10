@@ -15,26 +15,28 @@ class ActivityController extends Controller
 {
     /**
      * @param Request $request
+     * @param $filter
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, $filter = null)
     {
-        $prospects = $this->getProspects($request);
+        $prospects = $this->getProspects($request, $filter);
 
         return response()->json($prospects);
     }
 
     /**
      * @param Request $request
+     * @param $filter
      * @return mixed
      */
-    public function getProspects(Request $request)
+    public function getProspects(Request $request, $filter)
     {
-        if($request->has('filter')) {
-            if($request->get('filter') == 'my-prospects') {
+        if($filter) {
+            if($filter == 'prospects') {
                 return Prospect::has('events')->assignedTo(auth()->user())->paginate(25);
             }
-            if($request->get('filter') == 'ignored') {
+            if($filter == 'ignored') {
                 return Prospect::has('events')->ignored()->paginate(25);
             }
         }

@@ -1,7 +1,7 @@
 @extends('spark::layouts.app')
 
 @section('content')
-<activity :user="user" filter="{{ Request::get('filter') }}" inline-template>
+<activity :user="user" filter="{{ $filter }}" inline-template>
     <div class="container">
         <div class="row">
             <div class="col-sm-3 col-md-2">
@@ -12,8 +12,8 @@
                             All
                         </a>
                     </li>
-                    <li class="list-group-item" :class="{'active': filter == 'my-prospects'}">
-                        <a href="/activity?filter=my-prospects" aria-controls="most-engaged">
+                    <li class="list-group-item" :class="{'active': filter == 'prospects'}">
+                        <a href="/activity/prospects" aria-controls="most-engaged">
                             My Prospects
                         </a>
                     </li>
@@ -21,7 +21,7 @@
                 <hr>
                 <div class="list-group">
                     <li class="list-group-item" :class="{'active': filter == 'ignored'}">
-                        <a href="/activity?filter=ignored" aria-controls="ignored">
+                        <a href="/activity/ignored" aria-controls="ignored">
                             Ignored
                         </a>
                     </li>

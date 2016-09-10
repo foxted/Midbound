@@ -1,7 +1,7 @@
 <?php
 
 // Activity
-Route::resource('activity', 'ActivityController', ['only' => ['index']]);
+Route::get('activity/{filter?}', 'ActivityController@index');
 
 // Prospects
 Route::resource('prospects', 'ProspectsController', ['only' => ['update']]);

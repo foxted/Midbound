@@ -50486,19 +50486,13 @@ Vue.component('activity', {
             var endpoint = '/api/activity';
 
             if (this.filter) {
-                return endpoint + '?filter=' + this.filter;
+                return endpoint + '/' + this.filter;
             }
 
             return endpoint;
         },
         paginatedEndpoint: function paginatedEndpoint() {
-            var endpoint = '/api/activity?page=' + (this.pagination.current_page + 1);
-
-            if (this.filter) {
-                return endpoint + '&filter=' + this.filter;
-            }
-
-            return endpoint;
+            return this.endpoint + '/' + (this.pagination.current_page + 1);
         }
     },
 
