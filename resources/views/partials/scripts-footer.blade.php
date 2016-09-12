@@ -12,3 +12,10 @@
     mb('create', 'MB-576WQ6BX-7');
     mb('send', 'pageview');
 </script>
+
+<!-- Enable Bootstrap tooltips -->
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

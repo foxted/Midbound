@@ -1,6 +1,7 @@
 <?php
 
 Route::get('/', 'GuestController@home')->name('home');
+Route::get('/plans', 'GuestController@plans')->name('plans');
 Route::get('/styles', 'GuestController@styles');
 
 // Authentication...
