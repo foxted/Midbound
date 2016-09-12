@@ -74,9 +74,6 @@
              * Attempt to register with the application.
              */
             register() {
-                this.registerForm.busy = true;
-                this.registerForm.errors.forget();
-
                 this.sendRegistration();
             },
 
@@ -85,7 +82,8 @@
              */
             sendRegistration() {
                 Spark.post('/register', this.registerForm).then(response => {
-                    window.location = response.redirectUrl;
+                    console.log(response);
+                    //window.location = response.redirectUrl;
                 }).catch(errors => {
                     this.busy = false;
                     this.errors = errors.data;

@@ -34,13 +34,13 @@ class ActivityController extends Controller
     {
         if ($filter) {
             if ($filter == 'prospects') {
-                return Prospect::has('events')->assignedTo(auth()->user())->paginate(25);
+                return Prospect::has('events')->currentTeam()->assignedTo(auth()->user())->paginate(25);
             }
             if ($filter == 'ignored') {
-                return Prospect::has('events')->ignored()->paginate(25);
+                return Prospect::has('events')->currentTeam()->ignored()->paginate(25);
             }
         }
 
-        return Prospect::has('events')->active()->paginate(25);
+        return Prospect::has('events')->currentTeam()->active()->paginate(25);
     }
 }
