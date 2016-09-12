@@ -15,7 +15,7 @@ class ProspectObserver
      */
     public function creating(Prospect $prospect)
     {
-        if(auth()->check() && auth()->user()->currentTeam()) {
+        if (auth()->check() && auth()->user()->currentTeam()) {
             $prospect->team()->associate(auth()->user()->currentTeam()->id);
         }
     }

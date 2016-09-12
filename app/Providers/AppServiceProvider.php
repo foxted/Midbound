@@ -3,6 +3,7 @@
 namespace Midbound\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Midbound\Http\Requests\Auth\RegisterRequest;
 use Midbound\Observers\ProspectObserver;
 use Midbound\Observers\VisitorEventObserver;
 use Midbound\Observers\WebsiteObserver;
@@ -36,7 +37,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->instance(
+            \Laravel\Spark\Contracts\Http\Requests\Auth\RegisterRequest::class,
+            RegisterRequest::class
+        );
     }
 
     /**
@@ -44,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private function registerObservers()
     {
-        foreach($this->observers as $model => $observer) {
+        foreach ($this->observers as $model => $observer) {
             $model::observe($observer);
         }
     }

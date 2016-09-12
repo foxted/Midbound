@@ -1,6 +1,7 @@
 var elixir = require('laravel-elixir');
 
 require('laravel-elixir-vueify');
+require('laravel-elixir-browserify-official');
 
 elixir(function(mix) {
     mix.sass('app.scss')

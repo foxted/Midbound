@@ -92,9 +92,6 @@
              * Attempt to register with the application.
              */
             register() {
-                this.registerForm.busy = true;
-                this.registerForm.errors.forget();
-
                 this.sendRegistration();
             },
 

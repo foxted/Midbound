@@ -21,10 +21,15 @@ class TrackingPixelController extends Controller
         try {
             dispatch(
                 new ProcessTrackingEvent($request->only(
-                    'midid', 'midguid', 'midac', 'midrc', 'midtype', 'midurl'
+                    'midid',
+                    'midguid',
+                    'midac',
+                    'midrc',
+                    'midtype',
+                    'midurl'
                 ))
             );
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             logger($e->getMessage());
         } finally {
             $image = file_get_contents(public_path('img/pixel.gif'));

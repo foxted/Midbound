@@ -1096,6 +1096,7 @@ img {
   background-color: #e9ebee;
   border: 1px solid #ddd;
   border-radius: 3px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   display: inline-block;
   max-width: 100%;
@@ -2307,6 +2308,7 @@ output {
   border: 1px solid #ccd0d2;
   border-radius: 0;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
   .form-control:focus {
     border-color: #5DADD8;
@@ -2773,7 +2775,6 @@ select[multiple].input-lg,
   font-weight: 400;
   text-align: center;
   vertical-align: middle;
-  -ms-touch-action: manipulation;
   touch-action: manipulation;
   cursor: pointer;
   background-image: none;
@@ -3082,6 +3083,7 @@ input[type="button"].btn-block {
 
 .fade {
   opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
   transition: opacity 0.15s linear; }
   .fade.in {
     opacity: 1; }
@@ -3101,8 +3103,11 @@ tbody.collapse.in {
   position: relative;
   height: 0;
   overflow: hidden;
+  -webkit-transition-property: height, visibility;
   transition-property: height, visibility;
+  -webkit-transition-duration: 0.35s;
   transition-duration: 0.35s;
+  -webkit-transition-timing-function: ease;
   transition-timing-function: ease; }
 
 .caret {
@@ -4293,6 +4298,7 @@ a.badge:hover, a.badge:focus {
   background-color: #e9ebee;
   border: 1px solid #ddd;
   border-radius: 3px;
+  -webkit-transition: border 0.2s ease-in-out;
   transition: border 0.2s ease-in-out; }
   .thumbnail > img,
   .thumbnail a > img {
@@ -4372,6 +4378,12 @@ a.thumbnail.active {
   .alert-danger .alert-link {
     color: #843534; }
 
+@-webkit-keyframes progress-bar-stripes {
+  from {
+    background-position: 40px 0; }
+  to {
+    background-position: 0 0; } }
+
 @keyframes progress-bar-stripes {
   from {
     background-position: 40px 0; }
@@ -4396,35 +4408,42 @@ a.thumbnail.active {
   text-align: center;
   background-color: #5DADD8;
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-transition: width 0.6s ease;
   transition: width 0.6s ease; }
 
 .progress-striped .progress-bar,
 .progress-bar-striped {
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-size: 40px 40px; }
 
 .progress.active .progress-bar,
 .progress-bar.active {
+  -webkit-animation: progress-bar-stripes 2s linear infinite;
   animation: progress-bar-stripes 2s linear infinite; }
 
 .progress-bar-success {
   background-color: #6CAD5F; }
   .progress-striped .progress-bar-success {
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
 
 .progress-bar-info {
   background-color: #6C6999; }
   .progress-striped .progress-bar-info {
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
 
 .progress-bar-warning {
   background-color: #FFC857; }
   .progress-striped .progress-bar-warning {
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
 
 .progress-bar-danger {
   background-color: #BF5452; }
   .progress-striped .progress-bar-danger {
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
 
 .media {
@@ -5018,9 +5037,14 @@ button.close {
   -webkit-overflow-scrolling: touch;
   outline: 0; }
   .modal.fade .modal-dialog {
+    -webkit-transform: translate(0, -25%);
     transform: translate(0, -25%);
-    transition: transform 0.3s ease-out; }
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    transition: -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out; }
   .modal.in .modal-dialog {
+    -webkit-transform: translate(0, 0);
     transform: translate(0, 0); }
 
 .modal-open .modal {
@@ -5354,6 +5378,7 @@ button.close {
   .carousel-inner > .item {
     display: none;
     position: relative;
+    -webkit-transition: 0.6s ease-in-out left;
     transition: 0.6s ease-in-out left; }
     .carousel-inner > .item > img,
     .carousel-inner > .item > a > img {
@@ -5363,16 +5388,24 @@ button.close {
       line-height: 1; }
     @media all and (transform-3d), (-webkit-transform-3d) {
       .carousel-inner > .item {
+        -webkit-transition: -webkit-transform 0.6s ease-in-out;
+        transition: -webkit-transform 0.6s ease-in-out;
         transition: transform 0.6s ease-in-out;
+        transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
+        -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
+        -webkit-perspective: 1000px;
         perspective: 1000px; }
         .carousel-inner > .item.next, .carousel-inner > .item.active.right {
+          -webkit-transform: translate3d(100%, 0, 0);
           transform: translate3d(100%, 0, 0);
           left: 0; }
         .carousel-inner > .item.prev, .carousel-inner > .item.active.left {
+          -webkit-transform: translate3d(-100%, 0, 0);
           transform: translate3d(-100%, 0, 0);
           left: 0; }
         .carousel-inner > .item.next.left, .carousel-inner > .item.prev.right, .carousel-inner > .item.active {
+          -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
           left: 0; } }
   .carousel-inner > .active,
@@ -5412,12 +5445,14 @@ button.close {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   background-color: transparent; }
   .carousel-control.left {
+    background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1); }
   .carousel-control.right {
     left: auto;
     right: 0;
+    background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1); }
@@ -5858,6 +5893,7 @@ button.close {
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
+  -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s; }
 
 .btn-primary, .btn-info, .btn-success, .btn-warning, .btn-danger {
@@ -6053,13 +6089,14 @@ button.close {
 .navbar-brand,
 .hamburger {
   height: 70px;
-  display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
-  -ms-flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   flex-direction: row;
-  -ms-flex-pack: center;
+  -webkit-box-pack: center;
   justify-content: center;
-  -ms-flex-align: center;
+  -webkit-box-align: center;
   align-items: center; }
 
 .navbar-icon {
@@ -6074,12 +6111,15 @@ button.close {
     border-radius: 10px;
     position: absolute;
     right: -1px;
+    -webkit-transition: all .15s;
     transition: all .15s;
+    -webkit-transform: scale(0.85);
     transform: scale(0.85); }
   .navbar-icon .icon {
     font-size: 21px; }
 
 .has-activity-indicator:hover .activity-indicator {
+  -webkit-transform: scale(1.1);
   transform: scale(1.1); }
 
 .navbar .dropdown-header {
@@ -6162,12 +6202,11 @@ button.close {
 #modal-notifications .notification-content {
   padding-left: 70px; }
   #modal-notifications .notification-content .meta {
-    display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
-    -ms-flex-line-pack: end;
     align-content: flex-end; }
   #modal-notifications .notification-content .title {
-    -ms-flex: 1;
+    -webkit-box-flex: 1;
     flex: 1;
     font-weight: bold;
     line-height: 1.2;
@@ -6271,11 +6310,11 @@ body {
   display: none; }
 
 .registration .panel-heading ul {
-  display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
   margin: 0; }
   .registration .panel-heading ul li {
-    -ms-flex: 1 1;
+    -webkit-box-flex: 1;
     flex: 1 1;
     padding: 0;
     color: #999999;
@@ -6293,9 +6332,9 @@ body {
   color: #999999; }
 
 .plans {
-  display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
-  -ms-flex-pack: center;
+  -webkit-box-pack: center;
   justify-content: center; }
   .plans .prospect-count {
     margin-right: 20px; }
@@ -6322,6 +6361,7 @@ body {
       margin-top: -24px; }
 
 .btn {
+  -webkit-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
 
 .btn:hover {
@@ -6386,6 +6426,7 @@ body {
   outline-style: solid;
   border-color: transparent;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: outline-width ease-in-out 0.1s;
   transition: outline-width ease-in-out 0.1s; }
 
 .jumbotron {
@@ -6558,24 +6599,23 @@ h4.navbar-text {
     .panel-prospect .panel-body .checkbox {
       padding: 0 10px 0 20px; }
     .panel-prospect .panel-body .prospect-top {
-      display: -ms-flexbox;
+      display: -webkit-box;
       display: flex;
-      -ms-flex-pack: justify;
+      -webkit-box-pack: justify;
       justify-content: space-between; }
     .panel-prospect .panel-body .prospect-left {
-      -ms-flex-positive: 1;
+      -webkit-box-flex: 1;
       flex-grow: 1; }
     .panel-prospect .panel-body .prospect-right {
-      -ms-flex-positive: 0;
+      -webkit-box-flex: 0;
       flex-grow: 0; }
     .panel-prospect .panel-body .prospect-header {
-      display: -ms-flexbox;
+      display: -webkit-box;
       display: flex;
-      -ms-flex-align: start;
+      -webkit-box-align: start;
       align-items: flex-start; }
       .panel-prospect .panel-body .prospect-header .prospect-avatar {
         margin-right: 10px;
-        -ms-flex-negative: 0;
         flex-shrink: 0; }
       .panel-prospect .panel-body .prospect-header .prospect-info {
         text-overflow: ellipsis;
@@ -6591,9 +6631,9 @@ h4.navbar-text {
       font-weight: 700;
       color: #999999; }
     .panel-prospect .panel-body .prospect-event {
-      display: -ms-flexbox;
+      display: -webkit-box;
       display: flex;
-      -ms-flex-align: baseline;
+      -webkit-box-align: baseline;
       align-items: baseline;
       margin-top: 10px; }
       .panel-prospect .panel-body .prospect-event .event-date, .panel-prospect .panel-body .prospect-event .event-date a {
@@ -6620,15 +6660,15 @@ h4.navbar-text {
     font-size: 24px;
     font-weight: 900; }
   .panel-benefit .panel-body {
-    display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
-    -ms-flex-align: center;
+    -webkit-box-align: center;
     align-items: center; }
     .panel-benefit .panel-body .description {
-      -ms-flex: 2;
+      -webkit-box-flex: 2;
       flex: 2; }
     .panel-benefit .panel-body .img-preview {
-      -ms-flex: 3;
+      -webkit-box-flex: 3;
       flex: 3;
       padding: 0 10px; }
     .panel-benefit .panel-body h2 {
@@ -6636,10 +6676,10 @@ h4.navbar-text {
   .panel-benefit.right {
     text-align: right; }
     .panel-benefit.right .description {
-      -ms-flex-order: 2;
+      -webkit-box-ordinal-group: 3;
       order: 2; }
     .panel-benefit.right .img-preview {
-      -ms-flex-order: 1;
+      -webkit-box-ordinal-group: 2;
       order: 1; }
 
 .panel.search {
@@ -6690,11 +6730,12 @@ h4.navbar-text {
   margin: 0 20px;
   text-align: center;
   border: 1px solid #e2e2e2;
-  display: -ms-flexbox;
+  display: -webkit-box;
   display: flex;
-  -ms-flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   flex-direction: column;
-  -ms-flex-pack: justify;
+  -webkit-box-pack: justify;
   justify-content: space-between; }
   .panel-plan .panel-heading {
     padding: 10px 5px;

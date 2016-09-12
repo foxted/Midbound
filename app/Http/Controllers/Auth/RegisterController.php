@@ -5,9 +5,9 @@ namespace Midbound\Http\Controllers\Auth;
 use Auth;
 use Illuminate\Http\Request;
 use Laravel\Spark\Events\Auth\UserRegistered;
+use Laravel\Spark\Interactions\Auth\Register;
 use Midbound\Http\Controllers\Controller;
 use Midbound\Http\Requests\Auth\RegisterRequest;
-use Midbound\Interactions\Auth\Register;
 use Midbound\Website;
 use Spark;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -59,13 +59,14 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         Auth::login($user = Spark::interact(
-            Register::class, [$request]
+            Register::class,
+            [$request]
         ));
 
         event(new UserRegistered($user));
 
         // Create website
-        if($request->has('website')) {
+        if ($request->has('website')) {
             $website = Website::create([
                 'url' => $request->get('website')
             ]);

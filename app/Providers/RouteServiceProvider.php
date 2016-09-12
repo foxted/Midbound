@@ -2,8 +2,8 @@
 
 namespace Midbound\Providers;
 
+use Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
 use Midbound\Bindings\ProspectBinding;
 use Midbound\Bindings\WebsiteBinding;
 
@@ -14,8 +14,8 @@ use Midbound\Bindings\WebsiteBinding;
 class RouteServiceProvider extends ServiceProvider
 {
     protected $modelBindings = [
-        'prospects' => ProspectBinding::class,
-        'websites' => WebsiteBinding::class,
+        'prospect' => ProspectBinding::class,
+        'website' => WebsiteBinding::class,
     ];
     
     /**
@@ -26,95 +26,89 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $this->registerBindings($router);
+        $this->registerBindings();
 
-        parent::boot($router);
+        parent::boot();
     }
 
     /**
      * Define the routes for the application.
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    public function map(Router $router)
+    public function map()
     {
-        $this->mapGuestRoutes($router);
-        $this->mapPublicRoutes($router);
-        $this->mapAppRoutes($router);
-        $this->mapApiRoutes($router);
+        $this->mapGuestRoutes();
+        $this->mapPublicRoutes();
+        $this->mapAppRoutes();
+        $this->mapApiRoutes();
     }
 
     /**
      * Define the guest routes for the application (no authentication).
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapGuestRoutes(Router $router)
+    protected function mapGuestRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace,
             'middleware' => ['web', 'guest'],
         ], function ($router) {
-            require app_path('Http/guest.php');
+            require base_path('routes/guest.php');
         });
     }
 
     /**
      * Define the guest routes for the application (no authentication).
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapPublicRoutes(Router $router)
+    protected function mapPublicRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace,
             'middleware' => ['web'],
         ], function ($router) {
-            require app_path('Http/public.php');
+            require base_path('routes/public.php');
         });
     }
 
     /**
      * Define the application routes (behind authentication).
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapAppRoutes(Router $router)
+    protected function mapAppRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace,
             'middleware' => ['web', 'auth:web', 'hasTeam'],
             'as' => 'app.'
         ], function ($router) {
-            require app_path('Http/app.php');
+            require base_path('routes/app.php');
         });
     }
 
     /**
      * Define the "api" routes for the application.
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapApiRoutes(Router $router)
+    protected function mapApiRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace . '\API',
             'prefix' => 'api',
             'middleware' => ['auth:api']
         ], function ($router) {
-            require app_path('Http/api.php');
+            require base_path('routes/api.php');
         });
     }
 
-    private function registerBindings(Router $router)
+    private function registerBindings()
     {
-        foreach($this->modelBindings as $parameter => $binding) {
-            $router->bind($parameter, $binding);
+        foreach ($this->modelBindings as $parameter => $binding) {
+            Route::bind($parameter, $binding);
         }
     }
 }
