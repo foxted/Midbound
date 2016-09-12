@@ -14,8 +14,8 @@ use Midbound\Bindings\WebsiteBinding;
 class RouteServiceProvider extends ServiceProvider
 {
     protected $modelBindings = [
-        'prospects' => ProspectBinding::class,
-        'websites' => WebsiteBinding::class,
+        'prospect' => ProspectBinding::class,
+        'website' => WebsiteBinding::class,
     ];
     
     /**
