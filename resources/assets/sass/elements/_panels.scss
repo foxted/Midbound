@@ -176,5 +176,54 @@
 	height: 100%;
 }
 
+.panel-plan { 
+	width: 300px;
+	margin: 0 20px;
+	text-align: center;
+	border: 1px solid #e2e2e2;
+	display: flex;
+    	flex-direction: column;
+    	justify-content: space-between;
+
+	& .panel-heading {
+		padding: 10px 5px;
+		background-color: $dark-blue;
+		color: #fff;
+
+		& h2, & h3 {
+			color: #fff; 
+			margin-top: 10px;
+		}
+		&.pro {
+			background-color: $dark-blue;
+		}
+		&.basic {
+			background-color: $gray-blue;
+		}
+	}
+	& .panel-body {
+		& ul {
+			padding: 0;
+
+			li {
+				list-style-type: none;
+				margin: 20px 0;
+				display: inline-block;
+			}
+		}		
+	}
+	& .panel-footer {
+		& .cta-description {
+			color: $brand-success;
+			margin: 5px 0;
+			font-size: $font-size-smaller;
+			font-style: italic;
+		}
+	}
+	& p {
+		font-style: italic;
+		margin:0;
+	}
+}
 
 

@@ -5,14 +5,14 @@
 @stop
 
 @section('content')
-<div class="home-banner">
-<div class="color-overlay">
-    <h1>Turn prospects into leads, faster</h1>
-    <p class="lead">With Midbound, you know which sales prospects matter and when to make your move.</p>
-    <div class="cta">
-    		<a href="{{ route('auth.register') }}" class="btn btn-primary btn-lg">Get Started for Free</a>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Turn prospects into leads, faster</h1>
+        <p class="lead">With Midbound, you know which sales prospects matter and when to make your move.</p>
+        <div class="cta">
+                <a href="{{ route('auth.register') }}" class="btn btn-primary btn-lg">Get Started for Free</a>
+        </div>
     </div>
-</div>
 </div>
 
 <div class="container">

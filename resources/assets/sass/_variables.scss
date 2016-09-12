@@ -20,6 +20,7 @@ $gray-lighter:           #dddfe2;
 	
 $light-blue:			#5DADD8;
 $dark-blue: 			#2F4858;
+$gray-blue: 			#64869c;
 
 $brand-primary:         $light-blue;
 $brand-success:         #6CAD5F;
@@ -50,6 +51,12 @@ $nav-headings-font-weight: $font-weight-bold;
 $headings-font-weight: $font-weight-black;
 
 $fa-font-size-base: ceil(($font-size-base * 0.75));
+
+// Jumbotron
+$jumbotron-bg: $body-bg;
+$jumbotron-heading-color: #2F4858;
+$jumbotron-heading-font-size: $font-size-h1;
+$jumbotron-font-size: floor(($font-size-base * 1.4));
 
 
 //== Navbar
@@ -151,6 +158,7 @@ $alert-info-text: $brand-info;
 
 // Buttons
 $btn-primary-bg: $brand-primary;
+$btn-font-weight: 400;
 
 
 // Inputs
