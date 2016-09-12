@@ -263,16 +263,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v3.0.0",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1"
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1",
-                "reference": "fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
                 "shasum": ""
             },
             "require": {
@@ -302,7 +302,7 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2015-07-22 18:31:08"
+            "time": "2016-07-18 04:51:16"
         },
         {
             "name": "graham-campbell/manager",
@@ -987,16 +987,16 @@
         },
         {
             "name": "laravel/spark",
-            "version": "dev-master",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./spark",
-                "reference": "d372467554b85b874ba259e26cf917312afb7531",
+                "reference": "14451839525bfcdca0260e58fbcbbe6102ba85d1",
                 "shasum": null
             },
             "require": {
                 "erusev/parsedown": "~1.0",
-                "firebase/php-jwt": "~3.0",
+                "firebase/php-jwt": "~4.0",
                 "guzzlehttp/guzzle": "~6.0",
                 "intervention/image": "^2.3",
                 "php": ">=5.5.9",

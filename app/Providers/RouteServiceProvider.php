@@ -2,8 +2,8 @@
 
 namespace Midbound\Providers;
 
+use Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
 use Midbound\Bindings\ProspectBinding;
 use Midbound\Bindings\WebsiteBinding;
 
@@ -26,14 +26,13 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $this->registerBindings($router);
+        $this->registerBindings();
 
-        parent::boot($router);
+        parent::boot();
     }
 
     /**
@@ -41,12 +40,12 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    public function map(Router $router)
+    public function map()
     {
-        $this->mapGuestRoutes($router);
-        $this->mapPublicRoutes($router);
-        $this->mapAppRoutes($router);
-        $this->mapApiRoutes($router);
+        $this->mapGuestRoutes();
+        $this->mapPublicRoutes();
+        $this->mapAppRoutes();
+        $this->mapApiRoutes();
     }
 
     /**
@@ -54,9 +53,9 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapGuestRoutes(Router $router)
+    protected function mapGuestRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace,
             'middleware' => ['web', 'guest'],
         ], function ($router) {
@@ -69,9 +68,9 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapPublicRoutes(Router $router)
+    protected function mapPublicRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace,
             'middleware' => ['web'],
         ], function ($router) {
@@ -84,9 +83,9 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapAppRoutes(Router $router)
+    protected function mapAppRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace,
             'middleware' => ['web', 'auth:web', 'hasTeam'],
             'as' => 'app.'
@@ -100,9 +99,9 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router $router
      * @return void
      */
-    protected function mapApiRoutes(Router $router)
+    protected function mapApiRoutes()
     {
-        $router->group([
+        Route::group([
             'namespace' => $this->namespace . '\API',
             'prefix' => 'api',
             'middleware' => ['auth:api']
@@ -111,10 +110,10 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    private function registerBindings(Router $router)
+    private function registerBindings()
     {
         foreach ($this->modelBindings as $parameter => $binding) {
-            $router->bind($parameter, $binding);
+            Route::bind($parameter, $binding);
         }
     }
 }

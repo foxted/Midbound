@@ -2,8 +2,6 @@
 
 namespace Laravel\Spark;
 
-use Laravel\Spark\Billable;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
@@ -48,6 +46,7 @@ class Team extends Model
      * @var array
      */
     protected $casts = [
+        'owner_id' => 'int',
         'trial_ends_at' => 'date',
     ];
 
