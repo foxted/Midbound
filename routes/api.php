@@ -1,18 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
+// Activity
+Route::get('activity/{filter?}', 'ActivityController@index');
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+// Prospects
+Route::resource('prospects', 'ProspectsController', ['only' => ['update']]);
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+// Settings
+Route::resource('websites', 'WebsitesController', ['only' => ['index', 'show', 'store', 'destroy']]);
+
+// Email Developer
+Route::post('email-developer/{websites}', 'EmailDeveloperController@store');

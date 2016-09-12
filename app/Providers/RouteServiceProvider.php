@@ -37,7 +37,6 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the routes for the application.
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function map()
@@ -50,7 +49,6 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the guest routes for the application (no authentication).
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapGuestRoutes()
@@ -59,13 +57,12 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace,
             'middleware' => ['web', 'guest'],
         ], function ($router) {
-            require app_path('Http/guest.php');
+            require base_path('routes/guest.php');
         });
     }
 
     /**
      * Define the guest routes for the application (no authentication).
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapPublicRoutes()
@@ -74,13 +71,12 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace,
             'middleware' => ['web'],
         ], function ($router) {
-            require app_path('Http/public.php');
+            require base_path('routes/public.php');
         });
     }
 
     /**
      * Define the application routes (behind authentication).
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapAppRoutes()
@@ -90,13 +86,12 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => ['web', 'auth:web', 'hasTeam'],
             'as' => 'app.'
         ], function ($router) {
-            require app_path('Http/app.php');
+            require base_path('routes/app.php');
         });
     }
 
     /**
      * Define the "api" routes for the application.
-     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapApiRoutes()
@@ -106,7 +101,7 @@ class RouteServiceProvider extends ServiceProvider
             'prefix' => 'api',
             'middleware' => ['auth:api']
         ], function ($router) {
-            require app_path('Http/api.php');
+            require base_path('routes/api.php');
         });
     }
 
