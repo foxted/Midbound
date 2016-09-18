@@ -6384,6 +6384,11 @@ body {
 .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
   box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.75); }
 
+.input-group-btn .btn {
+  display: block;
+  line-height: 2.1em;
+  min-width: 80px; }
+
 .dropdown-menu > li {
   display: block;
   padding: 3px 20px;
@@ -6762,6 +6767,9 @@ h4.navbar-text {
   .panel-plan p {
     font-style: italic;
     margin: 0; }
+
+[data-toggle="popover"] {
+  cursor: help; }
 
 #spark-app {
   padding-bottom: 0; }

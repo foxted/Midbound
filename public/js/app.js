@@ -34091,26 +34091,7 @@ require('./components/bootstrap');
 var app = new Vue({
     mixins: [require('spark')],
 
-    ready: function ready() {
-        $('[data-toggle="popover"]').popover({
-            container: 'body'
-        });
-        $('[data-toggle="popover"]').on('show.bs.popover', function () {
-            var _this = this;
-
-            setTimeout(function () {
-                $(_this).popover('hide');
-            }, 2000);
-        });
-        $('body').on('click', function (e) {
-            $('[data-toggle=popover]').each(function () {
-                // hide any open popovers when the anywhere else in the body is clicked
-                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                    $(this).popover('hide');
-                }
-            });
-        });
-    }
+    ready: function ready() {}
 });
 
 },{"./components/bootstrap":41,"./filters":45,"spark":162,"spark-bootstrap":161}],37:[function(require,module,exports){
@@ -35411,8 +35392,10 @@ Vue.component('spark-websites-list', {
         return {
             showingWebsite: null,
             deletingWebsite: null,
-
-            deleteWebsiteForm: new SparkForm({})
+            deleteWebsiteForm: new SparkForm({}),
+            emailDeveloperForm: new SparkForm({
+                email: ''
+            })
         };
     },
 
@@ -35448,6 +35431,18 @@ Vue.component('spark-websites-list', {
                 _this.$dispatch('updateWebsites');
 
                 $('#modal-delete-website').modal('hide');
+            });
+        },
+        sendEmail: function sendEmail() {
+            var _this2 = this;
+
+            this.emailDeveloperForm.busy = true;
+            this.emailDeveloperForm.errors.forget();
+
+            Spark.post('/api/email-developer/' + this.showingWebsite.id, this.emailDeveloperForm).then(function (response) {
+                _this2.busy = false;
+                _this2.emailDeveloperForm.email = '';
+                $('#modal-view-website').modal('hide');
             });
         }
     }

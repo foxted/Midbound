@@ -46,6 +46,7 @@
 
         <!-- JavaScript -->
         <script src="/js/app.js"></script>
+        <script src="/js/all.js"></script>
         <script src="/js/sweetalert.min.js"></script>
         @include('partials.scripts-footer')
     </div>

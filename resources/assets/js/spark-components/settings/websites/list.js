@@ -8,11 +8,12 @@ Vue.component('spark-websites-list', {
         return {
             showingWebsite: null,
             deletingWebsite: null,
-
-            deleteWebsiteForm: new SparkForm({})
+            deleteWebsiteForm: new SparkForm({}),
+            emailDeveloperForm: new SparkForm({
+                email: ''
+            }),
         }
     },
-
 
     methods: {
         /**
@@ -44,6 +45,18 @@ Vue.component('spark-websites-list', {
 
                     $('#modal-delete-website').modal('hide');
                 });
+        },
+
+        sendEmail() {
+            this.emailDeveloperForm.busy = true;
+            this.emailDeveloperForm.errors.forget();
+
+            Spark.post(`/api/email-developer/${this.showingWebsite.id}`, this.emailDeveloperForm)
+                .then(response => {
+                    this.busy = false;
+                    this.emailDeveloperForm.email = '';
+                    $('#modal-view-website').modal('hide');
+                })
         }
     }
 });
