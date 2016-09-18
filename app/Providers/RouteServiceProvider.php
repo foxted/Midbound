@@ -30,9 +30,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerBindings();
-
         parent::boot();
+
+        $this->registerBindings();
     }
 
     /**
@@ -99,12 +99,15 @@ class RouteServiceProvider extends ServiceProvider
         Route::group([
             'namespace' => $this->namespace . '\API',
             'prefix' => 'api',
-            'middleware' => ['auth:api']
+            'middleware' => ['api']
         ], function ($router) {
             require base_path('routes/api.php');
         });
     }
 
+    /**
+     * Register bindings
+     */
     private function registerBindings()
     {
         foreach ($this->modelBindings as $parameter => $binding) {

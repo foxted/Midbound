@@ -19,7 +19,7 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'email', 'phone', 'is_ignored'];
+    protected $fillable = ['name', 'email', 'phone', 'company', 'is_ignored'];
 
     /**
      * @var array
@@ -66,6 +66,14 @@ class Prospect extends Model
         }
 
         return $this->latestEvent->created_at;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setIsIgnoredAttribute($value)
+    {
+        $this->attributes['is_ignored'] = (bool) $value;
     }
 
     /**

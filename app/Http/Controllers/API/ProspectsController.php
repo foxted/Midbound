@@ -20,13 +20,16 @@ class ProspectsController extends Controller
      */
     public function update(Request $request, Prospect $prospect)
     {
-        $prospect->update($request->only('is_ignored'));
+        if($request->has('is_ignored')) {
+            $prospect->update($request->only('is_ignored'));
+        }
 
         if($request->has('assignee_id')) {
-            $prospect->assignee()->associate(User::find($request->get('assignee_id')));
+            $user = User::find($request->get('assignee_id'));
+            $prospect->assignee()->associate($user);
             $prospect->save();
         }
 
-        return response()->json($prospect);
+        return response($prospect->toArray());
     }
 }
