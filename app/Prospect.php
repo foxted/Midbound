@@ -4,17 +4,27 @@ namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
 use Midbound\Traits\Belonging\BelongsToTeam;
+use Midbound\Traits\Search\Searchable;
 
 /**
  * Class Prospect
  * @property mixed id
  * @property mixed captured
+ * @property mixed assignee
+ * @property mixed created_at
+ * @property mixed is_ignored
+ * @property mixed company
+ * @property mixed phone
+ * @property mixed email
+ * @property mixed name
+ * @property mixed objectID
+ * @property mixed team
  * @package Midbound
  */
 class Prospect extends Model
 {
 
-    use BelongsToTeam;
+    use BelongsToTeam, Searchable;
 
     /**
      * @var array

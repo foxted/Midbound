@@ -177,6 +177,7 @@ return [
          * Package Service Providers
          */
         Vinkla\Hashids\HashidsServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
         /*
          * Application Service Providers...

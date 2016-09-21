@@ -11,7 +11,7 @@ Route::resource('prospects', 'ProspectsController', ['only' => ['show']]);
 Route::get('install', 'InstallWebsiteController@index')->name('websites.install');
 
 // Search
-Route::get('search', 'SearchController@index');
+Route::get('search', 'SearchController@index')->name('search');
 
 // Authentication
 Route::get('/logout', 'Auth\LoginController@logout');

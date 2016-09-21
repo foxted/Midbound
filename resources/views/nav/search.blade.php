@@ -1,8 +1,8 @@
-<form class="navbar-form navbar-left search">
+<form action="/search" method="GET" class="navbar-form navbar-left search">
     <div class="form-group">
-        <input class="form-control" placeholder="Search for anything..." value="">
+        <input class="form-control" placeholder="Search for anything..." name="q" type="text">
     </div>
-    {{--<!-- Default Search Panel -->--}}
+    <!-- Default Search Panel -->
     {{--<div class="panel search">--}}
         {{--<div class="panel-body">--}}
             {{--<div class="search-results">--}}
