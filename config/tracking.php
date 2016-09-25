@@ -58,6 +58,6 @@ return [
         'download' => 'Downloaded',
         'subscribe' => 'Subscribed to',
         'click' => 'Clicked on',
-        'capture' => 'Typed'
+        'capture' => 'Entered'
     ],
 ];
