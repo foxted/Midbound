@@ -72,7 +72,7 @@
                 </ul>
             </div>
             {{--<a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>--}}
-            <a class="btn btn-ghost btn-sm" href="@{{ prospect.linkedin }}">
+            <a class="btn btn-ghost btn-sm" href="@{{ prospect.linkedin }}" target="_blank">
                 <i class="fa fa-linkedin-square"></i> LinkedIn
             </a>
             <div class="pull-right">
