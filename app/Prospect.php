@@ -174,4 +174,20 @@ class Prospect extends Model
 
         return '';
     }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        if(!$value) {
+            $email = explode('@', $this->email);
+            $fullname = str_replace('.', ' ', $email[0]);
+
+            return ucwords($fullname);
+        }
+
+        return $value;
+    }
 }
