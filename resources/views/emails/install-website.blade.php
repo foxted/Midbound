@@ -3,7 +3,7 @@
 <h2>{{ $user->name }} has requested your help!</h2>
 
 <p>
-    {{ $user->name }} just registered on <a href="{{ route('home') }}">Midbound</a> and need your help to install the Midbound Tracking Script on the following website:
+    {{ $user->name }} just registered on <a href="{{ route('home') }}">Midbound</a> and need your help to install the Midbound Tracker on the following website:
 </p>
 
 <p><a href="{{ $website->url }}">{{ $website->url }}</a></p>
