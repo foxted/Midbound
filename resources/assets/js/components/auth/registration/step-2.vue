@@ -82,8 +82,7 @@
              */
             sendRegistration() {
                 Spark.post('/register', this.registerForm).then(response => {
-                    console.log(response);
-                    //window.location = response.redirectUrl;
+                    window.location = response.redirectUrl;
                 }).catch(errors => {
                     this.busy = false;
                     this.errors = errors.data;

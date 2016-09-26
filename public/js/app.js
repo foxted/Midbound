@@ -34300,8 +34300,7 @@ exports.default = {
             var _this = this;
 
             Spark.post('/register', this.registerForm).then(function (response) {
-                console.log(response);
-                //window.location = response.redirectUrl;
+                window.location = response.redirectUrl;
             }).catch(function (errors) {
                 _this.busy = false;
                 _this.errors = errors.data;
