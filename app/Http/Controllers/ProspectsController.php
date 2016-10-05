@@ -23,7 +23,7 @@ class ProspectsController extends Controller
      */
     public function show(Prospect $prospect)
     {
-        $events = $prospect->currentTeam()->events()->latest()->get();
+        $events = $prospect->events()->latest()->get();
 
         return view('prospects.show', compact('prospect', 'events'));
     }

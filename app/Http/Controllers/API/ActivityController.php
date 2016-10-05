@@ -3,12 +3,9 @@
 namespace Midbound\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-
-use Illuminate\Pagination\LengthAwarePaginator;
-use Midbound\Http\Requests;
+use Illuminate\Pagination\Paginator;
 use Midbound\Http\Controllers\Controller;
 use Midbound\Prospect;
-use Midbound\VisitorEvent;
 
 /**
  * Class ActivityController
@@ -17,16 +14,33 @@ use Midbound\VisitorEvent;
 class ActivityController extends Controller
 {
     /**
+     * @param Request $request
+     * @param $filter
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request, $filter = null)
     {
-        $activity = VisitorEvent::currentTeam()->latest()->paginate(25);
+        $prospects = $this->getProspects($request, $filter);
 
-//        $activity->setCollection($activity->getCollection()->groupBy('action'));
+        return response()->json($prospects);
+    }
 
-        dd($activity->toArray());
+    /**
+     * @param Request $request
+     * @param $filter
+     * @return mixed
+     */
+    public function getProspects(Request $request, $filter)
+    {
+        if ($filter) {
+            if ($filter == 'prospects') {
+                return Prospect::has('events')->currentTeam()->assignedTo(auth()->user())->paginate(25);
+            }
+            if ($filter == 'ignored') {
+                return Prospect::has('events')->currentTeam()->ignored()->paginate(25);
+            }
+        }
 
-        return response()->json($activity);
+        return Prospect::has('events')->currentTeam()->active()->paginate(25);
     }
 }

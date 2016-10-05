@@ -16,6 +16,6 @@ class ProspectBinding
      */
     public function bind(string $prospectId)
     {
-        return Prospect::wherePid($prospectId)->first();
+        return Prospect::findOrFail($prospectId);
     }
 }

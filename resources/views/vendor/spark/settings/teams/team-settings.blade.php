@@ -33,7 +33,7 @@
                     </li>
                     @endif
 
-                <!-- Membership -->
+                    <!-- Membership -->
                     @if (Auth::user()->ownsTeam($team))
                     <li role="presentation" class="list-group-item">
                     @else
@@ -41,6 +41,13 @@
                     @endif
                         <a href="#membership" aria-controls="membership" role="tab" data-toggle="tab">
                             <i class="fa fa-fw fa-btn fa-users"></i>Membership
+                        </a>
+                    </li>
+
+                    <!-- Websites -->
+                    <li role="presentation" class="list-group-item">
+                        <a href="#websites" aria-controls="websites" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-btn fa-cubes"></i>Websites
                         </a>
                     </li>
 
@@ -93,6 +100,11 @@
                         <div v-if="team">
                             @include('spark::settings.teams.team-membership')
                         </div>
+                    </div>
+
+                    <!-- Websites -->
+                    <div role="tabpanel" class="tab-pane" id="websites">
+                        @include('spark::settings.websites')
                     </div>
 
                     <!-- Billing Tab Panes -->

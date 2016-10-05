@@ -56,7 +56,7 @@
                                             </span>
 
                                             <span v-else>
-                                                Spark
+                                                Midbound Team
                                             </span>
                                         </p>
 

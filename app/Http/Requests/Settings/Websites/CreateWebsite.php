@@ -2,13 +2,13 @@
 
 namespace Midbound\Http\Requests\Settings\Websites;
 
-use Midbound\Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class CreateWebsite
  * @package Midbound\Http\Requests\Settings\Websites
  */
-class CreateWebsite extends Request
+class CreateWebsite extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

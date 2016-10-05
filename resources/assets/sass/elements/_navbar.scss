@@ -64,3 +64,20 @@ nav.navbar-inverse form.search {
 	    }
 	}
 }
+.navbar-default .navbar-text {
+	color: $gray-base;
+	&:first-child {
+    		margin-left: 0;
+	}
+}
+
+h4.navbar-text {
+    line-height: inherit;
+}
+
+.bulk-actions {
+    position: fixed;
+    top: 60px;
+}
+
+

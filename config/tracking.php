@@ -35,6 +35,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Allowed fields
+    |--------------------------------------------------------------------------
+    |
+    | List of fields that the capture event supports
+    |
+    */
+    'allowed-fields' => [
+        'name', 'email', 'phone', 'company'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Verbs
     |--------------------------------------------------------------------------
     |
@@ -46,6 +58,6 @@ return [
         'download' => 'Downloaded',
         'subscribe' => 'Subscribed to',
         'click' => 'Clicked on',
-        'capture' => 'Typed'
+        'capture' => 'Entered'
     ],
 ];

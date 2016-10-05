@@ -28,12 +28,15 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Midbound\Http\Middleware\VerifyCsrfToken::class,
             \Laravel\Spark\Http\Middleware\CreateFreshApiToken::class,
         ],
 
         'api' => [
             'throttle:60,1',
+            'auth:api',
+            'bindings',
         ],
     ];
 
@@ -45,8 +48,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Midbound\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'dev' => \Laravel\Spark\Http\Middleware\VerifyUserIsDeveloper::class,
         'guest' => \Midbound\Http\Middleware\RedirectIfAuthenticated::class,
         'hasTeam' => \Laravel\Spark\Http\Middleware\VerifyUserHasTeam::class,

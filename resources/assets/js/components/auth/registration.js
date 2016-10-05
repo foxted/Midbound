@@ -6,20 +6,12 @@ Vue.component('registration', {
 
     components: { Step1, Step2 },
 
+    props: ['registerForm', 'invitation'],
+
     data() {
         return {
             component: 'step-1',
-            website: null,
-            registerForm: $.extend(true, new SparkForm({
-                stripe_token: '',
-                organization: '',
-                website: '',
-                name: '',
-                email: '',
-                password: '',
-                plan: 'connect',
-                terms: false
-            }), Spark.forms.register)
+            website: null
         }
     }
 

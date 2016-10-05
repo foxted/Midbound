@@ -1,3 +1,6 @@
+// Scaffolding 
+$body-bg: #e9ebee;
+
 // Wells
 $well-bg: darken($body-bg, 2%);
 $well-border: darken($well-bg, 20%);
@@ -6,11 +9,6 @@ $well-border: darken($well-bg, 20%);
 $border-radius-base: 3px;
 $border-radius-small: 3px;
 $border-radius-large: 3px;
-
-// Scaffolding 
-$body-bg: #e9ebee;
-$border-radius-base: 3px;
-
 
 // Colors
 $gray-base:              #222;
@@ -22,6 +20,7 @@ $gray-lighter:           #dddfe2;
 	
 $light-blue:			#5DADD8;
 $dark-blue: 			#2F4858;
+$gray-blue: 			#64869c;
 
 $brand-primary:         $light-blue;
 $brand-success:         #6CAD5F;
@@ -52,6 +51,12 @@ $nav-headings-font-weight: $font-weight-bold;
 $headings-font-weight: $font-weight-black;
 
 $fa-font-size-base: ceil(($font-size-base * 0.75));
+
+// Jumbotron
+$jumbotron-bg: $body-bg;
+$jumbotron-heading-color: #2F4858;
+$jumbotron-heading-font-size: $font-size-h1;
+$jumbotron-font-size: floor(($font-size-base * 1.4));
 
 
 //== Navbar
@@ -143,9 +148,6 @@ $list-group-link-heading-color: $gray;
 $list-group-header-font-size: $font-size-small;
 
 
-
-
-
 // Panels
 
 
@@ -156,3 +158,12 @@ $alert-info-text: $brand-info;
 
 // Buttons
 $btn-primary-bg: $brand-primary;
+$btn-font-weight: 400;
+
+
+// Inputs
+$input-border-radius:            0;
+$input-border-radius-large:      0;
+$input-border-radius-small:      0;
+
+$input-border-focus:             $light-blue;

@@ -2,13 +2,13 @@
 
 namespace Midbound\Http\Requests\API;
 
-use Midbound\Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class EmailDeveloperRequest
  * @package Midbound\Http\Requests\API
  */
-class EmailDeveloperRequest extends Request
+class EmailDeveloperRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

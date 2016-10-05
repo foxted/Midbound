@@ -8,17 +8,31 @@
                     <div class="panel">
                         <div class="panel-body">
                             <img class="img-rounded img-responsive center-block" src="{{ $prospect->avatar }}" style="margin-bottom: 2em;">
+
+                            @if($prospect->assignee)
+                            <small><span class="text-uppercase text-muted">Assigned to</span></small>
+                            <h4 class="text-capitalize" style="margin-top: 0;">
+                                <strong>
+                                    @if($prospect->assignee->id == auth()->id())
+                                        Me
+                                    @else
+                                        {{ $prospect->assignee->name }}
+                                    @endif
+                                </strong>
+                            </h4>
+                            @endif
+
                             <small><span class="text-uppercase text-muted">Name</span></small>
                             <h4 class="text-capitalize" style="margin-top: 0;"><strong>{{ $prospect->name }}</strong></h4>
 
                             <small><span class="text-uppercase text-muted">Email</span></small>
-                            <p class="text-lowercase"><a href="#">{{ $prospect->email }}</a></p>
+                            <p class="text-lowercase">{{ $prospect->email }}</p>
 
                             <small><span class="text-uppercase text-muted">Phone</span></small>
-                            <p><a href="#">{{ $prospect->phone or 'N/A'}}</a></p>
+                            <p>{{ $prospect->phone or 'N/A'}}</p>
 
                             <small><span class="text-uppercase text-muted">Company</span></small>
-                            <p><a href="/midbound-frontend/company-detail.php?id=97">Vulputate Risus A PC</a></p>
+                            <p>{{ $project->company or 'N/A' }}</p>
 
                             <small><span class="text-uppercase text-muted">Campaign</span></small>
                             <p><a href="#">Best Practices Whitepaper Downloads</a></p>
@@ -29,7 +43,7 @@
                             <small><span class="text-uppercase text-muted">Created</span></small>
                             <p>{{ $prospect->created_at->format(config('app.date_format')) }}</p>
 
-                            <a href="#" class="btn btn-default">Edit</a>
+                            <a href="#" class="btn btn-ghost btn-block">Edit prospect</a>
                         </div>
                     </div>
                 </div>
@@ -49,7 +63,7 @@
                         <div class="panel-body">
                             <div class="prospect-event">
                                 <p class="event">
-                                    {{ $event->action }} <a href="#">{{ $event->resource }}</a>
+                                    {{ ucwords($event->action) }} <a href="#">{{ $event->resource }}</a>
                                 </p>
                                <time class="event-date">
                                     &mdash;

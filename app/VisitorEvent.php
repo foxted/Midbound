@@ -26,7 +26,7 @@ class VisitorEvent extends Model
     /**
      * @var array
      */
-    protected $appends = ['prospect', 'actionVerb'];
+    protected $appends = ['actionVerb'];
 
     /**
      * @var array
@@ -54,7 +54,7 @@ class VisitorEvent extends Model
      */
     public function getActionVerbAttribute()
     {
-        if(array_key_exists($this->action, config('tracking.verbs'))) {
+        if (array_key_exists($this->action, config('tracking.verbs'))) {
             return config("tracking.verbs.{$this->action}");
         }
 

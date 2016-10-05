@@ -19,7 +19,29 @@ h3 {
 	color: $gray-base;
 }
 
+.text-light-gray {
+	color: $gray-light;
+}
+
 pre {
     font-size: $font-size-smaller;
     line-height: 1.4;
+}
+
+.text-inline {
+	display: inline-block;
+}
+
+.email {
+	font-size: $font-size-small;
+}
+
+.hover-info {
+	padding: 2px 0;
+	color: $light-blue;
+	border-bottom: 1px dotted;
+}
+.dollar {
+	font-size: ceil(($font-size-smaller * 0.7));
+	vertical-align: super;
 }

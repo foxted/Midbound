@@ -19,6 +19,17 @@ class RegisterRequest extends \Laravel\Spark\Http\Requests\Auth\RegisterRequest 
     }
 
     /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'website.required_without' => 'The website field is required.',
+            'team.required_without' => 'The team field is required.',
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -29,9 +40,8 @@ class RegisterRequest extends \Laravel\Spark\Http\Requests\Auth\RegisterRequest 
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'team' => 'required',
-            'website' => 'required',
-            'terms' => 'accepted'
+            'team' => 'required_without:invitation',
+            'website' => 'required_without:invitation|url'
         ];
     }
 }

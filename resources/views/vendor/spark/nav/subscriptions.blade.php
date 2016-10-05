@@ -1,7 +1,7 @@
 <li class="dropdown-header">{{Auth::user()->currentTeam()->name}}</li>
 <li>
     <a href="/settings/teams/{{ Auth::user()->currentTeam()->id }}#/membership">
-        <i class="fa fa-fw fa-btn fa-users"></i>3 Members
+        <i class="fa fa-fw fa-btn fa-users"></i>{{ count(Auth::user()->currentTeam()->users) }} {{ str_plural('Member',count(Auth::user()->currentTeam()->users)) }}
     </a>
 </li>
 <li>

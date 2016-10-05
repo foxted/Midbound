@@ -39,21 +39,14 @@
                         </li>
                     @endif
 
-                    <!-- Websites -->
-                    <li role="presentation" class="list-group-item">
-                        <a href="#websites" aria-controls="websites" role="tab" data-toggle="tab">
-                            <i class="fa fa-fw fa-btn fa-cubes"></i>Websites
-                        </a>
-                    </li>
-
                     <!-- API Link -->
-                    @if (Spark::usesApi())
-                        <li role="presentation" class="list-group-item">
-                            <a href="#api" aria-controls="api" role="tab" data-toggle="tab">
-                                <i class="fa fa-fw fa-btn fa-key"></i>API Tokens
-                            </a>
-                        </li>
-                    @endif
+                    {{--@if (Spark::usesApi())--}}
+                        {{--<li role="presentation" class="list-group-item">--}}
+                            {{--<a href="#api" aria-controls="api" role="tab" data-toggle="tab">--}}
+                                {{--<i class="fa fa-fw fa-btn fa-key"></i>API Tokens--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                    {{--@endif--}}
 
                     
                 </ul>
@@ -119,16 +112,11 @@
                     </div>
 
                     <!-- API -->
-                    @if (Spark::usesApi())
-                        <div role="tabpanel" class="tab-pane" id="api">
-                            @include('spark::settings.api')
-                        </div>
-                    @endif
-
-                    <!-- Websites -->
-                    <div role="tabpanel" class="tab-pane" id="websites">
-                        @include('spark::settings.websites')
-                    </div>
+                    {{--@if (Spark::usesApi())--}}
+                        {{--<div role="tabpanel" class="tab-pane" id="api">--}}
+                            {{--@include('spark::settings.api')--}}
+                        {{--</div>--}}
+                    {{--@endif--}}
 
                     <!-- Billing Tab Panes -->
                     @if (Spark::canBillCustomers())

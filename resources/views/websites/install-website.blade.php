@@ -13,7 +13,7 @@
                             <div class="alert alert-warning">
                                 <p>
                                     To get started, add the Midbound Tracker to your website.
-                                    <i class="fa fa-question-circle"
+                                    <i class="fa fa-question-circle cursor-help"
                                        @hover="showMoreInformation"
                                        data-container="body" data-toggle="popover" data-placement="right"
                                        data-html="true" title="The Midbound Tracker"
@@ -32,10 +32,10 @@
                             <button type="button" class="btn btn-primary" @click.prevent="showEmailDeveloperForm">
                                 <i class="fa fa-send"></i>&nbsp;Email to a developer
                             </button>
-                            <a href="/dashboard" title="Go to your dashboard" class="btn btn-default">
+                            <a href="{{ route('app.activity') }}" title="Go to your dashboard" class="btn btn-default">
                                 <i class="fa fa-check"></i>&nbsp;This is done
                             </a>
-                            <a href="/dashboard" title="Do this later" href="/dashboard" class="btn btn-ghost pull-right">
+                            <a href="/dashboard" title="Do this later" href="{{ route('app.activity') }}" class="btn btn-ghost pull-right">
                                 Do this later
                             </a>
                         </main>

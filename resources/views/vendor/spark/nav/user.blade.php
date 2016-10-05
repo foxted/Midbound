@@ -28,6 +28,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     @includeIf('spark::nav.user-left')
+                    @includeIf('nav.search')
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -42,3 +43,6 @@
         </div>
     </nav>
 </spark-navbar>
+
+
+

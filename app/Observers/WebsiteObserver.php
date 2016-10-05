@@ -16,7 +16,9 @@ class WebsiteObserver
      */
     public function creating(Website $website)
     {
-        $website->team()->associate(auth()->user()->currentTeam()->id);
+        if (auth()->check() && auth()->user()->currentTeam()) {
+            $website->team()->associate(auth()->user()->currentTeam()->id);
+        }
     }
 
     /**

@@ -18,10 +18,19 @@ class GuestController extends Controller
     }
 
     /**
+     * GET /plans
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function plans()
+    {
+        return view('guest.plans');
+    }
+
+    /**
      * GET /styles
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-     public function styles()
+    public function styles()
     {
         return view('guest.styles');
     }

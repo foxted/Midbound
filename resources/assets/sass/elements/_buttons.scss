@@ -1,12 +1,33 @@
+.btn {
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.btn:hover {
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
 .btn:active, .btn.active {
 	box-shadow: none;
 	color: $gray-dark;
 }
 
-.btn-ghost, .btn-ghost a, a.btn-ghost {
+.btn-ghost, .btn-ghost a, a.btn-ghost, .btn-ghost:hover, .btn-link, .btn-link a, a.btn-link, .btn-link:hover  {
 	border: 0;
-	color: $gray-light;
-	text-transform: none;
 	outline : none !important;
+	box-shadow: none;
+	text-transform: none;
+}
+.btn-ghost, .btn-ghost a, a.btn-ghost {
+	color: $gray-light;
 	background-color: transparent;
+}
+
+.btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
+	box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.75);
+}
+
+.input-group-btn .btn {
+	display: block;
+	line-height: 2.1em;
+	min-width: 80px;
 }

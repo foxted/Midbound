@@ -13,7 +13,7 @@
             </div>
 
             <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ route('app.dashboard') }}">
+            <a class="navbar-brand" href="{{ route('app.activity') }}">
                 <!-- Spark -->
                 <img src="/img/mono-logo.png" style="height: 32px;">
             </a>

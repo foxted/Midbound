@@ -12,18 +12,25 @@
 @import "spark/spark";
 
 // Pages
-@import "pages/home";
 @import "pages/registration";
+@import "pages/plans";
 
 // Components (sitewide components styles)
-@import "elements/typography";
-@import "elements/listgroups";
-@import "elements/panels";
-@import "elements/navbar";
-@import "elements/dropdowns";
 @import "elements/buttons";
-@import "elements/notifications";
-@import "elements/scaffolding";
+@import "elements/dropdowns";
 @import "elements/footer";
+@import "elements/forms";
+@import "elements/jumbotron";
+@import "elements/listgroups";
+@import "elements/navbar";
+@import "elements/notifications";
+@import "elements/panels";
+@import "elements/popover";
+@import "elements/scaffolding";
+@import "elements/typography";
+
+
+// Utilities
+@import "utilities/cursors";
 
 // Modules (area wide styles. Ex.: Prospect pages)
