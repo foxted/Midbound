@@ -17,6 +17,9 @@ require('./modal');
 // Registration
 require('./auth/registration');
 
+// Guest
+require('./guest/plans');
+
 // Websites
 require('./websites/install-website');
 
