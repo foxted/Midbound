@@ -24,5 +24,5 @@ require('./guest/plans');
 require('./websites/install-website');
 
 // Activity
-require('./activity');
+require('./activity/activity');
 

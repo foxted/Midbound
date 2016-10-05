@@ -11,7 +11,7 @@
     {{--</div>--}}
     {{--</div>--}}
     {{--</div>--}}
-    <div class="panel panel-prospect" v-for="prospect in prospects">
+    <div class="panel panel-prospect" v-for="prospect in prospects | orderBy 'created_at' -1">
         <div class="panel-body">
             <div class="prospect-top">
                 <div class="prospect-left">

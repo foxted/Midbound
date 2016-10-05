@@ -4,13 +4,15 @@ Vue.component('activity', {
 
     props: ['user', 'team', 'filter'],
 
-    mixins: [require('./../spark/mixins/tab-state')],
+    mixins: [require('./../../spark/mixins/tab-state')],
 
     data() {
         return {
             loading: true,
             pagination: null,
-            prospects: []
+            prospects: [],
+            prospectIgnored: false,
+            prospectTracked: false,
         }
     },
 
@@ -50,15 +52,37 @@ Vue.component('activity', {
             });
         },
 
-        track(prospect) {
+        track(prospect, undo = false) {
             this.$http.put(`/api/prospects/${prospect.id}`, {is_ignored: false}).then(() => {
+                if(undo) {
+                    this.prospects.push(prospect);
+                    this.prospectIgnored = false;
+                    return;
+                }
                 this.prospects.$remove(prospect);
+
+                this.prospectTracked = prospect;
+
+                setTimeout(() => {
+                    this.prospectTracked = false;
+                }, 5000);
             });
         },
 
-        ignore(prospect) {
+        ignore(prospect, undo = false) {
             this.$http.put(`/api/prospects/${prospect.id}`, {is_ignored: true}).then(() => {
+                if(undo) {
+                    this.prospects.push(prospect);
+                    this.prospectTracked = false;
+                    return;
+                }
                 this.prospects.$remove(prospect);
+
+                this.prospectIgnored = prospect;
+
+                setTimeout(() => {
+                    this.prospectIgnored = false;
+                }, 5000);
             });
         },
 

@@ -34319,13 +34319,15 @@ Vue.component('activity', {
 
     props: ['user', 'team', 'filter'],
 
-    mixins: [require('./../spark/mixins/tab-state')],
+    mixins: [require('./../../spark/mixins/tab-state')],
 
     data: function data() {
         return {
             loading: true,
             pagination: null,
-            prospects: []
+            prospects: [],
+            prospectIgnored: false,
+            prospectTracked: false
         };
     },
 
@@ -34372,15 +34374,41 @@ Vue.component('activity', {
         track: function track(prospect) {
             var _this3 = this;
 
+            var undo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
             this.$http.put('/api/prospects/' + prospect.id, { is_ignored: false }).then(function () {
+                if (undo) {
+                    _this3.prospects.push(prospect);
+                    _this3.prospectIgnored = false;
+                    return;
+                }
                 _this3.prospects.$remove(prospect);
+
+                _this3.prospectTracked = prospect;
+
+                setTimeout(function () {
+                    _this3.prospectTracked = false;
+                }, 5000);
             });
         },
         ignore: function ignore(prospect) {
             var _this4 = this;
 
+            var undo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
             this.$http.put('/api/prospects/' + prospect.id, { is_ignored: true }).then(function () {
+                if (undo) {
+                    _this4.prospects.push(prospect);
+                    _this4.prospectTracked = false;
+                    return;
+                }
                 _this4.prospects.$remove(prospect);
+
+                _this4.prospectIgnored = prospect;
+
+                setTimeout(function () {
+                    _this4.prospectIgnored = false;
+                }, 5000);
             });
         },
         assign: function assign(prospect, user) {
@@ -34394,7 +34422,7 @@ Vue.component('activity', {
     }
 });
 
-},{"./../spark/mixins/tab-state":99,"moment":18}],38:[function(require,module,exports){
+},{"./../../spark/mixins/tab-state":99,"moment":18}],38:[function(require,module,exports){
 'use strict';
 
 var _step = require('./registration/step-1.vue');
@@ -34565,9 +34593,9 @@ require('./guest/plans');
 require('./websites/install-website');
 
 // Activity
-require('./activity');
+require('./activity/activity');
 
-},{"./../spark-components/bootstrap":49,"./activity":37,"./auth/registration":38,"./guest/plans":42,"./home":43,"./modal":44,"./websites/install-website":45}],42:[function(require,module,exports){
+},{"./../spark-components/bootstrap":49,"./activity/activity":37,"./auth/registration":38,"./guest/plans":42,"./home":43,"./modal":44,"./websites/install-website":45}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('plans', {
