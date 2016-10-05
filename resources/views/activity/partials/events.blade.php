@@ -28,17 +28,20 @@
                     </div>
                 </div>
                 <div class="prospect-right">
-                    <div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
-                        9
-                    </div>
+                    {{--<div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a>--}}
+                        {{--9--}}
+                    {{--</div>--}}
                 </div>
             </div>
             <div class="prospect-event">
                 <p class="event" v-if="prospect.latest_event.action === 'pageview'">
-                    @{{ prospect.latest_event.actionVerb }} <a href="">@{{ prospect.latest_event.url }}</a>
+                    @{{ prospect.latest_event.actionVerb }}
+                    <a :href="prospect.latest_event.url" target="_blank">
+                        @{{ prospect.latest_event.url }}
+                    </a>
                 </p>
                 <p class="event" v-else>
-                    @{{ prospect.latest_event.actionVerb }} <a href="">@{{ prospect.latest_event.resource }}</a>
+                    @{{ prospect.latest_event.actionVerb }} <strong>@{{ prospect.latest_event.resource }}</strong>
                 </p>
                 <time class="event-date">
                     &mdash;

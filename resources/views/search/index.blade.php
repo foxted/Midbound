@@ -34,9 +34,9 @@
                     <div class="panel panel-prospect">
                         <div class="panel-body">
                             <div class="prospect-top">
-                                <div class="checkbox">
-                                    <input type="checkbox">
-                                </div>
+                                {{--<div class="checkbox">--}}
+                                    {{--<input type="checkbox">--}}
+                                {{--</div>--}}
                                 <div class="prospect-left">
                                     <div class="prospect-header">
                                         <div class="prospect-avatar">

@@ -44,8 +44,8 @@
 
 
 
-        @if (Spark::usesTeams())
-        <!-- Team Settings -->
+        @if (Spark::usesTeams() && auth()->user()->teams)
+            <!-- Team Settings -->
             @include('spark::nav.teams')
         @endif
 
