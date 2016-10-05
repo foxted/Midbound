@@ -47,7 +47,7 @@ class Website extends Model
      */
     public function getInstallUrlAttribute()
     {
-        return route('app.websites.install');
+        return route('websites.install');
     }
 
     /**
@@ -55,6 +55,6 @@ class Website extends Model
      */
     public function getResourceUrlAttribute()
     {
-        return route('api.websites.show', $this);
+        return route('websites.show', $this);
     }
 }
