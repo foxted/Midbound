@@ -26,12 +26,12 @@ class VisitorEvent extends Model
     /**
      * @var array
      */
-    protected $appends = ['actionVerb'];
+    protected $fillable = ['action', 'url', 'resource'];
 
     /**
      * @var array
      */
-    protected $fillable = ['action', 'url', 'resource'];
+    protected $appends = ['actionVerb', 'cleanUrl'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -59,5 +59,21 @@ class VisitorEvent extends Model
         }
 
         return $this->action;
+    }
+
+    /**
+     * @TODO Remove only the _utm query params
+     * @return string
+     */
+    public function getCleanUrlAttribute()
+    {
+        if($this->url) {
+            $url = ['host' => '', 'path' => ''];
+            $url = array_merge($url, parse_url($this->url));
+
+            return $url['host'].$url['path'];
+        }
+
+        return $this->url;
     }
 }

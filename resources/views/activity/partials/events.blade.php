@@ -37,7 +37,7 @@
                 <p class="event" v-if="prospect.latest_event.action === 'pageview'">
                     @{{ prospect.latest_event.actionVerb }}
                     <a :href="prospect.latest_event.url" target="_blank">
-                        @{{ prospect.latest_event.url }}
+                        @{{ prospect.latest_event.cleanUrl }}
                     </a>
                 </p>
                 <p class="event" v-else>
