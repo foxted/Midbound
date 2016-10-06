@@ -75,13 +75,19 @@
                     <div class="panel panel-prospect">
                         <div class="panel-body">
                             <div class="prospect-event">
-                                <p class="event">
-                                    {{ $event->actionVerb }} <a href="#">{{ $event->resource }}</a>
-                                </p>
+                                @if($event->isPageview())
+                                    <p class="event">
+                                        {{ $event->actionVerb }} <a href="#">{{ $event->cleanUrl }}</a>
+                                    </p>
+                                @else
+                                    <p class="event">
+                                        {{ $event->actionVerb }} <strong>{{ $event->resource }}</strong>
+                                    </p>
+                                @endif
+
                                <time class="event-date">
-                                    &mdash;
-                                      {{ $event->created_at->format(config('app.date_format')) }}
-                                </time>
+                                   &mdash; {{ $event->created_at->diffForHumans() }}
+                               </time>
                             </div>
                         </div>
                     </div>

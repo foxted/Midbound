@@ -14,6 +14,12 @@ class VisitorEvent extends Model
 
     use BelongsToTeam;
 
+    const TYPE_PAGEVIEW = 'pageview';
+    const TYPE_DOWNLOAD = 'download';
+    const TYPE_SUBSCRIBE = 'subscribe';
+    const TYPE_CLICK = 'click';
+    const TYPE_CAPTURE = 'capture';
+
     /**
      * @var array
      */
@@ -75,5 +81,13 @@ class VisitorEvent extends Model
         }
 
         return $this->url;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPageview()
+    {
+        return $this->action === self::TYPE_PAGEVIEW;
     }
 }
