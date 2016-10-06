@@ -32,7 +32,7 @@
                             <p>{{ $prospect->phone or 'N/A'}}</p>
 
                             <small><span class="text-uppercase text-muted">Company</span></small>
-                            <p>{{ $project->company or 'N/A' }}</p>
+                            <p>{{ $prospect->company or 'N/A' }}</p>
 
                             <small><span class="text-uppercase text-muted">Campaign</span></small>
                             <p><a href="#">Best Practices Whitepaper Downloads</a></p>
@@ -43,11 +43,18 @@
                             <small><span class="text-uppercase text-muted">Created</span></small>
                             <p>{{ $prospect->created_at->format(config('app.date_format')) }}</p>
 
-                            <a href="#" class="btn btn-ghost btn-block">Edit prospect</a>
+                            <a href="{{ route('app.prospects.edit', $prospect) }}" class="btn btn-ghost btn-block">Edit prospect</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-9">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            <p>
+                                {{ session('success') }}
+                            </p>
+                        </div>
+                    @endif
                     {{--<div class="alert alert-warning" style="padding: 20px; margin: 0 0 20px;">--}}
                         {{--<strong>Next campaign action (4 of 7)</strong> from Best Practices Whitepaper Downloads:--}}
                         {{--<h4 class="lead">Send "<a href="#">Don't miss: B2B Marketing Webinar</a>"--}}
@@ -63,7 +70,7 @@
                         <div class="panel-body">
                             <div class="prospect-event">
                                 <p class="event">
-                                    {{ ucwords($event->action) }} <a href="#">{{ $event->resource }}</a>
+                                    {{ $event->actionVerb }} <a href="#">{{ $event->resource }}</a>
                                 </p>
                                <time class="event-date">
                                     &mdash;

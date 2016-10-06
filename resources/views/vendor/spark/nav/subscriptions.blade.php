@@ -39,7 +39,7 @@
     @else
     <li>
         <small class="text-muted">
-            Currently on Midbound {{ Auth::user()->currentTeam()->sparkPlan('free')->name }} Plan
+            Currently on Midbound Free Plan
         </small>
         <a class="dropdown-btn" href="/settings/teams/{{ Auth::user()->currentTeam()->id }}#/subscription">
             <button class="btn btn-block btn-primary">

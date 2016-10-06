@@ -5,7 +5,7 @@
 
 // Activity
 Route::get('activity/{filter?}', 'ActivityController@index')->name('activity');
-Route::resource('prospects', 'ProspectsController', ['only' => ['show']]);
+Route::resource('prospects', 'ProspectsController', ['only' => ['show', 'edit', 'update']]);
 
 // Websites
 Route::get('install', 'InstallWebsiteController@index')->name('websites.install');
