@@ -1,16 +1,4 @@
 <div class="col-sm-9 col-md-10" v-if="prospects && prospects.length">
-    {{--<div class="container">--}}
-    {{--<div class="row">--}}
-    {{--<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">--}}
-    {{--<nav class="navbar navbar-default bulk-actions">--}}
-    {{--<ul class="nav navbar-nav">--}}
-    {{--<li><h4 class="navbar-text">2 selected</h4></li>--}}
-    {{--<li><button class="btn btn-default navbar-btn">Ignore</button></li>--}}
-    {{--</ul>--}}
-    {{--</nav>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
     <div class="panel panel-prospect" v-for="prospect in prospects | orderBy 'created_at' -1">
         <div class="panel-body">
             <div class="prospect-top">

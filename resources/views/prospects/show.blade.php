@@ -22,17 +22,23 @@
                             </h4>
                             @endif
 
-                            <small><span class="text-uppercase text-muted">Name</span></small>
-                            <h4 class="text-capitalize" style="margin-top: 0;"><strong>{{ $prospect->name }}</strong></h4>
-
                             <small><span class="text-uppercase text-muted">Email</span></small>
                             <p class="text-lowercase">{{ $prospect->email }}</p>
 
-                            <small><span class="text-uppercase text-muted">Phone</span></small>
-                            <p>{{ $prospect->phone or 'N/A'}}</p>
+                            @if($prospect->name)
+                                <small><span class="text-uppercase text-muted">Name</span></small>
+                                <p><strong>{{ $prospect->name }}</strong></p>
+                            @endif
 
+                            @if($prospect->phone)
+                            <small><span class="text-uppercase text-muted">Phone</span></small>
+                            <p>{{ $prospect->phone }}</p>
+                            @endif
+
+                            @if($prospect->company)
                             <small><span class="text-uppercase text-muted">Company</span></small>
-                            <p>{{ $prospect->company or 'N/A' }}</p>
+                            <p>{{ $prospect->company }}</p>
+                            @endif
 
                             <small><span class="text-uppercase text-muted">Campaign</span></small>
                             <p><a href="#">Best Practices Whitepaper Downloads</a></p>
@@ -41,7 +47,7 @@
                             <p>4</p>
 
                             <small><span class="text-uppercase text-muted">Created</span></small>
-                            <p>{{ $prospect->created_at->format(config('app.date_format')) }}</p>
+                            <p>{{ $prospect->created_at->diffForHumans() }}</p>
 
                             <a href="{{ route('app.prospects.edit', $prospect) }}" class="btn btn-ghost btn-block">Edit prospect</a>
                         </div>
@@ -65,7 +71,7 @@
                         {{--<a href="#" class="" style="padding: 0 10px;">Switch Campaigns</a>--}}
                     {{--</div>--}}
 
-                    @foreach($events as $event)
+                    @forelse($events as $event)
                     <div class="panel panel-prospect">
                         <div class="panel-body">
                             <div class="prospect-event">
@@ -79,7 +85,9 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    @empty
+                        @include('prospects.partials.no-events')
+                    @endforelse
                 </div>
             </div>
         </div>

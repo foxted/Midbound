@@ -34413,10 +34413,20 @@ Vue.component('activity', {
         },
         assign: function assign(prospect, user) {
             prospect.assignee = user;
+
+            if (this.filter === 'prospects' && prospect.assignee.id !== this.user.id) {
+                this.prospects.$remove(prospect);
+            }
+
             this.$http.put('/api/prospects/' + prospect.id, { assignee_id: user.id });
         },
         unassign: function unassign(prospect) {
             prospect.assignee = null;
+
+            if (this.filter === 'prospects') {
+                this.prospects.$remove(prospect);
+            }
+
             this.$http.put('/api/prospects/' + prospect.id, { assignee_id: 0 });
         }
     }
