@@ -3,6 +3,7 @@
 namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
+use Midbound\Sequences\URLCleaner\URLCleaner;
 use Midbound\Traits\Belonging\BelongsToTeam;
 
 /**
@@ -73,14 +74,7 @@ class VisitorEvent extends Model
      */
     public function getCleanUrlAttribute()
     {
-        if($this->url) {
-            $url = ['host' => '', 'path' => ''];
-            $url = array_merge($url, parse_url($this->url));
-
-            return $url['host'].$url['path'];
-        }
-
-        return $this->url;
+        return (new URLCleaner)->clean($this->url);
     }
 
     /**
