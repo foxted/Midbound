@@ -26,6 +26,10 @@ body {
 
 #spark-app {
     padding-bottom: 4em;
+
+    &.guest {
+        padding-bottom: 0;
+    }
 }
 
 // Vue Cloak

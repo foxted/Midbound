@@ -31,10 +31,7 @@ module.exports = {
      * Prepare the component.
      */
     ready() {
-        setTimeout(() => {
-            alert('Will now active tabs');
-            this.usePushStateForTabs('.spark-settings-tabs');
-        }, 2000);
+        this.usePushStateForTabs('.spark-settings-tabs');
     },
 
 
@@ -53,7 +50,7 @@ module.exports = {
          * Get the team being managed.
          */
         getTeam() {
-            this.$http.get(`/teams/${this.teamId}`)
+            this.$http.get(`/${Spark.pluralTeamString}/${this.teamId}`)
                 .then(response => {
                     this.team = response.data;
                 });

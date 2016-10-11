@@ -6305,6 +6305,8 @@ body {
 
 #spark-app {
   padding-bottom: 4em; }
+  #spark-app.guest {
+    padding-bottom: 0; }
 
 [v-cloak] {
   display: none; }

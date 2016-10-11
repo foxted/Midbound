@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@yield('title', 'Midbound')</title>
-    @include('partials.scripts-header')
+
     <!-- Fonts -->
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 
@@ -17,13 +17,7 @@
 
     <!-- Scripts -->
     @yield('scripts', '')
-
-    <!-- Global Spark Object -->
-    <script>
-        window.Spark = <?php echo json_encode(array_merge(
-            Spark::scriptVariables(), []
-        )); ?>;
-    </script>
+    @include('layouts.partials-app.scripts-header')
 </head>
 <body @if (Auth::check()) class="with-navbar" @endif v-cloak>
     <div id="spark-app">
@@ -48,7 +42,7 @@
         <script src="/js/app.js"></script>
         <script src="/js/all.js"></script>
         <script src="/js/sweetalert.min.js"></script>
-        @include('partials.scripts-footer')
+        @include('layouts.partials-app.scripts-footer')
     </div>
 </body>
 </html>

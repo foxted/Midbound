@@ -33,11 +33,9 @@ module.exports = {
          // If only yearly subscription plans are available, we will select that interval so that we
          // can show the plans. Then we'll select the first available paid plan from the list and
          // start the form in a good default spot. The user may then select another plan later.
-        if (this.onlyHasYearlyPlans) {
+        if (this.onlyHasYearlyPaidPlans) {
             this.showYearlyPlans();
         }
-
-        this.selectPlan(this.paidPlansForActiveInterval[0]);
 
          // Next, we will configure the braintree container element on the page and handle the nonce
          // received callback. We'll then set the nonce and fire off the subscribe method so this
@@ -92,7 +90,7 @@ module.exports = {
         urlForNewSubscription() {
             return this.billingUser
                             ? '/settings/subscription'
-                            : `/settings/teams/${this.team.id}/subscription`;
+                            : `/settings/${Spark.pluralTeamString}/${this.team.id}/subscription`;
         }
     }
 };

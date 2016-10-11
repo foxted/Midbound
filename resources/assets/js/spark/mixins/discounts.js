@@ -21,7 +21,9 @@ module.exports = {
 
             this.$http.get(`/coupon/user/${user.id}`)
                 .then(response => {
-                    this.currentDiscount = response.data;
+                    if (response.status == 200) {
+                        this.currentDiscount = response.data;
+                    }
 
                     this.loadingCurrentDiscount = false;
                 });
@@ -36,9 +38,11 @@ module.exports = {
 
             this.loadingCurrentDiscount = true;
 
-            this.$http.get(`/coupon/team/${team.id}`)
+            this.$http.get(`/coupon/${Spark.teamString}/${team.id}`)
                 .then(response => {
-                    this.currentDiscount = response.data;
+                    if (response.status == 200) {
+                        this.currentDiscount = response.data;
+                    }
 
                     this.loadingCurrentDiscount = false;
                 });
@@ -82,7 +86,7 @@ module.exports = {
 
             switch (discount.duration) {
                 case 'forever':
-                    return 'for all future invoices';
+                    return 'all future invoices';
                 case 'once':
                     return 'a single invoice';
                 case 'repeating':
