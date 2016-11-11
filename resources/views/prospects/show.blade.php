@@ -22,13 +22,13 @@
                             </h4>
                             @endif
 
-                            <small><span class="text-uppercase text-muted">Email</span></small>
-                            <p class="text-lowercase">{{ $prospect->email }}</p>
-
                             @if($prospect->name)
                                 <small><span class="text-uppercase text-muted">Name</span></small>
                                 <p><strong>{{ $prospect->name }}</strong></p>
                             @endif
+
+                            <small><span class="text-uppercase text-muted">Email</span></small>
+                            <p class="text-lowercase">{{ $prospect->email }}</p>
 
                             @if($prospect->phone)
                             <small><span class="text-uppercase text-muted">Phone</span></small>
@@ -40,11 +40,11 @@
                             <p>{{ $prospect->company }}</p>
                             @endif
 
-                            <small><span class="text-uppercase text-muted">Campaign</span></small>
-                            <p><a href="#">Best Practices Whitepaper Downloads</a></p>
+                            {{--<small><span class="text-uppercase text-muted">Campaign</span></small>--}}
+                            {{--<p><a href="#">Best Practices Whitepaper Downloads</a></p>--}}
 
-                            <small><span class="text-uppercase text-muted">Score</span></small>
-                            <p>4</p>
+                            {{--<small><span class="text-uppercase text-muted">Score</span></small>--}}
+                            {{--<p>4</p>--}}
 
                             <small><span class="text-uppercase text-muted">Created</span></small>
                             <p>{{ $prospect->created_at->diffForHumans() }}</p>

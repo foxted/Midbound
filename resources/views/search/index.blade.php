@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="prospect-info">
                                             <h4 class="name">
-                                                <a>{{ $prospect->name }}</a>
+                                                <a href="{{ route('app.prospects.show', $prospect) }}">{{ $prospect->name }}</a>
                                             </h4>
                                             <a class="email">{{ $prospect->email }}</a>
                                         </div>
