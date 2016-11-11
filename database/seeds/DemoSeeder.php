@@ -17,7 +17,7 @@ class DemoSeeder extends Seeder
         ]);
 
         // Create a team
-        $team = factory(\Midbound\Team::class)->create();
+        $team = factory(\Midbound\Team::class)->make();
         $team->owner()->associate($user)->save();
 
         // Add user to team

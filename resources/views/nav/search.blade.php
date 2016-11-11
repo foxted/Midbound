@@ -1,6 +1,6 @@
 <form action="/search" method="GET" class="navbar-form navbar-left search">
     <div class="form-group">
-        <input class="form-control" placeholder="Search for anything..." name="q" type="text">
+        <input class="form-control" placeholder="Search for anything..." name="q" type="text" value="{{ request()->get('q') }}">
     </div>
     <!-- Default Search Panel -->
     {{--<div class="panel search">--}}

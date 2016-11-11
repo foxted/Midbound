@@ -55,6 +55,6 @@ class Website extends Model
      */
     public function getResourceUrlAttribute()
     {
-        return route('api.websites.show', $this);
+        return route('websites.show', $this);
     }
 }

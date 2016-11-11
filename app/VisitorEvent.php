@@ -3,6 +3,7 @@
 namespace Midbound;
 
 use Illuminate\Database\Eloquent\Model;
+use Midbound\Sequences\URLCleaner\URLCleaner;
 use Midbound\Traits\Belonging\BelongsToTeam;
 
 /**
@@ -13,6 +14,12 @@ class VisitorEvent extends Model
 {
 
     use BelongsToTeam;
+
+    const TYPE_PAGEVIEW = 'pageview';
+    const TYPE_DOWNLOAD = 'download';
+    const TYPE_SUBSCRIBE = 'subscribe';
+    const TYPE_CLICK = 'click';
+    const TYPE_CAPTURE = 'capture';
 
     /**
      * @var array
@@ -26,12 +33,12 @@ class VisitorEvent extends Model
     /**
      * @var array
      */
-    protected $appends = ['actionVerb'];
+    protected $fillable = ['action', 'url', 'resource'];
 
     /**
      * @var array
      */
-    protected $fillable = ['action', 'url', 'resource'];
+    protected $appends = ['actionVerb', 'cleanUrl'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -59,5 +66,22 @@ class VisitorEvent extends Model
         }
 
         return $this->action;
+    }
+
+    /**
+     * @TODO Remove only the _utm query params
+     * @return string
+     */
+    public function getCleanUrlAttribute()
+    {
+        return (new URLCleaner)->clean($this->url);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPageview()
+    {
+        return $this->action === self::TYPE_PAGEVIEW;
     }
 }

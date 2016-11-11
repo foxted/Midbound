@@ -50,35 +50,8 @@ class SparkServiceProvider extends ServiceProvider
      */
     public function booted()
     {
-        Spark::useStripe()->noCardUpFront()->teamTrialDays(60);
-
-        Spark::freeTeamPlan()
-            ->features([
-                'Tracking script', 'Prospect activity', 'Awesomeness!'
-            ]);
-
-        Spark::teamPlan('Connect', 'connect')
-            ->price(4.99)
-            ->features([
-                'Tracking script', 'Prospect activity', 'Awesomeness!'
-            ]);
-
-        Spark::teamPlan('Plus', 'plus')
-            ->price(79.99)
-            ->features([
-                'Tracking script', 'Prospect activity', 'Awesomeness!'
-            ]);
-
-        Spark::teamPlan('Premium', 'premium')
-            ->price(129.99)
-            ->features([
-                'Tracking script', 'Prospect activity', 'Awesomeness!'
-            ]);
-
-        Spark::useRoles([
-            'member' => 'Member',
-            'owner' => 'Owner',
-        ]);
+        $this->configureSpark();
+        $this->registerPlans();
     }
 
     /**
@@ -88,5 +61,37 @@ class SparkServiceProvider extends ServiceProvider
     {
         Spark::useUserModel(\Midbound\User::class);
         Spark::useTeamModel(\Midbound\Team::class);
+    }
+
+    /**
+     *
+     */
+    protected function configureSpark()
+    {
+        Spark::useStripe()->noCardUpFront()->teamTrialDays(config('spark.trial'));
+        Spark::useRoles(config('spark.roles'));
+    }
+
+    /**
+     *
+     */
+    protected function registerPlans()
+    {
+        $basicPlans = config('spark.plans.basic');
+        $proPlans = config('spark.plans.pro');
+
+        foreach($basicPlans as $stripeId => $plan) {
+            Spark::teamPlan($plan['name'], $stripeId)
+                ->price($plan['price'])
+                ->features(config('spark.features.basic'))
+                ->attributes($plan['attributes']);
+        }
+
+        foreach($proPlans as $stripeId => $plan) {
+            Spark::teamPlan($plan['name'], $stripeId)
+                ->price($plan['price'])
+                ->features(config('spark.features.pro'))
+                ->attributes($plan['attributes']);
+        }
     }
 }

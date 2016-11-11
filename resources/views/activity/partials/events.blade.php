@@ -1,17 +1,5 @@
 <div class="col-sm-9 col-md-10" v-if="prospects && prospects.length">
-    {{--<div class="container">--}}
-    {{--<div class="row">--}}
-    {{--<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">--}}
-    {{--<nav class="navbar navbar-default bulk-actions">--}}
-    {{--<ul class="nav navbar-nav">--}}
-    {{--<li><h4 class="navbar-text">2 selected</h4></li>--}}
-    {{--<li><button class="btn btn-default navbar-btn">Ignore</button></li>--}}
-    {{--</ul>--}}
-    {{--</nav>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    <div class="panel panel-prospect" v-for="prospect in prospects">
+    <div class="panel panel-prospect" v-for="prospect in prospects | orderBy 'created_at' -1">
         <div class="panel-body">
             <div class="prospect-top">
                 <div class="prospect-left">
@@ -28,17 +16,20 @@
                     </div>
                 </div>
                 <div class="prospect-right">
-                    <div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a>
-                        9
-                    </div>
+                    {{--<div class="engagement"><a :href="prospect.url"><img src="/img/engagement-graph.png" height="40"></a>--}}
+                        {{--9--}}
+                    {{--</div>--}}
                 </div>
             </div>
             <div class="prospect-event">
                 <p class="event" v-if="prospect.latest_event.action === 'pageview'">
-                    @{{ prospect.latest_event.actionVerb }} <a href="">@{{ prospect.latest_event.url }}</a>
+                    @{{ prospect.latest_event.actionVerb }}
+                    <a :href="prospect.latest_event.url" target="_blank">
+                        @{{ prospect.latest_event.cleanUrl }}
+                    </a>
                 </p>
                 <p class="event" v-else>
-                    @{{ prospect.latest_event.actionVerb }} <a href="">@{{ prospect.latest_event.resource }}</a>
+                    @{{ prospect.latest_event.actionVerb }} <strong>@{{ prospect.latest_event.resource }}</strong>
                 </p>
                 <time class="event-date">
                     &mdash;

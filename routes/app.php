@@ -5,7 +5,7 @@
 
 // Activity
 Route::get('activity/{filter?}', 'ActivityController@index')->name('activity');
-Route::resource('prospects', 'ProspectsController', ['only' => ['show']]);
+Route::resource('prospects', 'ProspectsController', ['only' => ['show', 'edit', 'update']]);
 
 // Websites
 Route::get('install', 'InstallWebsiteController@index')->name('websites.install');
@@ -14,4 +14,4 @@ Route::get('install', 'InstallWebsiteController@index')->name('websites.install'
 Route::get('search', 'SearchController@index')->name('search');
 
 // Authentication
-Route::get('/logout', 'Auth\LoginController@logout');
+Route::get('logout', 'Auth\LoginController@logout');

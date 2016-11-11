@@ -6304,7 +6304,9 @@ body {
   font-weight: 300; }
 
 #spark-app {
-  padding-bottom: 2em; }
+  padding-bottom: 4em; }
+  #spark-app.guest {
+    padding-bottom: 0; }
 
 [v-cloak] {
   display: none; }
@@ -6770,9 +6772,6 @@ h4.navbar-text {
 
 [data-toggle="popover"] {
   cursor: help; }
-
-#spark-app {
-  padding-bottom: 0; }
 
 .page-header {
   text-align: center;
