@@ -16,7 +16,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $prospects = Prospect::search($request->get('q', ''));
+        $prospects = Prospect::search($request->get('q', ''))->where('team.data.id', auth()->user()->currentTeam()->id);
 
         $prospects = $this->applyFilters($request, $prospects);
 
@@ -25,6 +25,11 @@ class SearchController extends Controller
         return view('search.index', compact('prospects'));
     }
 
+    /**
+     * @param Request $request
+     * @param Builder $query
+     * @return Builder
+     */
     public function applyFilters(Request $request, Builder $query)
     {
         if($request->has('assigned')) {
