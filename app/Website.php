@@ -47,7 +47,7 @@ class Website extends Model
      */
     public function getInstallUrlAttribute()
     {
-        return route('websites.install');
+        return route('app.websites.install');
     }
 
     /**
