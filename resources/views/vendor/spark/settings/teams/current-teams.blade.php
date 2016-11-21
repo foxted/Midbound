@@ -6,21 +6,14 @@
             <div class="panel-body">
                 <table class="table table-borderless m-b-none">
                     <thead>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Owner</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th class="col-md-4">Name</th>
+                        <th class="col-md-4">Owner</th>
+                        <th class="col-md-2"></th>
+                        <th class="col-md-2"></th>
                     </thead>
 
                     <tbody>
                         <tr v-for="team in teams">
-                            <!-- Photo -->
-                            <td>
-                                <img :src="team.photo_url" class="spark-team-photo">
-                            </td>
-
                             <!-- Team Name -->
                             <td>
                                 <div class="btn-table-align">
@@ -50,17 +43,13 @@
                                 </a>
                             </td>
 
-                            <!-- Leave Button -->
+                            <!-- Delete Button -->
                             <td>
                                 <button class="btn btn-warning" @click="approveLeavingTeam(team)"
                                     data-toggle="tooltip" title="Leave Team"
                                     v-if="user.id !== team.owner_id">
                                     <i class="fa fa-sign-out"></i>&nbsp;Leave Team
                                 </button>
-                            </td>
-
-                            <!-- Delete Button -->
-                            <td>
                                 <button class="btn btn-danger-outline" @click="approveTeamDelete(team)" v-if="user.id === team.owner_id">
                                     <i class="fa fa-times"></i>&nbsp;Delete Team
                                 </button>
