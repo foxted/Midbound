@@ -17,5 +17,8 @@
     "urijs": "^1.17.0",
     "vue": "~1.0.13",
     "vue-resource": "~1.0.1"
+  },
+  "dependencies": {
+    "accounting": "^0.4.1"
   }
 }
