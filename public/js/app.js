@@ -35913,9 +35913,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-b5c6a6fe", module.exports)
+    hotAPI.createRecord("_v-67010392", module.exports)
   } else {
-    hotAPI.update("_v-b5c6a6fe", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-67010392", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":38,"vue-hot-reload-api":36}],43:[function(require,module,exports){
@@ -35969,9 +35969,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-b5aa77fc", module.exports)
+    hotAPI.createRecord("_v-670f1b13", module.exports)
   } else {
-    hotAPI.update("_v-b5aa77fc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-670f1b13", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":38,"vue-hot-reload-api":36}],44:[function(require,module,exports){
@@ -37301,6 +37301,7 @@ Vue.component('spark-websites-list', {
      */
     data: function data() {
         return {
+            editedWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
             deleteWebsiteForm: new SparkForm({}),
@@ -37312,6 +37313,25 @@ Vue.component('spark-websites-list', {
 
 
     methods: {
+
+        /**
+         * Edit the specify website url .
+         */
+        editWebsite: function editWebsite(website) {
+            this.beforeEditCache = website.url;
+            this.editedWebsite = website;
+        },
+
+
+        /**
+         * Cancel the edit website url .
+         */
+        cancelEditWebsite: function cancelEditWebsite(website) {
+            this.editedWebsite = null;
+            website.url = this.beforeEditCache;
+        },
+
+
         /**
          * Show the edit website modal.
          */
@@ -37357,6 +37377,15 @@ Vue.component('spark-websites-list', {
             });
         }
     }
+
+    // directives: {
+    //     'website-focus': function (el, value) {
+    //         if (value) {
+    //             el.focus()
+    //         }
+    //     }
+    // }
+
 });
 
 },{}],102:[function(require,module,exports){

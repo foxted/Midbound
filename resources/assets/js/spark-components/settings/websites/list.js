@@ -6,6 +6,7 @@ Vue.component('spark-websites-list', {
      */
     data() {
         return {
+            editedWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
             deleteWebsiteForm: new SparkForm({}),
@@ -16,6 +17,23 @@ Vue.component('spark-websites-list', {
     },
 
     methods: {
+
+        /**
+         * Edit the specify website url .
+         */
+        editWebsite(website) {
+            this.beforeEditCache = website.url;
+            this.editedWebsite = website;
+        },
+
+        /**
+         * Cancel the edit website url .
+         */
+        cancelEditWebsite(website) {
+            this.editedWebsite = null;
+            website.url = this.beforeEditCache;
+        },
+
         /**
          * Show the edit website modal.
          */
@@ -59,4 +77,13 @@ Vue.component('spark-websites-list', {
                 })
         }
     }
+    
+    // directives: {
+    //     'website-focus': function (el, value) {
+    //         if (value) {
+    //             el.focus()
+    //         }
+    //     }
+    // }
+
 });

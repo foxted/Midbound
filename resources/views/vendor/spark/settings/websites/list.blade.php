@@ -13,12 +13,20 @@
                             <th></th>
                         </thead>
 
-                        <tbody>
+                        <tbody >
                             <tr v-for="website in websites">
                                 <!-- URL -->
-                                <td>
-                                    <div class="btn-table-align">
-                                        @{{ website.url }}
+                                <td v-cloak>
+                                    <div class="btn-table-align" 
+                                    :class="{editing: website == editedWebsite}">
+                                        <div class="view" >
+                                            <label @click="editWebsite(website)">
+                                                @{{ website.url }}
+                                            </label>
+                                        </div>
+                                        <input class="edit" type="text" 
+                                            v-model="website.url"
+                                            @keyup.esc="cancelEditWebsite(website)" /> 
                                     </div>
                                 </td>
 
