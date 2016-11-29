@@ -2,7 +2,7 @@
 <li class="dropdown-header" v-if="teams.length > 1">Switch Teams</li>
 
 <!-- Switch Current Team -->
-<li v-for="team in teams" v-if="teams.length > 1">
+<li v-for="team in teams" v-show="teams.length > 1">
     <a href="/teams/@{{ team.id }}/switch">
         <span v-if="user.current_team_id == team.id">
             @{{ team.name }}

@@ -19,6 +19,7 @@
     "vue-resource": "~1.0.1"
   },
   "dependencies": {
-    "accounting": "^0.4.1"
+    "accounting": "^0.4.1",
+    "payment": "^2.1.3"
   }
 }
