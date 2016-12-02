@@ -25,3 +25,17 @@
 		background-color: white;
 	}
 }
+
+.website-url {
+	.editing {
+		.view {
+			display: none;
+		}
+		.edit {
+			display: block;
+		}
+	}
+	.edit {
+		display: none;
+	}
+}

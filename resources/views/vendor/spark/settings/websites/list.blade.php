@@ -14,19 +14,22 @@
                         </thead>
 
                         <tbody >
-                            <tr v-for="website in websites">
+                            <tr v-for="website in websites" >
                                 <!-- URL -->
-                                <td v-cloak>
+                                <td v-cloak class="website-url" :key="website.id">
                                     <div class="btn-table-align" 
-                                    :class="{editing: website == editedWebsite}">
-                                        <div class="view" >
-                                            <label @click="editWebsite(website)">
+                                        :class="{ editing: website == editingWebsite }">
+                                        <div class="view">
+                                            <label @click="editUrl(website)"> 
                                                 @{{ website.url }}
                                             </label>
                                         </div>
-                                        <input class="edit" type="text" 
+                                        <input class="edit form-control" type="text" 
                                             v-model="website.url"
-                                            @keyup.esc="cancelEditWebsite(website)" /> 
+                                            v-el="urlInput"  
+                                            @blur="doneEditUrl(website)"
+                                            @keyup.enter="doneEditUrl(website)"
+                                            @keyup.esc="cancelEditUrl(website)" /> 
                                     </div>
                                 </td>
 
@@ -138,7 +141,7 @@
                         Are you sure you want to delete this website? If deleted, the associated tracker will not record
                         any data anymore.
                     </div>
-
+ 
                     <!-- Modal Actions -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">No, Go Back</button>

@@ -6,9 +6,12 @@ Vue.component('spark-websites-list', {
      */
     data() {
         return {
-            editedWebsite: null,
+            editingWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
+            websiteUrlForm: new SparkForm({
+                url: ''
+            }),
             deleteWebsiteForm: new SparkForm({}),
             emailDeveloperForm: new SparkForm({
                 email: ''
@@ -16,21 +19,46 @@ Vue.component('spark-websites-list', {
         }
     },
 
-    methods: {
+    computed: {
+        validWebsiteUrl() {
+            return this.editedWebsite.url != "";
+        }
+    },
 
+    methods: {
         /**
          * Edit the specify website url .
          */
-        editWebsite(website) {
+        editUrl(website) {
             this.beforeEditCache = website.url;
-            this.editedWebsite = website;
+            this.editingWebsite = website;
         },
+
+        /** 
+        *
+        */
+        doneEditUrl(website) {
+            if (!this.editingWebsite) {
+                return
+            }
+            this.editingWebsite = null;
+            if (website.url != this.beforeEditCache) {
+                this.websiteUrlForm.url = website.url;
+                Spark.put(`/api/websites/${website.id}`, this.websiteUrlForm)
+                    .then(response => {
+                       
+                       this.editingWebsite = null;
+
+                    });
+            } 
+        },
+
 
         /**
          * Cancel the edit website url .
          */
-        cancelEditWebsite(website) {
-            this.editedWebsite = null;
+        cancelEditUrl(website) {
+            this.editingWebsite = null;
             website.url = this.beforeEditCache;
         },
 
@@ -76,14 +104,18 @@ Vue.component('spark-websites-list', {
                     $('#modal-view-website').modal('hide');
                 })
         }
-    }
-    
+    },
+
+    // a custom directive to wait for the DOM to be updated
+    // before focusing on the input field.
     // directives: {
-    //     'website-focus': function (el, value) {
+    //     'url-focus': function (el, value) {
     //         if (value) {
-    //             el.focus()
+    //             el.focus();
     //         }
     //     }
     // }
-
 });
+
+
+

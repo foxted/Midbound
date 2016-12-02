@@ -37342,9 +37342,12 @@ Vue.component('spark-websites-list', {
      */
     data: function data() {
         return {
-            editedWebsite: null,
+            editingWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
+            websiteUrlForm: new SparkForm({
+                url: ''
+            }),
             deleteWebsiteForm: new SparkForm({}),
             emailDeveloperForm: new SparkForm({
                 email: ''
@@ -37353,22 +37356,47 @@ Vue.component('spark-websites-list', {
     },
 
 
-    methods: {
+    computed: {
+        validWebsiteUrl: function validWebsiteUrl() {
+            return this.editedWebsite.url != "";
+        }
+    },
 
+    methods: {
         /**
          * Edit the specify website url .
          */
-        editWebsite: function editWebsite(website) {
+        editUrl: function editUrl(website) {
             this.beforeEditCache = website.url;
-            this.editedWebsite = website;
+            this.editingWebsite = website;
+        },
+
+
+        /** 
+        *
+        */
+        doneEditUrl: function doneEditUrl(website) {
+            var _this = this;
+
+            if (!this.editingWebsite) {
+                return;
+            }
+            this.editingWebsite = null;
+            if (website.url != this.beforeEditCache) {
+                this.websiteUrlForm.url = website.url;
+                Spark.put('/api/websites/' + website.id, this.websiteUrlForm).then(function (response) {
+
+                    _this.editingWebsite = null;
+                });
+            }
         },
 
 
         /**
          * Cancel the edit website url .
          */
-        cancelEditWebsite: function cancelEditWebsite(website) {
-            this.editedWebsite = null;
+        cancelEditUrl: function cancelEditUrl(website) {
+            this.editingWebsite = null;
             website.url = this.beforeEditCache;
         },
 
@@ -37397,35 +37425,27 @@ Vue.component('spark-websites-list', {
          * Delete the specified website.
          */
         deleteWebsite: function deleteWebsite() {
-            var _this = this;
+            var _this2 = this;
 
             Spark.delete('/api/websites/' + this.deletingWebsite.id, this.deleteWebsiteForm).then(function () {
-                _this.$dispatch('updateWebsites');
+                _this2.$dispatch('updateWebsites');
 
                 $('#modal-delete-website').modal('hide');
             });
         },
         sendEmail: function sendEmail() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.emailDeveloperForm.busy = true;
             this.emailDeveloperForm.errors.forget();
 
             Spark.post('/api/email-developer/' + this.showingWebsite.id, this.emailDeveloperForm).then(function (response) {
-                _this2.busy = false;
-                _this2.emailDeveloperForm.email = '';
+                _this3.busy = false;
+                _this3.emailDeveloperForm.email = '';
                 $('#modal-view-website').modal('hide');
             });
         }
     }
-
-    // directives: {
-    //     'website-focus': function (el, value) {
-    //         if (value) {
-    //             el.focus()
-    //         }
-    //     }
-    // }
 
 });
 
