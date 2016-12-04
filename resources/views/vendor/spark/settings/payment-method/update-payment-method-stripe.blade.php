@@ -6,7 +6,7 @@
                 Update Payment Method
             </div>
 
-            <div class="pull-right">
+            <div class="pull-right" v-if="billable.card_last_four">
                 <a href="#" class="btn-link" v-if="!updating" @click.prevent="toggleUpdate">Update</a>
                 <a href="#" class="btn-link" v-else @click.prevent="toggleUpdate">Cancel</a>
             </div>
@@ -37,7 +37,7 @@
                 Card ending in @{{ billable.card_last_four }}
             </span>
 
-            <form class="form-horizontal" role="form" v-if="updating">
+            <form class="form-horizontal update-form" role="form" v-if="updating || !billable.card_last_four">
                 <!-- Billing Address Fields -->
                 @if (Spark::collectsBillingAddress())
                     <h2><i class="fa fa-btn fa-map-marker"></i>Billing Address</h2>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <!-- Security Code -->
+                <!-- Security Code & Expiration -->
                 <div class="form-group" :class="{'has-error': cardForm.errors.has('number')}">
                     <label for="cvc" class="col-md-4 control-label"></label>
 

@@ -1,9 +1,10 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "midbound/midbound",
+    "description": "Connect with the right prospects, at the right time.",
     "keywords": [
-        "framework",
-        "laravel"
+        "midbound",
+        "laravel",
+        "sales"
     ],
     "license": "MIT",
     "type": "project",
