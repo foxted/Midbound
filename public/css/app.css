@@ -6273,11 +6273,25 @@ button.close {
   .spark-settings-stacked-tabs li a:active, .spark-settings-stacked-tabs li a:hover, .spark-settings-stacked-tabs li a:link, .spark-settings-stacked-tabs li a:visited {
     background-color: white; }
 
+.website-url .view:hover {
+  color: #a6a6a6; }
+  .website-url .view:hover .overlay-icon {
+    opacity: 1;
+    z-index: auto;
+    padding-left: 10px; }
+    .website-url .view:hover .overlay-icon.fa-pencil {
+      color: #a6a6a6; }
+
 .website-url .editing .view {
   display: none; }
 
 .website-url .editing .edit {
   display: block; }
+
+.website-url .overlay-icon {
+  opacity: 0;
+  z-index: auto;
+  width: 24px; }
 
 .website-url .edit {
   display: none; }

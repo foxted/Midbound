@@ -37342,6 +37342,7 @@ Vue.component('spark-websites-list', {
      */
     data: function data() {
         return {
+            editing: false,
             editingWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
@@ -37366,9 +37367,14 @@ Vue.component('spark-websites-list', {
         /**
          * Edit the specify website url .
          */
-        editUrl: function editUrl(website) {
+        toggleEditUrl: function toggleEditUrl(website, $event) {
             this.beforeEditCache = website.url;
             this.editingWebsite = website;
+            if (this.editing || this.editingWebsite) {
+                this.$nextTick(function () {
+                    $($event.target).next('input').focus();
+                });
+            }
         },
 
 
@@ -37381,11 +37387,14 @@ Vue.component('spark-websites-list', {
             if (!this.editingWebsite) {
                 return;
             }
+            if (website.url == "") {
+                website.url = this.beforeEditCache;
+                return;
+            }
             this.editingWebsite = null;
-            if (website.url != this.beforeEditCache) {
+            if (website.url != this.beforeEditCache && website.url != "") {
                 this.websiteUrlForm.url = website.url;
                 Spark.put('/api/websites/' + website.id, this.websiteUrlForm).then(function (response) {
-
                     _this.editingWebsite = null;
                 });
             }
@@ -37446,7 +37455,6 @@ Vue.component('spark-websites-list', {
             });
         }
     }
-
 });
 
 },{}],103:[function(require,module,exports){

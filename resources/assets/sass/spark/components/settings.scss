@@ -27,6 +27,17 @@
 }
 
 .website-url {
+	.view:hover {
+		color: #a6a6a6;
+		.overlay-icon {
+			opacity: 1;
+			z-index: auto;
+			padding-left: 10px;
+			&.fa-pencil {
+				color: #a6a6a6;
+			}
+		}
+	}
 	.editing {
 		.view {
 			display: none;
@@ -34,6 +45,11 @@
 		.edit {
 			display: block;
 		}
+	}
+	.overlay-icon {
+		opacity: 0;
+		z-index: auto;
+		width: 24px;
 	}
 	.edit {
 		display: none;

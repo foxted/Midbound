@@ -13,20 +13,18 @@
                             <th></th>
                         </thead>
 
-                        <tbody >
+                        <tbody v-cloak>
                             <tr v-for="website in websites" >
                                 <!-- URL -->
-                                <td v-cloak class="website-url" :key="website.id">
+                                <td class="website-url" :key="website.id">
                                     <div class="btn-table-align" 
                                         :class="{ editing: website == editingWebsite }">
-                                        <div class="view">
-                                            <label @click="editUrl(website)"> 
+                                        <label class="view" @click="toggleEditUrl(website, $event)">
                                                 @{{ website.url }}
-                                            </label>
-                                        </div>
+                                                <span class="overlay-icon fa fa-pencil"></span>
+                                        </label>
                                         <input class="edit form-control" type="text" 
                                             v-model="website.url"
-                                            v-el="urlInput"  
                                             @blur="doneEditUrl(website)"
                                             @keyup.enter="doneEditUrl(website)"
                                             @keyup.esc="cancelEditUrl(website)" /> 
@@ -39,7 +37,6 @@
                                         {{--<span v-if="website.last_used_at">--}}
                                             {{--@{{ website.last_used_at | datetime }}--}}
                                         {{--</span>--}}
-
                                         <span v-else>
                                             Never
                                         </span>

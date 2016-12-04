@@ -6,6 +6,7 @@ Vue.component('spark-websites-list', {
      */
     data() {
         return {
+            editing: false,
             editingWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
@@ -29,9 +30,14 @@ Vue.component('spark-websites-list', {
         /**
          * Edit the specify website url .
          */
-        editUrl(website) {
+        toggleEditUrl(website, $event) {
             this.beforeEditCache = website.url;
             this.editingWebsite = website;
+            if(this.editing || this.editingWebsite) {
+                this.$nextTick(() => {
+                    $($event.target).next('input').focus();
+                });
+            }
         },
 
         /** 
@@ -41,14 +47,16 @@ Vue.component('spark-websites-list', {
             if (!this.editingWebsite) {
                 return
             }
+            if (website.url == "") {
+                website.url = this.beforeEditCache;
+                return
+            }
             this.editingWebsite = null;
-            if (website.url != this.beforeEditCache) {
+            if (website.url != this.beforeEditCache && website.url != "") {
                 this.websiteUrlForm.url = website.url;
                 Spark.put(`/api/websites/${website.id}`, this.websiteUrlForm)
                     .then(response => {
-                       
                        this.editingWebsite = null;
-
                     });
             } 
         },
@@ -104,18 +112,5 @@ Vue.component('spark-websites-list', {
                     $('#modal-view-website').modal('hide');
                 })
         }
-    },
-
-    // a custom directive to wait for the DOM to be updated
-    // before focusing on the input field.
-    // directives: {
-    //     'url-focus': function (el, value) {
-    //         if (value) {
-    //             el.focus();
-    //         }
-    //     }
-    // }
+    }
 });
-
-
-
