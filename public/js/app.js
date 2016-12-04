@@ -1,4 +1,419 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*!
+ * accounting.js v0.4.1
+ * Copyright 2014 Open Exchange Rates
+ *
+ * Freely distributable under the MIT license.
+ * Portions of accounting.js are inspired or borrowed from underscore.js
+ *
+ * Full details and documentation:
+ * http://openexchangerates.github.io/accounting.js/
+ */
+
+(function(root, undefined) {
+
+	/* --- Setup --- */
+
+	// Create the local library object, to be exported or referenced globally later
+	var lib = {};
+
+	// Current version
+	lib.version = '0.4.1';
+
+
+	/* --- Exposed settings --- */
+
+	// The library's settings configuration object. Contains default parameters for
+	// currency and number formatting
+	lib.settings = {
+		currency: {
+			symbol : "$",		// default currency symbol is '$'
+			format : "%s%v",	// controls output: %s = symbol, %v = value (can be object, see docs)
+			decimal : ".",		// decimal point separator
+			thousand : ",",		// thousands separator
+			precision : 2,		// decimal places
+			grouping : 3		// digit grouping (not implemented yet)
+		},
+		number: {
+			precision : 0,		// default precision on numbers is 0
+			grouping : 3,		// digit grouping (not implemented yet)
+			thousand : ",",
+			decimal : "."
+		}
+	};
+
+
+	/* --- Internal Helper Methods --- */
+
+	// Store reference to possibly-available ECMAScript 5 methods for later
+	var nativeMap = Array.prototype.map,
+		nativeIsArray = Array.isArray,
+		toString = Object.prototype.toString;
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js
+	 */
+	function isString(obj) {
+		return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
+	}
+
+	/**
+	 * Tests whether supplied parameter is a string
+	 * from underscore.js, delegates to ECMA5's native Array.isArray
+	 */
+	function isArray(obj) {
+		return nativeIsArray ? nativeIsArray(obj) : toString.call(obj) === '[object Array]';
+	}
+
+	/**
+	 * Tests whether supplied parameter is a true object
+	 */
+	function isObject(obj) {
+		return obj && toString.call(obj) === '[object Object]';
+	}
+
+	/**
+	 * Extends an object with a defaults object, similar to underscore's _.defaults
+	 *
+	 * Used for abstracting parameter handling from API methods
+	 */
+	function defaults(object, defs) {
+		var key;
+		object = object || {};
+		defs = defs || {};
+		// Iterate over object non-prototype properties:
+		for (key in defs) {
+			if (defs.hasOwnProperty(key)) {
+				// Replace values with defaults only if undefined (allow empty/zero values):
+				if (object[key] == null) object[key] = defs[key];
+			}
+		}
+		return object;
+	}
+
+	/**
+	 * Implementation of `Array.map()` for iteration loops
+	 *
+	 * Returns a new Array as a result of calling `iterator` on each array value.
+	 * Defers to native Array.map if available
+	 */
+	function map(obj, iterator, context) {
+		var results = [], i, j;
+
+		if (!obj) return results;
+
+		// Use native .map method if it exists:
+		if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
+
+		// Fallback for native .map:
+		for (i = 0, j = obj.length; i < j; i++ ) {
+			results[i] = iterator.call(context, obj[i], i, obj);
+		}
+		return results;
+	}
+
+	/**
+	 * Check and normalise the value of precision (must be positive integer)
+	 */
+	function checkPrecision(val, base) {
+		val = Math.round(Math.abs(val));
+		return isNaN(val)? base : val;
+	}
+
+
+	/**
+	 * Parses a format string or object and returns format obj for use in rendering
+	 *
+	 * `format` is either a string with the default (positive) format, or object
+	 * containing `pos` (required), `neg` and `zero` values (or a function returning
+	 * either a string or object)
+	 *
+	 * Either string or format.pos must contain "%v" (value) to be valid
+	 */
+	function checkCurrencyFormat(format) {
+		var defaults = lib.settings.currency.format;
+
+		// Allow function as format parameter (should return string or object):
+		if ( typeof format === "function" ) format = format();
+
+		// Format can be a string, in which case `value` ("%v") must be present:
+		if ( isString( format ) && format.match("%v") ) {
+
+			// Create and return positive, negative and zero formats:
+			return {
+				pos : format,
+				neg : format.replace("-", "").replace("%v", "-%v"),
+				zero : format
+			};
+
+		// If no format, or object is missing valid positive value, use defaults:
+		} else if ( !format || !format.pos || !format.pos.match("%v") ) {
+
+			// If defaults is a string, casts it to an object for faster checking next time:
+			return ( !isString( defaults ) ) ? defaults : lib.settings.currency.format = {
+				pos : defaults,
+				neg : defaults.replace("%v", "-%v"),
+				zero : defaults
+			};
+
+		}
+		// Otherwise, assume format was fine:
+		return format;
+	}
+
+
+	/* --- API Methods --- */
+
+	/**
+	 * Takes a string/array of strings, removes all formatting/cruft and returns the raw float value
+	 * Alias: `accounting.parse(string)`
+	 *
+	 * Decimal must be included in the regular expression to match floats (defaults to
+	 * accounting.settings.number.decimal), so if the number uses a non-standard decimal 
+	 * separator, provide it as the second argument.
+	 *
+	 * Also matches bracketed negatives (eg. "$ (1.99)" => -1.99)
+	 *
+	 * Doesn't throw any errors (`NaN`s become 0) but this may change in future
+	 */
+	var unformat = lib.unformat = lib.parse = function(value, decimal) {
+		// Recursively unformat arrays:
+		if (isArray(value)) {
+			return map(value, function(val) {
+				return unformat(val, decimal);
+			});
+		}
+
+		// Fails silently (need decent errors):
+		value = value || 0;
+
+		// Return the value as-is if it's already a number:
+		if (typeof value === "number") return value;
+
+		// Default decimal point comes from settings, but could be set to eg. "," in opts:
+		decimal = decimal || lib.settings.number.decimal;
+
+		 // Build regex to strip out everything except digits, decimal point and minus sign:
+		var regex = new RegExp("[^0-9-" + decimal + "]", ["g"]),
+			unformatted = parseFloat(
+				("" + value)
+				.replace(/\((.*)\)/, "-$1") // replace bracketed values with negatives
+				.replace(regex, '')         // strip out any cruft
+				.replace(decimal, '.')      // make sure decimal point is standard
+			);
+
+		// This will fail silently which may cause trouble, let's wait and see:
+		return !isNaN(unformatted) ? unformatted : 0;
+	};
+
+
+	/**
+	 * Implementation of toFixed() that treats floats more like decimals
+	 *
+	 * Fixes binary rounding issues (eg. (0.615).toFixed(2) === "0.61") that present
+	 * problems for accounting- and finance-related software.
+	 */
+	var toFixed = lib.toFixed = function(value, precision) {
+		precision = checkPrecision(precision, lib.settings.number.precision);
+		var power = Math.pow(10, precision);
+
+		// Multiply up by precision, round accurately, then divide and use native toFixed():
+		return (Math.round(lib.unformat(value) * power) / power).toFixed(precision);
+	};
+
+
+	/**
+	 * Format a number, with comma-separated thousands and custom precision/decimal places
+	 * Alias: `accounting.format()`
+	 *
+	 * Localise by overriding the precision and thousand / decimal separators
+	 * 2nd parameter `precision` can be an object matching `settings.number`
+	 */
+	var formatNumber = lib.formatNumber = lib.format = function(number, precision, thousand, decimal) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val) {
+				return formatNumber(val, precision, thousand, decimal);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(precision) ? precision : {
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal
+				}),
+				lib.settings.number
+			),
+
+			// Clean up precision
+			usePrecision = checkPrecision(opts.precision),
+
+			// Do some calc:
+			negative = number < 0 ? "-" : "",
+			base = parseInt(toFixed(Math.abs(number || 0), usePrecision), 10) + "",
+			mod = base.length > 3 ? base.length % 3 : 0;
+
+		// Format the number:
+		return negative + (mod ? base.substr(0, mod) + opts.thousand : "") + base.substr(mod).replace(/(\d{3})(?=\d)/g, "$1" + opts.thousand) + (usePrecision ? opts.decimal + toFixed(Math.abs(number), usePrecision).split('.')[1] : "");
+	};
+
+
+	/**
+	 * Format a number into currency
+	 *
+	 * Usage: accounting.formatMoney(number, symbol, precision, thousandsSep, decimalSep, format)
+	 * defaults: (0, "$", 2, ",", ".", "%s%v")
+	 *
+	 * Localise by overriding the symbol, precision, thousand / decimal separators and format
+	 * Second param can be an object matching `settings.currency` which is the easiest way.
+	 *
+	 * To do: tidy up the parameters
+	 */
+	var formatMoney = lib.formatMoney = function(number, symbol, precision, thousand, decimal, format) {
+		// Resursively format arrays:
+		if (isArray(number)) {
+			return map(number, function(val){
+				return formatMoney(val, symbol, precision, thousand, decimal, format);
+			});
+		}
+
+		// Clean up number:
+		number = unformat(number);
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero):
+			formats = checkCurrencyFormat(opts.format),
+
+			// Choose which format to use for this value:
+			useFormat = number > 0 ? formats.pos : number < 0 ? formats.neg : formats.zero;
+
+		// Return with currency symbol added:
+		return useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(number), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+	};
+
+
+	/**
+	 * Format a list of numbers into an accounting column, padding with whitespace
+	 * to line up currency symbols, thousand separators and decimals places
+	 *
+	 * List should be an array of numbers
+	 * Second parameter can be an object containing keys that match the params
+	 *
+	 * Returns array of accouting-formatted number strings of same length
+	 *
+	 * NB: `white-space:pre` CSS rule is required on the list container to prevent
+	 * browsers from collapsing the whitespace in the output strings.
+	 */
+	lib.formatColumn = function(list, symbol, precision, thousand, decimal, format) {
+		if (!list) return [];
+
+		// Build options object from second param (if object) or all params, extending defaults:
+		var opts = defaults(
+				(isObject(symbol) ? symbol : {
+					symbol : symbol,
+					precision : precision,
+					thousand : thousand,
+					decimal : decimal,
+					format : format
+				}),
+				lib.settings.currency
+			),
+
+			// Check format (returns object with pos, neg and zero), only need pos for now:
+			formats = checkCurrencyFormat(opts.format),
+
+			// Whether to pad at start of string or after currency symbol:
+			padAfterSymbol = formats.pos.indexOf("%s") < formats.pos.indexOf("%v") ? true : false,
+
+			// Store value for the length of the longest string in the column:
+			maxLength = 0,
+
+			// Format the list according to options, store the length of the longest string:
+			formatted = map(list, function(val, i) {
+				if (isArray(val)) {
+					// Recursively format columns if list is a multi-dimensional array:
+					return lib.formatColumn(val, opts);
+				} else {
+					// Clean up the value
+					val = unformat(val);
+
+					// Choose which format to use for this value (pos, neg or zero):
+					var useFormat = val > 0 ? formats.pos : val < 0 ? formats.neg : formats.zero,
+
+						// Format this value, push into formatted list and save the length:
+						fVal = useFormat.replace('%s', opts.symbol).replace('%v', formatNumber(Math.abs(val), checkPrecision(opts.precision), opts.thousand, opts.decimal));
+
+					if (fVal.length > maxLength) maxLength = fVal.length;
+					return fVal;
+				}
+			});
+
+		// Pad each number in the list and send back the column of numbers:
+		return map(formatted, function(val, i) {
+			// Only if this is a string (not a nested array, which would have already been padded):
+			if (isString(val) && val.length < maxLength) {
+				// Depending on symbol position, pad after symbol or at index 0:
+				return padAfterSymbol ? val.replace(opts.symbol, opts.symbol+(new Array(maxLength - val.length + 1).join(" "))) : (new Array(maxLength - val.length + 1).join(" ")) + val;
+			}
+			return val;
+		});
+	};
+
+
+	/* --- Module Definition --- */
+
+	// Export accounting for CommonJS. If being loaded as an AMD module, define it as such.
+	// Otherwise, just add `accounting` to the global object
+	if (typeof exports !== 'undefined') {
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = lib;
+		}
+		exports.accounting = lib;
+	} else if (typeof define === 'function' && define.amd) {
+		// Return the library as an AMD module:
+		define([], function() {
+			return lib;
+		});
+	} else {
+		// Use accounting.noConflict to restore `accounting` back to its original value.
+		// Returns a reference to the library's `accounting` object;
+		// e.g. `var numbers = accounting.noConflict();`
+		lib.noConflict = (function(oldAccounting) {
+			return function() {
+				// Reset the value of the root's `accounting` variable:
+				root.accounting = oldAccounting;
+				// Delete the noConflict method:
+				lib.noConflict = undefined;
+				// Return reference to the library to re-assign it:
+				return lib;
+			};
+		})(root.accounting);
+
+		// Declare `fx` on the root (global/window) object:
+		root['accounting'] = lib;
+	}
+
+	// Root will be `window` in browser or `global` on the server:
+}(this));
+
+},{}],2:[function(require,module,exports){
 "use strict";
 
 // rawAsap provides everything we need except exception management.
@@ -66,7 +481,7 @@ RawTask.prototype.call = function () {
     }
 };
 
-},{"./raw":2}],2:[function(require,module,exports){
+},{"./raw":3}],3:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -293,7 +708,7 @@ rawAsap.makeRequestCallFromTimer = makeRequestCallFromTimer;
 // https://github.com/tildeio/rsvp.js/blob/cddf7232546a9cf858524b75cde6f9edf72620a7/lib/rsvp/asap.js
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
 require('../../js/transition.js')
 require('../../js/alert.js')
@@ -307,7 +722,7 @@ require('../../js/popover.js')
 require('../../js/scrollspy.js')
 require('../../js/tab.js')
 require('../../js/affix.js')
-},{"../../js/affix.js":4,"../../js/alert.js":5,"../../js/button.js":6,"../../js/carousel.js":7,"../../js/collapse.js":8,"../../js/dropdown.js":9,"../../js/modal.js":10,"../../js/popover.js":11,"../../js/scrollspy.js":12,"../../js/tab.js":13,"../../js/tooltip.js":14,"../../js/transition.js":15}],4:[function(require,module,exports){
+},{"../../js/affix.js":5,"../../js/alert.js":6,"../../js/button.js":7,"../../js/carousel.js":8,"../../js/collapse.js":9,"../../js/dropdown.js":10,"../../js/modal.js":11,"../../js/popover.js":12,"../../js/scrollspy.js":13,"../../js/tab.js":14,"../../js/tooltip.js":15,"../../js/transition.js":16}],5:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: affix.js v3.3.7
  * http://getbootstrap.com/javascript/#affix
@@ -471,7 +886,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: alert.js v3.3.7
  * http://getbootstrap.com/javascript/#alerts
@@ -567,7 +982,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: button.js v3.3.7
  * http://getbootstrap.com/javascript/#buttons
@@ -694,7 +1109,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: carousel.js v3.3.7
  * http://getbootstrap.com/javascript/#carousel
@@ -933,7 +1348,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: collapse.js v3.3.7
  * http://getbootstrap.com/javascript/#collapse
@@ -1147,7 +1562,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: dropdown.js v3.3.7
  * http://getbootstrap.com/javascript/#dropdowns
@@ -1314,7 +1729,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: modal.js v3.3.7
  * http://getbootstrap.com/javascript/#modals
@@ -1655,7 +2070,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: popover.js v3.3.7
  * http://getbootstrap.com/javascript/#popovers
@@ -1765,7 +2180,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: scrollspy.js v3.3.7
  * http://getbootstrap.com/javascript/#scrollspy
@@ -1939,7 +2354,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: tab.js v3.3.7
  * http://getbootstrap.com/javascript/#tabs
@@ -2096,7 +2511,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: tooltip.js v3.3.7
  * http://getbootstrap.com/javascript/#tooltip
@@ -2618,7 +3033,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: transition.js v3.3.7
  * http://getbootstrap.com/javascript/#transitions
@@ -2679,7 +3094,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
@@ -12495,7 +12910,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /*!
  * JavaScript Cookie v2.1.3
  * https://github.com/js-cookie/js-cookie
@@ -12653,7 +13068,7 @@ return jQuery;
 	return init(function () {});
 }));
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 //! moment.js
 //! version : 2.15.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -16888,7 +17303,614 @@ return jQuery;
     return _moment;
 
 }));
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
+(function (global){
+// Generated by CoffeeScript 1.10.0
+(function() {
+  var Payment, QJ, cardFromNumber, cardFromType, cards, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardNumber, formatExpiry, formatForwardExpiry, formatForwardSlash, formatMonthExpiry, hasTextSelected, luhnCheck, reFormatCardNumber, restrictCVC, restrictCardNumber, restrictCombinedExpiry, restrictExpiry, restrictMonthExpiry, restrictNumeric, restrictYearExpiry, setCardType,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  QJ = require('qj');
+
+  defaultFormat = /(\d{1,4})/g;
+
+  cards = [
+    {
+      type: 'amex',
+      pattern: /^3[47]/,
+      format: /(\d{1,4})(\d{1,6})?(\d{1,5})?/,
+      length: [15],
+      cvcLength: [4],
+      luhn: true
+    }, {
+      type: 'dankort',
+      pattern: /^5019/,
+      format: defaultFormat,
+      length: [16],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'dinersclub',
+      pattern: /^(36|38|30[0-5])/,
+      format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/,
+      length: [14],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'discover',
+      pattern: /^(6011|65|64[4-9]|622)/,
+      format: defaultFormat,
+      length: [16],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'jcb',
+      pattern: /^35/,
+      format: defaultFormat,
+      length: [16],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'laser',
+      pattern: /^(6706|6771|6709)/,
+      format: defaultFormat,
+      length: [16, 17, 18, 19],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'maestro',
+      pattern: /^(5018|5020|5038|6304|6703|6708|6759|676[1-3])/,
+      format: defaultFormat,
+      length: [12, 13, 14, 15, 16, 17, 18, 19],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'mastercard',
+      pattern: /^5[1-5]/,
+      pattern: /^(5[1-5]|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)/,
+      format: defaultFormat,
+      length: [16],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'unionpay',
+      pattern: /^62/,
+      format: defaultFormat,
+      length: [16, 17, 18, 19],
+      cvcLength: [3],
+      luhn: false
+    }, {
+      type: 'visaelectron',
+      pattern: /^4(026|17500|405|508|844|91[37])/,
+      format: defaultFormat,
+      length: [16],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'elo',
+      pattern: /^(4011|438935|45(1416|76|7393)|50(4175|6699|67|90[4-7])|63(6297|6368))/,
+      format: defaultFormat,
+      length: [16],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'visa',
+      pattern: /^4/,
+      format: defaultFormat,
+      length: [13, 16, 19],
+      cvcLength: [3],
+      luhn: true
+    }
+  ];
+
+  cardFromNumber = function(num) {
+    var card, i, len;
+    num = (num + '').replace(/\D/g, '');
+    for (i = 0, len = cards.length; i < len; i++) {
+      card = cards[i];
+      if (card.pattern.test(num)) {
+        return card;
+      }
+    }
+  };
+
+  cardFromType = function(type) {
+    var card, i, len;
+    for (i = 0, len = cards.length; i < len; i++) {
+      card = cards[i];
+      if (card.type === type) {
+        return card;
+      }
+    }
+  };
+
+  luhnCheck = function(num) {
+    var digit, digits, i, len, odd, sum;
+    odd = true;
+    sum = 0;
+    digits = (num + '').split('').reverse();
+    for (i = 0, len = digits.length; i < len; i++) {
+      digit = digits[i];
+      digit = parseInt(digit, 10);
+      if ((odd = !odd)) {
+        digit *= 2;
+      }
+      if (digit > 9) {
+        digit -= 9;
+      }
+      sum += digit;
+    }
+    return sum % 10 === 0;
+  };
+
+  hasTextSelected = function(target) {
+    var e, error, ref;
+    try {
+      if ((target.selectionStart != null) && target.selectionStart !== target.selectionEnd) {
+        return true;
+      }
+      if ((typeof document !== "undefined" && document !== null ? (ref = document.selection) != null ? ref.createRange : void 0 : void 0) != null) {
+        if (document.selection.createRange().text) {
+          return true;
+        }
+      }
+    } catch (error) {
+      e = error;
+    }
+    return false;
+  };
+
+  reFormatCardNumber = function(e) {
+    return setTimeout((function(_this) {
+      return function() {
+        var target, value;
+        target = e.target;
+        value = QJ.val(target);
+        value = Payment.fns.formatCardNumber(value);
+        QJ.val(target, value);
+        return QJ.trigger(target, 'change');
+      };
+    })(this));
+  };
+
+  formatCardNumber = function(e) {
+    var card, digit, length, re, target, upperLength, value;
+    digit = String.fromCharCode(e.which);
+    if (!/^\d+$/.test(digit)) {
+      return;
+    }
+    target = e.target;
+    value = QJ.val(target);
+    card = cardFromNumber(value + digit);
+    length = (value.replace(/\D/g, '') + digit).length;
+    upperLength = 16;
+    if (card) {
+      upperLength = card.length[card.length.length - 1];
+    }
+    if (length >= upperLength) {
+      return;
+    }
+    if (hasTextSelected(target)) {
+      return;
+    }
+    if (card && card.type === 'amex') {
+      re = /^(\d{4}|\d{4}\s\d{6})$/;
+    } else {
+      re = /(?:^|\s)(\d{4})$/;
+    }
+    if (re.test(value)) {
+      e.preventDefault();
+      QJ.val(target, value + ' ' + digit);
+      return QJ.trigger(target, 'change');
+    } else if (re.test(value + digit)) {
+      e.preventDefault();
+      QJ.val(target, value + digit + ' ');
+      return QJ.trigger(target, 'change');
+    }
+  };
+
+  formatBackCardNumber = function(e) {
+    var target, value;
+    target = e.target;
+    value = QJ.val(target);
+    if (e.meta) {
+      return;
+    }
+    if (e.which !== 8) {
+      return;
+    }
+    if (hasTextSelected(target)) {
+      return;
+    }
+    if (/\d\s$/.test(value)) {
+      e.preventDefault();
+      return QJ.val(target, value.replace(/\d\s$/, ''));
+    } else if (/\s\d?$/.test(value)) {
+      e.preventDefault();
+      return QJ.val(target, value.replace(/\s\d?$/, ''));
+    }
+  };
+
+  formatExpiry = function(e) {
+    var digit, target, val;
+    digit = String.fromCharCode(e.which);
+    if (!/^\d+$/.test(digit)) {
+      return;
+    }
+    target = e.target;
+    val = QJ.val(target) + digit;
+    if (/^\d$/.test(val) && (val !== '0' && val !== '1')) {
+      e.preventDefault();
+      return QJ.val(target, "0" + val + " / ");
+    } else if (/^\d\d$/.test(val)) {
+      e.preventDefault();
+      return QJ.val(target, val + " / ");
+    }
+  };
+
+  formatMonthExpiry = function(e) {
+    var digit, target, val;
+    digit = String.fromCharCode(e.which);
+    if (!/^\d+$/.test(digit)) {
+      return;
+    }
+    target = e.target;
+    val = QJ.val(target) + digit;
+    if (/^\d$/.test(val) && (val !== '0' && val !== '1')) {
+      e.preventDefault();
+      return QJ.val(target, "0" + val);
+    } else if (/^\d\d$/.test(val)) {
+      e.preventDefault();
+      return QJ.val(target, "" + val);
+    }
+  };
+
+  formatForwardExpiry = function(e) {
+    var digit, target, val;
+    digit = String.fromCharCode(e.which);
+    if (!/^\d+$/.test(digit)) {
+      return;
+    }
+    target = e.target;
+    val = QJ.val(target);
+    if (/^\d\d$/.test(val)) {
+      return QJ.val(target, val + " / ");
+    }
+  };
+
+  formatForwardSlash = function(e) {
+    var slash, target, val;
+    slash = String.fromCharCode(e.which);
+    if (slash !== '/') {
+      return;
+    }
+    target = e.target;
+    val = QJ.val(target);
+    if (/^\d$/.test(val) && val !== '0') {
+      return QJ.val(target, "0" + val + " / ");
+    }
+  };
+
+  formatBackExpiry = function(e) {
+    var target, value;
+    if (e.metaKey) {
+      return;
+    }
+    target = e.target;
+    value = QJ.val(target);
+    if (e.which !== 8) {
+      return;
+    }
+    if (hasTextSelected(target)) {
+      return;
+    }
+    if (/\d(\s|\/)+$/.test(value)) {
+      e.preventDefault();
+      return QJ.val(target, value.replace(/\d(\s|\/)*$/, ''));
+    } else if (/\s\/\s?\d?$/.test(value)) {
+      e.preventDefault();
+      return QJ.val(target, value.replace(/\s\/\s?\d?$/, ''));
+    }
+  };
+
+  restrictNumeric = function(e) {
+    var input;
+    if (e.metaKey || e.ctrlKey) {
+      return true;
+    }
+    if (e.which === 32) {
+      return e.preventDefault();
+    }
+    if (e.which === 0) {
+      return true;
+    }
+    if (e.which < 33) {
+      return true;
+    }
+    input = String.fromCharCode(e.which);
+    if (!/[\d\s]/.test(input)) {
+      return e.preventDefault();
+    }
+  };
+
+  restrictCardNumber = function(e) {
+    var card, digit, target, value;
+    target = e.target;
+    digit = String.fromCharCode(e.which);
+    if (!/^\d+$/.test(digit)) {
+      return;
+    }
+    if (hasTextSelected(target)) {
+      return;
+    }
+    value = (QJ.val(target) + digit).replace(/\D/g, '');
+    card = cardFromNumber(value);
+    if (card) {
+      if (!(value.length <= card.length[card.length.length - 1])) {
+        return e.preventDefault();
+      }
+    } else {
+      if (!(value.length <= 16)) {
+        return e.preventDefault();
+      }
+    }
+  };
+
+  restrictExpiry = function(e, length) {
+    var digit, target, value;
+    target = e.target;
+    digit = String.fromCharCode(e.which);
+    if (!/^\d+$/.test(digit)) {
+      return;
+    }
+    if (hasTextSelected(target)) {
+      return;
+    }
+    value = QJ.val(target) + digit;
+    value = value.replace(/\D/g, '');
+    if (value.length > length) {
+      return e.preventDefault();
+    }
+  };
+
+  restrictCombinedExpiry = function(e) {
+    return restrictExpiry(e, 6);
+  };
+
+  restrictMonthExpiry = function(e) {
+    return restrictExpiry(e, 2);
+  };
+
+  restrictYearExpiry = function(e) {
+    return restrictExpiry(e, 4);
+  };
+
+  restrictCVC = function(e) {
+    var digit, target, val;
+    target = e.target;
+    digit = String.fromCharCode(e.which);
+    if (!/^\d+$/.test(digit)) {
+      return;
+    }
+    if (hasTextSelected(target)) {
+      return;
+    }
+    val = QJ.val(target) + digit;
+    if (!(val.length <= 4)) {
+      return e.preventDefault();
+    }
+  };
+
+  setCardType = function(e) {
+    var allTypes, card, cardType, target, val;
+    target = e.target;
+    val = QJ.val(target);
+    cardType = Payment.fns.cardType(val) || 'unknown';
+    if (!QJ.hasClass(target, cardType)) {
+      allTypes = (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = cards.length; i < len; i++) {
+          card = cards[i];
+          results.push(card.type);
+        }
+        return results;
+      })();
+      QJ.removeClass(target, 'unknown');
+      QJ.removeClass(target, allTypes.join(' '));
+      QJ.addClass(target, cardType);
+      QJ.toggleClass(target, 'identified', cardType !== 'unknown');
+      return QJ.trigger(target, 'payment.cardType', cardType);
+    }
+  };
+
+  Payment = (function() {
+    function Payment() {}
+
+    Payment.fns = {
+      cardExpiryVal: function(value) {
+        var month, prefix, ref, year;
+        value = value.replace(/\s/g, '');
+        ref = value.split('/', 2), month = ref[0], year = ref[1];
+        if ((year != null ? year.length : void 0) === 2 && /^\d+$/.test(year)) {
+          prefix = (new Date).getFullYear();
+          prefix = prefix.toString().slice(0, 2);
+          year = prefix + year;
+        }
+        month = parseInt(month, 10);
+        year = parseInt(year, 10);
+        return {
+          month: month,
+          year: year
+        };
+      },
+      validateCardNumber: function(num) {
+        var card, ref;
+        num = (num + '').replace(/\s+|-/g, '');
+        if (!/^\d+$/.test(num)) {
+          return false;
+        }
+        card = cardFromNumber(num);
+        if (!card) {
+          return false;
+        }
+        return (ref = num.length, indexOf.call(card.length, ref) >= 0) && (card.luhn === false || luhnCheck(num));
+      },
+      validateCardExpiry: function(month, year) {
+        var currentTime, expiry, prefix, ref, ref1;
+        if (typeof month === 'object' && 'month' in month) {
+          ref = month, month = ref.month, year = ref.year;
+        } else if (typeof month === 'string' && indexOf.call(month, '/') >= 0) {
+          ref1 = Payment.fns.cardExpiryVal(month), month = ref1.month, year = ref1.year;
+        }
+        if (!(month && year)) {
+          return false;
+        }
+        month = QJ.trim(month);
+        year = QJ.trim(year);
+        if (!/^\d+$/.test(month)) {
+          return false;
+        }
+        if (!/^\d+$/.test(year)) {
+          return false;
+        }
+        month = parseInt(month, 10);
+        if (!(month && month <= 12)) {
+          return false;
+        }
+        if (year.length === 2) {
+          prefix = (new Date).getFullYear();
+          prefix = prefix.toString().slice(0, 2);
+          year = prefix + year;
+        }
+        expiry = new Date(year, month);
+        currentTime = new Date;
+        expiry.setMonth(expiry.getMonth() - 1);
+        expiry.setMonth(expiry.getMonth() + 1, 1);
+        return expiry > currentTime;
+      },
+      validateCardCVC: function(cvc, type) {
+        var ref, ref1;
+        cvc = QJ.trim(cvc);
+        if (!/^\d+$/.test(cvc)) {
+          return false;
+        }
+        if (type && cardFromType(type)) {
+          return ref = cvc.length, indexOf.call((ref1 = cardFromType(type)) != null ? ref1.cvcLength : void 0, ref) >= 0;
+        } else {
+          return cvc.length >= 3 && cvc.length <= 4;
+        }
+      },
+      cardType: function(num) {
+        var ref;
+        if (!num) {
+          return null;
+        }
+        return ((ref = cardFromNumber(num)) != null ? ref.type : void 0) || null;
+      },
+      formatCardNumber: function(num) {
+        var card, groups, ref, upperLength;
+        card = cardFromNumber(num);
+        if (!card) {
+          return num;
+        }
+        upperLength = card.length[card.length.length - 1];
+        num = num.replace(/\D/g, '');
+        num = num.slice(0, upperLength);
+        if (card.format.global) {
+          return (ref = num.match(card.format)) != null ? ref.join(' ') : void 0;
+        } else {
+          groups = card.format.exec(num);
+          if (groups != null) {
+            groups.shift();
+          }
+          return groups != null ? groups.join(' ') : void 0;
+        }
+      }
+    };
+
+    Payment.restrictNumeric = function(el) {
+      return QJ.on(el, 'keypress', restrictNumeric);
+    };
+
+    Payment.cardExpiryVal = function(el) {
+      return Payment.fns.cardExpiryVal(QJ.val(el));
+    };
+
+    Payment.formatCardCVC = function(el) {
+      Payment.restrictNumeric(el);
+      QJ.on(el, 'keypress', restrictCVC);
+      return el;
+    };
+
+    Payment.formatCardExpiry = function(el) {
+      var month, year;
+      Payment.restrictNumeric(el);
+      if (el.length && el.length === 2) {
+        month = el[0], year = el[1];
+        this.formatCardExpiryMultiple(month, year);
+      } else {
+        QJ.on(el, 'keypress', restrictCombinedExpiry);
+        QJ.on(el, 'keypress', formatExpiry);
+        QJ.on(el, 'keypress', formatForwardSlash);
+        QJ.on(el, 'keypress', formatForwardExpiry);
+        QJ.on(el, 'keydown', formatBackExpiry);
+      }
+      return el;
+    };
+
+    Payment.formatCardExpiryMultiple = function(month, year) {
+      QJ.on(month, 'keypress', restrictMonthExpiry);
+      QJ.on(month, 'keypress', formatMonthExpiry);
+      return QJ.on(year, 'keypress', restrictYearExpiry);
+    };
+
+    Payment.formatCardNumber = function(el) {
+      Payment.restrictNumeric(el);
+      QJ.on(el, 'keypress', restrictCardNumber);
+      QJ.on(el, 'keypress', formatCardNumber);
+      QJ.on(el, 'keydown', formatBackCardNumber);
+      QJ.on(el, 'keyup', setCardType);
+      QJ.on(el, 'paste', reFormatCardNumber);
+      return el;
+    };
+
+    Payment.getCardArray = function() {
+      return cards;
+    };
+
+    Payment.setCardArray = function(cardArray) {
+      cards = cardArray;
+      return true;
+    };
+
+    Payment.addToCardArray = function(cardObject) {
+      return cards.push(cardObject);
+    };
+
+    Payment.removeFromCardArray = function(type) {
+      var key, value;
+      for (key in cards) {
+        value = cards[key];
+        if (value.type === type) {
+          cards.splice(key, 1);
+        }
+      }
+      return true;
+    };
+
+    return Payment;
+
+  })();
+
+  module.exports = Payment;
+
+  global.Payment = Payment;
+
+}).call(this);
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"qj":30}],21:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -17070,12 +18092,12 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib')
 
-},{"./lib":25}],21:[function(require,module,exports){
+},{"./lib":27}],23:[function(require,module,exports){
 'use strict';
 
 var asap = require('asap/raw');
@@ -17290,7 +18312,7 @@ function doResolve(fn, promise) {
   }
 }
 
-},{"asap/raw":2}],22:[function(require,module,exports){
+},{"asap/raw":3}],24:[function(require,module,exports){
 'use strict';
 
 var Promise = require('./core.js');
@@ -17305,7 +18327,7 @@ Promise.prototype.done = function (onFulfilled, onRejected) {
   });
 };
 
-},{"./core.js":21}],23:[function(require,module,exports){
+},{"./core.js":23}],25:[function(require,module,exports){
 'use strict';
 
 //This file contains the ES6 extensions to the core Promises/A+ API
@@ -17414,7 +18436,7 @@ Promise.prototype['catch'] = function (onRejected) {
   return this.then(null, onRejected);
 };
 
-},{"./core.js":21}],24:[function(require,module,exports){
+},{"./core.js":23}],26:[function(require,module,exports){
 'use strict';
 
 var Promise = require('./core.js');
@@ -17432,7 +18454,7 @@ Promise.prototype['finally'] = function (f) {
   });
 };
 
-},{"./core.js":21}],25:[function(require,module,exports){
+},{"./core.js":23}],27:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./core.js');
@@ -17442,7 +18464,7 @@ require('./es6-extensions.js');
 require('./node-extensions.js');
 require('./synchronous.js');
 
-},{"./core.js":21,"./done.js":22,"./es6-extensions.js":23,"./finally.js":24,"./node-extensions.js":26,"./synchronous.js":27}],26:[function(require,module,exports){
+},{"./core.js":23,"./done.js":24,"./es6-extensions.js":25,"./finally.js":26,"./node-extensions.js":28,"./synchronous.js":29}],28:[function(require,module,exports){
 'use strict';
 
 // This file contains then/promise specific extensions that are only useful
@@ -17574,7 +18596,7 @@ Promise.prototype.nodeify = function (callback, ctx) {
   });
 }
 
-},{"./core.js":21,"asap":1}],27:[function(require,module,exports){
+},{"./core.js":23,"asap":2}],29:[function(require,module,exports){
 'use strict';
 
 var Promise = require('./core.js');
@@ -17638,7 +18660,242 @@ Promise.disableSynchronous = function() {
   Promise.prototype.getState = undefined;
 };
 
-},{"./core.js":21}],28:[function(require,module,exports){
+},{"./core.js":23}],30:[function(require,module,exports){
+// Generated by CoffeeScript 1.10.0
+(function() {
+  var QJ, rreturn, rtrim;
+
+  QJ = function(selector) {
+    if (QJ.isDOMElement(selector)) {
+      return selector;
+    }
+    return document.querySelectorAll(selector);
+  };
+
+  QJ.isDOMElement = function(el) {
+    return el && (el.nodeName != null);
+  };
+
+  rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+
+  QJ.trim = function(text) {
+    if (text === null) {
+      return "";
+    } else {
+      return (text + "").replace(rtrim, "");
+    }
+  };
+
+  rreturn = /\r/g;
+
+  QJ.val = function(el, val) {
+    var ret;
+    if (arguments.length > 1) {
+      return el.value = val;
+    } else {
+      ret = el.value;
+      if (typeof ret === "string") {
+        return ret.replace(rreturn, "");
+      } else {
+        if (ret === null) {
+          return "";
+        } else {
+          return ret;
+        }
+      }
+    }
+  };
+
+  QJ.preventDefault = function(eventObject) {
+    if (typeof eventObject.preventDefault === "function") {
+      eventObject.preventDefault();
+      return;
+    }
+    eventObject.returnValue = false;
+    return false;
+  };
+
+  QJ.normalizeEvent = function(e) {
+    var original;
+    original = e;
+    e = {
+      which: original.which != null ? original.which : void 0,
+      target: original.target || original.srcElement,
+      preventDefault: function() {
+        return QJ.preventDefault(original);
+      },
+      originalEvent: original,
+      data: original.data || original.detail
+    };
+    if (e.which == null) {
+      e.which = original.charCode != null ? original.charCode : original.keyCode;
+    }
+    return e;
+  };
+
+  QJ.on = function(element, eventName, callback) {
+    var el, i, j, len, len1, multEventName, originalCallback, ref;
+    if (element.length) {
+      for (i = 0, len = element.length; i < len; i++) {
+        el = element[i];
+        QJ.on(el, eventName, callback);
+      }
+      return;
+    }
+    if (eventName.match(" ")) {
+      ref = eventName.split(" ");
+      for (j = 0, len1 = ref.length; j < len1; j++) {
+        multEventName = ref[j];
+        QJ.on(element, multEventName, callback);
+      }
+      return;
+    }
+    originalCallback = callback;
+    callback = function(e) {
+      e = QJ.normalizeEvent(e);
+      return originalCallback(e);
+    };
+    if (element.addEventListener) {
+      return element.addEventListener(eventName, callback, false);
+    }
+    if (element.attachEvent) {
+      eventName = "on" + eventName;
+      return element.attachEvent(eventName, callback);
+    }
+    element['on' + eventName] = callback;
+  };
+
+  QJ.addClass = function(el, className) {
+    var e;
+    if (el.length) {
+      return (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = el.length; i < len; i++) {
+          e = el[i];
+          results.push(QJ.addClass(e, className));
+        }
+        return results;
+      })();
+    }
+    if (el.classList) {
+      return el.classList.add(className);
+    } else {
+      return el.className += ' ' + className;
+    }
+  };
+
+  QJ.hasClass = function(el, className) {
+    var e, hasClass, i, len;
+    if (el.length) {
+      hasClass = true;
+      for (i = 0, len = el.length; i < len; i++) {
+        e = el[i];
+        hasClass = hasClass && QJ.hasClass(e, className);
+      }
+      return hasClass;
+    }
+    if (el.classList) {
+      return el.classList.contains(className);
+    } else {
+      return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+    }
+  };
+
+  QJ.removeClass = function(el, className) {
+    var cls, e, i, len, ref, results;
+    if (el.length) {
+      return (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = el.length; i < len; i++) {
+          e = el[i];
+          results.push(QJ.removeClass(e, className));
+        }
+        return results;
+      })();
+    }
+    if (el.classList) {
+      ref = className.split(' ');
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        cls = ref[i];
+        results.push(el.classList.remove(cls));
+      }
+      return results;
+    } else {
+      return el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    }
+  };
+
+  QJ.toggleClass = function(el, className, bool) {
+    var e;
+    if (el.length) {
+      return (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = el.length; i < len; i++) {
+          e = el[i];
+          results.push(QJ.toggleClass(e, className, bool));
+        }
+        return results;
+      })();
+    }
+    if (bool) {
+      if (!QJ.hasClass(el, className)) {
+        return QJ.addClass(el, className);
+      }
+    } else {
+      return QJ.removeClass(el, className);
+    }
+  };
+
+  QJ.append = function(el, toAppend) {
+    var e;
+    if (el.length) {
+      return (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = el.length; i < len; i++) {
+          e = el[i];
+          results.push(QJ.append(e, toAppend));
+        }
+        return results;
+      })();
+    }
+    return el.insertAdjacentHTML('beforeend', toAppend);
+  };
+
+  QJ.find = function(el, selector) {
+    if (el instanceof NodeList || el instanceof Array) {
+      el = el[0];
+    }
+    return el.querySelectorAll(selector);
+  };
+
+  QJ.trigger = function(el, name, data) {
+    var e, error, ev;
+    try {
+      ev = new CustomEvent(name, {
+        detail: data
+      });
+    } catch (error) {
+      e = error;
+      ev = document.createEvent('CustomEvent');
+      if (ev.initCustomEvent) {
+        ev.initCustomEvent(name, true, true, data);
+      } else {
+        ev.initEvent(name, true, true, data);
+      }
+    }
+    return el.dispatchEvent(ev);
+  };
+
+  module.exports = QJ;
+
+}).call(this);
+
+},{}],31:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -19188,7 +20445,7 @@ Promise.disableSynchronous = function() {
   }
 }.call(this));
 
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 /*!
  * URI.js - Mutating URLs
  * IPv6 Support
@@ -19375,7 +20632,7 @@ Promise.disableSynchronous = function() {
   };
 }));
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 /*!
  * URI.js - Mutating URLs
  * Second Level Domain (SLD) Support
@@ -19617,7 +20874,7 @@ Promise.disableSynchronous = function() {
   return SLD;
 }));
 
-},{}],31:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /*!
  * URI.js - Mutating URLs
  *
@@ -21837,7 +23094,7 @@ Promise.disableSynchronous = function() {
   return URI;
 }));
 
-},{"./IPv6":29,"./SecondLevelDomains":30,"./punycode":32}],32:[function(require,module,exports){
+},{"./IPv6":32,"./SecondLevelDomains":33,"./punycode":35}],35:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.0 by @mathias */
 ;(function(root) {
@@ -22374,7 +23631,7 @@ Promise.disableSynchronous = function() {
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -22675,7 +23932,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],34:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /*!
  * vue-resource v1.0.3
  * https://github.com/vuejs/vue-resource
@@ -24194,7 +25451,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -34435,7 +35692,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":19}],36:[function(require,module,exports){
+},{"_process":21}],39:[function(require,module,exports){
 'use strict';
 
 require('./filters');
@@ -34448,7 +35705,7 @@ var app = new Vue({
    mixins: [require('spark')]
 });
 
-},{"./components/bootstrap":41,"./filters":46,"spark":163,"spark-bootstrap":162}],37:[function(require,module,exports){
+},{"./components/bootstrap":44,"./filters":49,"spark":166,"spark-bootstrap":165}],40:[function(require,module,exports){
 'use strict';
 
 var _moment = require('moment');
@@ -34574,7 +35831,7 @@ Vue.component('activity', {
     }
 });
 
-},{"./../../spark/mixins/tab-state":99,"moment":18}],38:[function(require,module,exports){
+},{"./../../spark/mixins/tab-state":102,"moment":19}],41:[function(require,module,exports){
 'use strict';
 
 var _step = require('./registration/step-1.vue');
@@ -34601,7 +35858,7 @@ Vue.component('registration', {
     }
 });
 
-},{"./registration/step-1.vue":39,"./registration/step-2.vue":40}],39:[function(require,module,exports){
+},{"./registration/step-1.vue":42,"./registration/step-2.vue":43}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34661,7 +35918,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-b5c6a6fe", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":35,"vue-hot-reload-api":33}],40:[function(require,module,exports){
+},{"vue":38,"vue-hot-reload-api":36}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34717,7 +35974,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-b5aa77fc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":35,"vue-hot-reload-api":33}],41:[function(require,module,exports){
+},{"vue":38,"vue-hot-reload-api":36}],44:[function(require,module,exports){
 'use strict';
 
 /*
@@ -34747,7 +36004,7 @@ require('./websites/install-website');
 // Activity
 require('./activity/activity');
 
-},{"./../spark-components/bootstrap":49,"./activity/activity":37,"./auth/registration":38,"./guest/plans":42,"./home":43,"./modal":44,"./websites/install-website":45}],42:[function(require,module,exports){
+},{"./../spark-components/bootstrap":52,"./activity/activity":40,"./auth/registration":41,"./guest/plans":45,"./home":46,"./modal":47,"./websites/install-website":48}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('plans', {
@@ -34769,7 +36026,7 @@ Vue.component('plans', {
     }
 });
 
-},{}],43:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Vue.component('home', {
@@ -34780,7 +36037,7 @@ Vue.component('home', {
     }
 });
 
-},{}],44:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -35090,7 +36347,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   });
 }(jQuery);
 
-},{}],45:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Vue.component('install-website', {
@@ -35145,7 +36402,7 @@ Vue.component('install-website', {
 
 });
 
-},{}],46:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -35156,6 +36413,10 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _accounting = require('accounting');
+
+var _accounting2 = _interopRequireDefault(_accounting);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.filter('human', function (value) {
@@ -35164,7 +36425,11 @@ _vue2.default.filter('human', function (value) {
     return (0, _moment2.default)(value, format).fromNow(false);
 });
 
-},{"moment":18,"vue":35}],47:[function(require,module,exports){
+_vue2.default.filter('numberFormat', function (value) {
+    return _accounting2.default.formatNumber(value, 0, ' ');
+});
+
+},{"accounting":1,"moment":19,"vue":38}],50:[function(require,module,exports){
 'use strict';
 
 var base = require('auth/register-braintree');
@@ -35173,7 +36438,7 @@ Vue.component('spark-register-braintree', {
     mixins: [base]
 });
 
-},{"auth/register-braintree":100}],48:[function(require,module,exports){
+},{"auth/register-braintree":103}],51:[function(require,module,exports){
 'use strict';
 
 var base = require('auth/register-stripe');
@@ -35182,7 +36447,7 @@ Vue.component('spark-register-stripe', {
     mixins: [base]
 });
 
-},{"auth/register-stripe":101}],49:[function(require,module,exports){
+},{"auth/register-stripe":104}],52:[function(require,module,exports){
 'use strict';
 
 /**
@@ -35284,7 +36549,7 @@ require('./kiosk/users');
 require('./kiosk/profile');
 require('./kiosk/add-discount');
 
-},{"./auth/register-braintree":47,"./auth/register-stripe":48,"./kiosk/add-discount":50,"./kiosk/announcements":51,"./kiosk/kiosk":52,"./kiosk/metrics":53,"./kiosk/profile":54,"./kiosk/users":55,"./navbar/navbar":56,"./notifications/notifications":57,"./settings/api":58,"./settings/api/create-token":59,"./settings/api/tokens":60,"./settings/invoices":61,"./settings/invoices/invoice-list":62,"./settings/invoices/update-extra-billing-information":63,"./settings/payment-method-braintree":64,"./settings/payment-method-stripe":65,"./settings/payment-method/redeem-coupon":66,"./settings/payment-method/update-payment-method-braintree":67,"./settings/payment-method/update-payment-method-stripe":68,"./settings/payment-method/update-vat-id":69,"./settings/profile":70,"./settings/profile/update-contact-information":71,"./settings/profile/update-profile-photo":72,"./settings/security":73,"./settings/security/disable-two-factor-auth":74,"./settings/security/enable-two-factor-auth":75,"./settings/security/update-password":76,"./settings/settings":77,"./settings/subscription":78,"./settings/subscription/cancel-subscription":79,"./settings/subscription/resume-subscription":80,"./settings/subscription/subscribe-braintree":81,"./settings/subscription/subscribe-stripe":82,"./settings/subscription/update-subscription":83,"./settings/teams":84,"./settings/teams/create-team":85,"./settings/teams/current-teams":86,"./settings/teams/mailed-invitations":87,"./settings/teams/pending-invitations":88,"./settings/teams/send-invitation":89,"./settings/teams/team-members":90,"./settings/teams/team-membership":91,"./settings/teams/team-profile":92,"./settings/teams/team-settings":93,"./settings/teams/update-team-name":94,"./settings/teams/update-team-photo":95,"./settings/websites":96,"./settings/websites/create-website":97,"./settings/websites/list":98}],50:[function(require,module,exports){
+},{"./auth/register-braintree":50,"./auth/register-stripe":51,"./kiosk/add-discount":53,"./kiosk/announcements":54,"./kiosk/kiosk":55,"./kiosk/metrics":56,"./kiosk/profile":57,"./kiosk/users":58,"./navbar/navbar":59,"./notifications/notifications":60,"./settings/api":61,"./settings/api/create-token":62,"./settings/api/tokens":63,"./settings/invoices":64,"./settings/invoices/invoice-list":65,"./settings/invoices/update-extra-billing-information":66,"./settings/payment-method-braintree":67,"./settings/payment-method-stripe":68,"./settings/payment-method/redeem-coupon":69,"./settings/payment-method/update-payment-method-braintree":70,"./settings/payment-method/update-payment-method-stripe":71,"./settings/payment-method/update-vat-id":72,"./settings/profile":73,"./settings/profile/update-contact-information":74,"./settings/profile/update-profile-photo":75,"./settings/security":76,"./settings/security/disable-two-factor-auth":77,"./settings/security/enable-two-factor-auth":78,"./settings/security/update-password":79,"./settings/settings":80,"./settings/subscription":81,"./settings/subscription/cancel-subscription":82,"./settings/subscription/resume-subscription":83,"./settings/subscription/subscribe-braintree":84,"./settings/subscription/subscribe-stripe":85,"./settings/subscription/update-subscription":86,"./settings/teams":87,"./settings/teams/create-team":88,"./settings/teams/current-teams":89,"./settings/teams/mailed-invitations":90,"./settings/teams/pending-invitations":91,"./settings/teams/send-invitation":92,"./settings/teams/team-members":93,"./settings/teams/team-membership":94,"./settings/teams/team-profile":95,"./settings/teams/team-settings":96,"./settings/teams/update-team-name":97,"./settings/teams/update-team-photo":98,"./settings/websites":99,"./settings/websites/create-website":100,"./settings/websites/list":101}],53:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/add-discount');
@@ -35293,7 +36558,7 @@ Vue.component('spark-kiosk-add-discount', {
     mixins: [base]
 });
 
-},{"kiosk/add-discount":108}],51:[function(require,module,exports){
+},{"kiosk/add-discount":111}],54:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/announcements');
@@ -35302,7 +36567,7 @@ Vue.component('spark-kiosk-announcements', {
     mixins: [base]
 });
 
-},{"kiosk/announcements":109}],52:[function(require,module,exports){
+},{"kiosk/announcements":112}],55:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/kiosk');
@@ -35311,7 +36576,7 @@ Vue.component('spark-kiosk', {
     mixins: [base]
 });
 
-},{"kiosk/kiosk":110}],53:[function(require,module,exports){
+},{"kiosk/kiosk":113}],56:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/metrics');
@@ -35320,7 +36585,7 @@ Vue.component('spark-kiosk-metrics', {
     mixins: [base]
 });
 
-},{"kiosk/metrics":111}],54:[function(require,module,exports){
+},{"kiosk/metrics":114}],57:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/profile');
@@ -35329,7 +36594,7 @@ Vue.component('spark-kiosk-profile', {
     mixins: [base]
 });
 
-},{"kiosk/profile":112}],55:[function(require,module,exports){
+},{"kiosk/profile":115}],58:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/users');
@@ -35338,7 +36603,7 @@ Vue.component('spark-kiosk-users', {
     mixins: [base]
 });
 
-},{"kiosk/users":113}],56:[function(require,module,exports){
+},{"kiosk/users":116}],59:[function(require,module,exports){
 'use strict';
 
 var base = require('navbar/navbar');
@@ -35347,7 +36612,7 @@ Vue.component('spark-navbar', {
     mixins: [base]
 });
 
-},{"navbar/navbar":122}],57:[function(require,module,exports){
+},{"navbar/navbar":125}],60:[function(require,module,exports){
 'use strict';
 
 var base = require('notifications/notifications');
@@ -35356,7 +36621,7 @@ Vue.component('spark-notifications', {
     mixins: [base]
 });
 
-},{"notifications/notifications":123}],58:[function(require,module,exports){
+},{"notifications/notifications":126}],61:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api');
@@ -35365,7 +36630,7 @@ Vue.component('spark-api', {
     mixins: [base]
 });
 
-},{"settings/api":124}],59:[function(require,module,exports){
+},{"settings/api":127}],62:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/create-token');
@@ -35374,7 +36639,7 @@ Vue.component('spark-create-token', {
     mixins: [base]
 });
 
-},{"settings/api/create-token":125}],60:[function(require,module,exports){
+},{"settings/api/create-token":128}],63:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/tokens');
@@ -35383,7 +36648,7 @@ Vue.component('spark-tokens', {
     mixins: [base]
 });
 
-},{"settings/api/tokens":126}],61:[function(require,module,exports){
+},{"settings/api/tokens":129}],64:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices');
@@ -35392,7 +36657,7 @@ Vue.component('spark-invoices', {
     mixins: [base]
 });
 
-},{"settings/invoices":127}],62:[function(require,module,exports){
+},{"settings/invoices":130}],65:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/invoice-list');
@@ -35401,7 +36666,7 @@ Vue.component('spark-invoice-list', {
     mixins: [base]
 });
 
-},{"settings/invoices/invoice-list":128}],63:[function(require,module,exports){
+},{"settings/invoices/invoice-list":131}],66:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/update-extra-billing-information');
@@ -35410,7 +36675,7 @@ Vue.component('spark-update-extra-billing-information', {
     mixins: [base]
 });
 
-},{"settings/invoices/update-extra-billing-information":129}],64:[function(require,module,exports){
+},{"settings/invoices/update-extra-billing-information":132}],67:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-braintree');
@@ -35419,7 +36684,7 @@ Vue.component('spark-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method-braintree":130}],65:[function(require,module,exports){
+},{"settings/payment-method-braintree":133}],68:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-stripe');
@@ -35428,7 +36693,7 @@ Vue.component('spark-payment-method-stripe', {
     mixins: [base]
 });
 
-},{"settings/payment-method-stripe":131}],66:[function(require,module,exports){
+},{"settings/payment-method-stripe":134}],69:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/redeem-coupon');
@@ -35437,7 +36702,7 @@ Vue.component('spark-redeem-coupon', {
     mixins: [base]
 });
 
-},{"settings/payment-method/redeem-coupon":132}],67:[function(require,module,exports){
+},{"settings/payment-method/redeem-coupon":135}],70:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-braintree');
@@ -35446,16 +36711,246 @@ Vue.component('spark-update-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-payment-method-braintree":133}],68:[function(require,module,exports){
+},{"settings/payment-method/update-payment-method-braintree":136}],71:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-stripe');
+var Payment = require('payment');
 
 Vue.component('spark-update-payment-method-stripe', {
-    mixins: [base]
+    props: ['user', 'team', 'billableType'],
+
+    /**
+     * The component's data.
+     */
+    data: function data() {
+        return {
+            expiry: '',
+            updating: false,
+            form: new SparkForm({
+                stripe_token: '',
+                address: '',
+                address_line_2: '',
+                city: '',
+                state: '',
+                zip: '',
+                country: 'US'
+            }),
+
+            cardForm: new SparkForm({
+                name: '',
+                number: '',
+                cvc: '',
+                month: '',
+                year: ''
+            })
+        };
+    },
+
+
+    /**
+     * Prepare the component.
+     */
+    ready: function ready() {
+        Stripe.setPublishableKey(Spark.stripeKey);
+
+        this.initializeBillingAddress();
+    },
+
+
+    watch: {
+        expiry: function expiry(value) {
+            var expiry = Payment.fns.cardExpiryVal(value);
+
+            if (expiry.month) {
+                this.cardForm.month = expiry.month;
+            } else {
+                this.cardForm.month = '';
+            }
+
+            if (expiry.year) {
+                this.cardForm.year = expiry.year;
+            } else {
+                this.cardForm.year = '';
+            }
+        }
+    },
+
+    methods: {
+        toggleUpdate: function toggleUpdate() {
+            if (this.updating) {
+                this.cardForm.name = '';
+                this.cardForm.number = '';
+                this.cardForm.cvc = '';
+                this.cardForm.month = '';
+                this.cardForm.year = '';
+                this.expiry = '';
+                this.updating = false;
+            } else {
+                this.updating = true;
+                this.$nextTick(function () {
+                    Payment.formatCardNumber($('input[data-stripe="number"]'));
+                    Payment.formatCardExpiry($('input[data-stripe="exp"]'));
+                    Payment.formatCardCVC($('input[data-stripe="cvc"]'));
+                });
+            }
+        },
+
+
+        /**
+         * Initialize the billing address form for the billable entity.
+         */
+        initializeBillingAddress: function initializeBillingAddress() {
+            if (!Spark.collectsBillingAddress) {
+                return;
+            }
+
+            this.form.address = this.billable.billing_address;
+            this.form.address_line_2 = this.billable.billing_address_line_2;
+            this.form.city = this.billable.billing_city;
+            this.form.state = this.billable.billing_state;
+            this.form.zip = this.billable.billing_zip;
+            this.form.country = this.billable.billing_country || 'US';
+        },
+
+
+        /**
+         * Update the billable's card information.
+         */
+        update: function update() {
+            var _this = this;
+
+            this.form.busy = true;
+            this.form.errors.forget();
+            this.form.successful = false;
+            this.cardForm.errors.forget();
+
+            // Here we will build out the payload to send to Stripe to obtain a card token so
+            // we can create the actual subscription. We will build out this data that has
+            // this credit card number, CVC, etc. and exchange it for a secure token ID.
+            var payload = {
+                name: this.cardForm.name,
+                number: this.cardForm.number,
+                cvc: this.cardForm.cvc,
+                exp_month: this.cardForm.month,
+                exp_year: this.cardForm.year,
+                address_line1: this.form.address,
+                address_line2: this.form.address_line_2,
+                address_city: this.form.city,
+                address_state: this.form.state,
+                address_zip: this.form.zip,
+                address_country: this.form.country
+            };
+
+            // Once we have the Stripe payload we'll send it off to Stripe and obtain a token
+            // which we will send to the server to update this payment method. If there is
+            // an error we will display that back out to the user for their information.
+            Stripe.card.createToken(payload, function (status, response) {
+                if (response.error) {
+                    _this.cardForm.errors.set({ number: [response.error.message] });
+
+                    _this.form.busy = false;
+                } else {
+                    _this.sendUpdateToServer(response.id);
+                }
+            });
+        },
+
+
+        /**
+         * Send the credit card update information to the server.
+         */
+        sendUpdateToServer: function sendUpdateToServer(token) {
+            var _this2 = this;
+
+            this.form.stripe_token = token;
+
+            Spark.put(this.urlForUpdate, this.form).then(function () {
+                _this2.$dispatch('updateUser');
+                _this2.$dispatch('updateTeam');
+
+                _this2.cardForm.name = '';
+                _this2.cardForm.number = '';
+                _this2.cardForm.cvc = '';
+                _this2.cardForm.month = '';
+                _this2.cardForm.year = '';
+                _this2.expiry = '';
+
+                if (!Spark.collectsBillingAddress) {
+                    _this2.form.zip = '';
+                }
+
+                _this2.updating = false;
+            });
+        }
+    },
+
+    computed: {
+        /**
+         * Get the new card brand
+         */
+        cardType: function cardType() {
+            return Payment.fns.cardType(this.cardForm.number);
+        },
+
+
+        /**
+         * Get the billable entity's "billable" name.
+         */
+        billableName: function billableName() {
+            return this.billingUser ? this.user.name : this.team.owner.name;
+        },
+
+
+        /**
+         * Get the URL for the payment method update.
+         */
+        urlForUpdate: function urlForUpdate() {
+            return this.billingUser ? '/settings/payment-method' : '/settings/' + Spark.pluralTeamString + '/' + this.team.id + '/payment-method';
+        },
+
+
+        /**
+         * Get the proper brand icon for the customer's credit card.
+         */
+        cardIcon: function cardIcon() {
+            if (!this.billable.card_brand) {
+                return 'fa-cc-stripe';
+            }
+
+            switch (this.billable.card_brand) {
+                case 'American Express':
+                    return 'fa-cc-amex';
+                case 'Diners Club':
+                    return 'fa-cc-diners-club';
+                case 'Discover':
+                    return 'fa-cc-discover';
+                case 'JCB':
+                    return 'fa-cc-jcb';
+                case 'MasterCard':
+                    return 'fa-cc-mastercard';
+                case 'Visa':
+                    return 'fa-cc-visa';
+                default:
+                    return 'fa-cc-stripe';
+            }
+        },
+
+
+        /**
+         * Get the placeholder for the billable entity's credit card.
+         */
+        placeholder: function placeholder() {
+            if (this.billable.card_last_four) {
+                return '************' + this.billable.card_last_four;
+            }
+
+            return '';
+        }
+    }
 });
 
-},{"settings/payment-method/update-payment-method-stripe":134}],69:[function(require,module,exports){
+},{"payment":20,"settings/payment-method/update-payment-method-stripe":137}],72:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-vat-id');
@@ -35464,7 +36959,7 @@ Vue.component('spark-update-vat-id', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-vat-id":135}],70:[function(require,module,exports){
+},{"settings/payment-method/update-vat-id":138}],73:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile');
@@ -35473,7 +36968,7 @@ Vue.component('spark-profile', {
     mixins: [base]
 });
 
-},{"settings/profile":136}],71:[function(require,module,exports){
+},{"settings/profile":139}],74:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-contact-information');
@@ -35482,7 +36977,7 @@ Vue.component('spark-update-contact-information', {
     mixins: [base]
 });
 
-},{"settings/profile/update-contact-information":137}],72:[function(require,module,exports){
+},{"settings/profile/update-contact-information":140}],75:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-profile-photo');
@@ -35491,7 +36986,7 @@ Vue.component('spark-update-profile-photo', {
     mixins: [base]
 });
 
-},{"settings/profile/update-profile-photo":138}],73:[function(require,module,exports){
+},{"settings/profile/update-profile-photo":141}],76:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security');
@@ -35500,7 +36995,7 @@ Vue.component('spark-security', {
     mixins: [base]
 });
 
-},{"settings/security":139}],74:[function(require,module,exports){
+},{"settings/security":142}],77:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/disable-two-factor-auth');
@@ -35509,7 +37004,7 @@ Vue.component('spark-disable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/disable-two-factor-auth":140}],75:[function(require,module,exports){
+},{"settings/security/disable-two-factor-auth":143}],78:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/enable-two-factor-auth');
@@ -35518,7 +37013,7 @@ Vue.component('spark-enable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/enable-two-factor-auth":141}],76:[function(require,module,exports){
+},{"settings/security/enable-two-factor-auth":144}],79:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/update-password');
@@ -35527,7 +37022,7 @@ Vue.component('spark-update-password', {
     mixins: [base]
 });
 
-},{"settings/security/update-password":142}],77:[function(require,module,exports){
+},{"settings/security/update-password":145}],80:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/settings');
@@ -35536,7 +37031,7 @@ Vue.component('spark-settings', {
     mixins: [base]
 });
 
-},{"settings/settings":143}],78:[function(require,module,exports){
+},{"settings/settings":146}],81:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription');
@@ -35545,7 +37040,7 @@ Vue.component('spark-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription":144}],79:[function(require,module,exports){
+},{"settings/subscription":147}],82:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/cancel-subscription');
@@ -35554,7 +37049,7 @@ Vue.component('spark-cancel-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/cancel-subscription":145}],80:[function(require,module,exports){
+},{"settings/subscription/cancel-subscription":148}],83:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/resume-subscription');
@@ -35563,7 +37058,7 @@ Vue.component('spark-resume-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/resume-subscription":146}],81:[function(require,module,exports){
+},{"settings/subscription/resume-subscription":149}],84:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-braintree');
@@ -35572,7 +37067,7 @@ Vue.component('spark-subscribe-braintree', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-braintree":147}],82:[function(require,module,exports){
+},{"settings/subscription/subscribe-braintree":150}],85:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-stripe');
@@ -35581,7 +37076,7 @@ Vue.component('spark-subscribe-stripe', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-stripe":148}],83:[function(require,module,exports){
+},{"settings/subscription/subscribe-stripe":151}],86:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/update-subscription');
@@ -35590,7 +37085,7 @@ Vue.component('spark-update-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/update-subscription":149}],84:[function(require,module,exports){
+},{"settings/subscription/update-subscription":152}],87:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams');
@@ -35599,7 +37094,7 @@ Vue.component('spark-teams', {
     mixins: [base]
 });
 
-},{"settings/teams":150}],85:[function(require,module,exports){
+},{"settings/teams":153}],88:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/create-team');
@@ -35608,7 +37103,7 @@ Vue.component('spark-create-team', {
     mixins: [base]
 });
 
-},{"settings/teams/create-team":151}],86:[function(require,module,exports){
+},{"settings/teams/create-team":154}],89:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/current-teams');
@@ -35617,7 +37112,7 @@ Vue.component('spark-current-teams', {
     mixins: [base]
 });
 
-},{"settings/teams/current-teams":152}],87:[function(require,module,exports){
+},{"settings/teams/current-teams":155}],90:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/mailed-invitations');
@@ -35626,7 +37121,7 @@ Vue.component('spark-mailed-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/mailed-invitations":153}],88:[function(require,module,exports){
+},{"settings/teams/mailed-invitations":156}],91:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/pending-invitations');
@@ -35635,7 +37130,7 @@ Vue.component('spark-pending-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/pending-invitations":154}],89:[function(require,module,exports){
+},{"settings/teams/pending-invitations":157}],92:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/send-invitation');
@@ -35644,7 +37139,7 @@ Vue.component('spark-send-invitation', {
     mixins: [base]
 });
 
-},{"settings/teams/send-invitation":155}],90:[function(require,module,exports){
+},{"settings/teams/send-invitation":158}],93:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-members');
@@ -35653,7 +37148,7 @@ Vue.component('spark-team-members', {
     mixins: [base]
 });
 
-},{"settings/teams/team-members":156}],91:[function(require,module,exports){
+},{"settings/teams/team-members":159}],94:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-membership');
@@ -35662,7 +37157,7 @@ Vue.component('spark-team-membership', {
     mixins: [base]
 });
 
-},{"settings/teams/team-membership":157}],92:[function(require,module,exports){
+},{"settings/teams/team-membership":160}],95:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-profile');
@@ -35671,7 +37166,7 @@ Vue.component('spark-team-profile', {
     mixins: [base]
 });
 
-},{"settings/teams/team-profile":158}],93:[function(require,module,exports){
+},{"settings/teams/team-profile":161}],96:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-settings');
@@ -35680,7 +37175,7 @@ Vue.component('spark-team-settings', {
     mixins: [base]
 });
 
-},{"settings/teams/team-settings":159}],94:[function(require,module,exports){
+},{"settings/teams/team-settings":162}],97:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-name');
@@ -35689,7 +37184,7 @@ Vue.component('spark-update-team-name', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-name":160}],95:[function(require,module,exports){
+},{"settings/teams/update-team-name":163}],98:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-photo');
@@ -35698,7 +37193,7 @@ Vue.component('spark-update-team-photo', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-photo":161}],96:[function(require,module,exports){
+},{"settings/teams/update-team-photo":164}],99:[function(require,module,exports){
 'use strict';
 
 Vue.component('spark-websites', {
@@ -35741,7 +37236,7 @@ Vue.component('spark-websites', {
     }
 });
 
-},{}],97:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 'use strict';
 
 Vue.component('spark-create-website', {
@@ -35795,7 +37290,7 @@ Vue.component('spark-create-website', {
     }
 });
 
-},{}],98:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 Vue.component('spark-websites-list', {
@@ -35864,7 +37359,7 @@ Vue.component('spark-websites-list', {
     }
 });
 
-},{}],99:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35961,7 +37456,7 @@ module.exports = {
     }
 };
 
-},{}],100:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36080,7 +37575,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/braintree":115,"./../mixins/plans":117,"./../mixins/register":118}],101:[function(require,module,exports){
+},{"./../mixins/braintree":118,"./../mixins/plans":120,"./../mixins/register":121}],104:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36307,7 +37802,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":117,"./../mixins/register":118,"./../mixins/vat":121}],102:[function(require,module,exports){
+},{"./../mixins/plans":120,"./../mixins/register":121,"./../mixins/vat":124}],105:[function(require,module,exports){
 'use strict';
 
 /**
@@ -36331,7 +37826,7 @@ Vue.filter('relative', function (value) {
   return moment.utc(value).local().locale('en-short').fromNow();
 });
 
-},{}],103:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 'use strict';
 
 /**
@@ -36358,7 +37853,7 @@ require('./errors');
  */
 $.extend(Spark, require('./http'));
 
-},{"./errors":104,"./form":105,"./http":106}],104:[function(require,module,exports){
+},{"./errors":107,"./form":108,"./http":109}],107:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -36429,7 +37924,7 @@ window.SparkFormErrors = function () {
     };
 };
 
-},{}],105:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 "use strict";
 
 /**
@@ -36483,7 +37978,7 @@ window.SparkForm = function (data) {
   };
 };
 
-},{}],106:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36534,7 +38029,7 @@ module.exports = {
     }
 };
 
-},{}],107:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 'use strict';
 
 module.exports = function (request, next) {
@@ -36562,7 +38057,7 @@ module.exports = function (request, next) {
     });
 };
 
-},{}],108:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 function kioskAddDiscountForm() {
@@ -36626,7 +38121,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":116}],109:[function(require,module,exports){
+},{"./../mixins/discounts":119}],112:[function(require,module,exports){
 'use strict';
 
 var announcementsCreateForm = function announcementsCreateForm() {
@@ -36747,7 +38242,7 @@ module.exports = {
     }
 };
 
-},{}],110:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36782,7 +38277,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":120}],111:[function(require,module,exports){
+},{"./../mixins/tab-state":123}],114:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37064,7 +38559,7 @@ module.exports = {
     }
 };
 
-},{}],112:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37212,7 +38707,7 @@ module.exports = {
     }
 };
 
-},{}],113:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37345,7 +38840,7 @@ module.exports = {
     }
 };
 
-},{}],114:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37379,7 +38874,7 @@ module.exports = {
     }
 };
 
-},{}],115:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict';
 
 window.braintreeCheckout = [];
@@ -37434,7 +38929,7 @@ module.exports = {
     }
 };
 
-},{}],116:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37535,7 +39030,7 @@ module.exports = {
     }
 };
 
-},{}],117:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict';
 
 /*
@@ -37680,7 +39175,7 @@ module.exports = {
     }
 };
 
-},{}],118:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -37796,7 +39291,7 @@ module.exports = {
     }
 };
 
-},{}],119:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 'use strict';
 
 /*
@@ -37962,9 +39457,9 @@ module.exports = {
     }
 };
 
-},{}],120:[function(require,module,exports){
-arguments[4][99][0].apply(exports,arguments)
-},{"dup":99}],121:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
+arguments[4][102][0].apply(exports,arguments)
+},{"dup":102}],124:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38006,7 +39501,7 @@ module.exports = {
     }
 };
 
-},{}],122:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38030,7 +39525,7 @@ module.exports = {
     }
 };
 
-},{}],123:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38114,7 +39609,7 @@ module.exports = {
     }
 };
 
-},{}],124:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38169,7 +39664,7 @@ module.exports = {
     }
 };
 
-},{}],125:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38314,7 +39809,7 @@ module.exports = {
     }
 };
 
-},{}],126:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38422,7 +39917,7 @@ module.exports = {
     }
 };
 
-},{}],127:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38471,7 +39966,7 @@ module.exports = {
 	}
 };
 
-},{}],128:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38487,7 +39982,7 @@ module.exports = {
     }
 };
 
-},{}],129:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38532,7 +40027,7 @@ module.exports = {
     }
 };
 
-},{}],130:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38606,7 +40101,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":116}],131:[function(require,module,exports){
+},{"./../mixins/discounts":119}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38648,7 +40143,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":116}],132:[function(require,module,exports){
+},{"./../mixins/discounts":119}],135:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38691,7 +40186,7 @@ module.exports = {
     }
 };
 
-},{}],133:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38787,7 +40282,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":115}],134:[function(require,module,exports){
+},{"./../../mixins/braintree":118}],137:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38972,7 +40467,7 @@ module.exports = {
     }
 };
 
-},{}],135:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39015,14 +40510,14 @@ module.exports = {
     }
 };
 
-},{}],136:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user']
 };
 
-},{}],137:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39064,7 +40559,7 @@ module.exports = {
     }
 };
 
-},{}],138:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39138,7 +40633,7 @@ module.exports = {
     }
 };
 
-},{}],139:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39166,7 +40661,7 @@ module.exports = {
     }
 };
 
-},{}],140:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39196,7 +40691,7 @@ module.exports = {
 	}
 };
 
-},{}],141:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39240,7 +40735,7 @@ module.exports = {
 	}
 };
 
-},{}],142:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39268,7 +40763,7 @@ module.exports = {
     }
 };
 
-},{}],143:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39297,7 +40792,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":120}],144:[function(require,module,exports){
+},{"./../mixins/tab-state":123}],147:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39349,7 +40844,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":117,"./../mixins/subscriptions":119}],145:[function(require,module,exports){
+},{"./../mixins/plans":120,"./../mixins/subscriptions":122}],148:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39399,7 +40894,7 @@ module.exports = {
     }
 };
 
-},{}],146:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39440,7 +40935,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":117,"./../../mixins/subscriptions":119}],147:[function(require,module,exports){
+},{"./../../mixins/plans":120,"./../../mixins/subscriptions":122}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39535,7 +41030,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":115,"./../../mixins/plans":117,"./../../mixins/subscriptions":119}],148:[function(require,module,exports){
+},{"./../../mixins/braintree":118,"./../../mixins/plans":120,"./../../mixins/subscriptions":122}],151:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39736,7 +41231,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":117,"./../../mixins/subscriptions":119,"./../../mixins/vat":121}],149:[function(require,module,exports){
+},{"./../../mixins/plans":120,"./../../mixins/subscriptions":122,"./../../mixins/vat":124}],152:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39830,14 +41325,14 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":117,"./../../mixins/subscriptions":119}],150:[function(require,module,exports){
+},{"./../../mixins/plans":120,"./../../mixins/subscriptions":122}],153:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'teams']
 };
 
-},{}],151:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39972,7 +41467,7 @@ module.exports = {
     }
 };
 
-},{}],152:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40061,7 +41556,7 @@ module.exports = {
     }
 };
 
-},{}],153:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40083,7 +41578,7 @@ module.exports = {
     }
 };
 
-},{}],154:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40159,7 +41654,7 @@ module.exports = {
     }
 };
 
-},{}],155:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40280,7 +41775,7 @@ module.exports = {
     }
 };
 
-},{}],156:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40430,7 +41925,7 @@ module.exports = {
     }
 };
 
-},{}],157:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40477,14 +41972,14 @@ module.exports = {
     }
 };
 
-},{}],158:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'team']
 };
 
-},{}],159:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40545,7 +42040,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/tab-state":120}],160:[function(require,module,exports){
+},{"./../../mixins/tab-state":123}],163:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40586,7 +42081,7 @@ module.exports = {
     }
 };
 
-},{}],161:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -40669,7 +42164,7 @@ module.exports = {
     }
 };
 
-},{}],162:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 /*
@@ -40720,7 +42215,7 @@ if ($('#spark-app').length > 0) {
     require('vue-bootstrap');
 }
 
-},{"bootstrap/dist/js/npm":3,"jquery":16,"js-cookie":17,"moment":18,"promise":20,"underscore":28,"urijs":31,"vue-bootstrap":164}],163:[function(require,module,exports){
+},{"bootstrap/dist/js/npm":4,"jquery":17,"js-cookie":18,"moment":19,"promise":22,"underscore":31,"urijs":34,"vue-bootstrap":167}],166:[function(require,module,exports){
 'use strict';
 
 /**
@@ -41003,7 +42498,7 @@ module.exports = {
     }
 };
 
-},{}],164:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 /*
@@ -41039,6 +42534,6 @@ require('./filters');
  */
 require('./forms/bootstrap');
 
-},{"./filters":102,"./forms/bootstrap":103,"./interceptors":107,"./mixin":114,"vue":35,"vue-resource":34}]},{},[36]);
+},{"./filters":105,"./forms/bootstrap":106,"./interceptors":110,"./mixin":117,"vue":38,"vue-resource":37}]},{},[39]);
 
 //# sourceMappingURL=app.js.map

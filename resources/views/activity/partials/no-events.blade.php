@@ -1,19 +1,19 @@
 <div class="col-sm-9 col-md-10" v-else>
     @if(Request::is('activity/ignored'))
         <div class="text-center empty-message">
-            <h2>No prospects ignored.</h2>
+            <h2>No prospects ignored... yet.</h2>
             <p>
-                Go on the <a href="{{ route('app.activity') }}">main activity</a> page and click
+                Go on the <a href="{{ route('app.activity') }}">activity</a> page and click
                 <span class="btn btn-ghost"><i class="fa fa-ban"></i>&nbsp;Ignore</span> to stop following prospects!</p>
         </div>
     @elseif(Request::is('activity/prospects'))
         <div class="text-center empty-message">
-            <h2>No prospects assigned to you yet.</h2>
-            <p>Go on the <a href="{{ route('app.activity') }}">main activity</a> page and assign prospect to yourself!</p>
+            <h2>No prospects assigned to you... yet.</h2>
+            <p>Go on the <a href="{{ route('app.activity') }}">activity</a> page and assign prospect to yourself!</p>
         </div>
     @else
         <div class="text-center empty-message">
-            <h2>No prospect ignored.</h2>
+            <h2>No prospects... yet.</h2>
             <p>If you <em>just</em> created your account, this is completely normal.</p>
             <p>Be sure to <a href="/settings/teams/{{ auth()->user()->currentTeam()->id }}#/websites">add the Midbound Tracker to your website</a>.</p>
         </div>

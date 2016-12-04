@@ -27,11 +27,11 @@
                     <div v-for="plan in plans" class="radio">
                         <label :class="{ 'active': plan.limit == selectedPlan.limit }" v-if="plan.limit > 0">
                             <input type="radio" name="prospects" @click="updatePrice(plan)" :checked="plan.limit == selectedPlan.limit">
-                            Up to @{{ plan.limit | currency '' }}
+                            Up to @{{ plan.limit | numberFormat }}
                         </label>
                         <label :class="{ 'active': plan.limit == selectedPlan.limit }" v-else>
                             <input type="radio" name="prospects" @click="updatePrice(plan)" :checked="plan.limit == selectedPlan.limit">
-                            More than 10,000
+                            More than 10 000
                         </label>
                     </div>
                 </div>

@@ -63,7 +63,7 @@ class Prospect extends Model
      */
     public function getLatestEventAttribute()
     {
-        return $this->events()->first();
+        return $this->events()->latest()->first();
     }
 
     /**

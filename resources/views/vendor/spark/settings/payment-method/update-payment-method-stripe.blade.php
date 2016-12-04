@@ -7,10 +7,8 @@
             </div>
 
             <div class="pull-right">
-                <span v-if="billable.card_last_four">
-                    <i class="fa fa-btn @{{ cardIcon }}"></i>
-                    ************@{{ billable.card_last_four }}
-                </span>
+                <a href="#" class="btn-link" v-if="!updating" @click.prevent="toggleUpdate">Update</a>
+                <a href="#" class="btn-link" v-else @click.prevent="toggleUpdate">Cancel</a>
             </div>
 
             <div class="clearfix"></div>
@@ -20,15 +18,26 @@
             <!-- Card Update Success Message -->
             <div class="alert alert-success" v-if="form.successful">
                 Your card has been updated.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <!-- Generic 500 Level Error Message / Stripe Threw Exception -->
             <div class="alert alert-danger" v-if="form.errors.has('form')">
                 We had trouble updating your card. It's possible your card provider is preventing
                 us from charging the card. Please contact your card provider or customer support.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
-            <form class="form-horizontal" role="form">
+            <span v-if="billable.card_last_four && !updating">
+                <i class="fa fa-btn @{{ cardIcon }}"></i>
+                Card ending in @{{ billable.card_last_four }}
+            </span>
+
+            <form class="form-horizontal" role="form" v-if="updating">
                 <!-- Billing Address Fields -->
                 @if (Spark::collectsBillingAddress())
                     <h2><i class="fa fa-btn fa-map-marker"></i>Billing Address</h2>
@@ -43,51 +52,41 @@
                     <label for="name" class="col-md-4 control-label">Cardholder's Name</label>
 
                     <div class="col-md-6">
-                        <input type="text" class="form-control" v-model="cardForm.name">
+                        <input type="text" class="form-control" v-model="cardForm.name" autofocus>
                     </div>
                 </div>
 
                 <!-- Card Number -->
                 <div class="form-group" :class="{'has-error': cardForm.errors.has('number')}">
-                    <label for="number" class="col-md-4 control-label">Card Number</label>
+
+                    <label for="number" class="col-md-4 control-label">Card Information</label>
 
                     <div class="col-md-6">
+                        <i v-if="cardType" class="fa fa-input fa-cc-@{{ cardType }}"></i>
                         <input type="text"
                             class="form-control"
                             data-stripe="number"
                             :placeholder="placeholder"
                             v-model="cardForm.number">
-
-                        <span class="help-block" v-show="cardForm.errors.has('number')">
-                            @{{ cardForm.errors.get('number') }}
-                        </span>
                     </div>
                 </div>
 
                 <!-- Security Code -->
-                <div class="form-group">
-                    <label for="cvc" class="col-md-4 control-label">Security Code</label>
+                <div class="form-group" :class="{'has-error': cardForm.errors.has('number')}">
+                    <label for="cvc" class="col-md-4 control-label"></label>
 
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" data-stripe="cvc" v-model="cardForm.cvc">
-                    </div>
-                </div>
-
-                <!-- Expiration Information -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Expiration</label>
-
-                    <!-- Month -->
                     <div class="col-md-3">
                         <input type="text" class="form-control"
-                            placeholder="MM" maxlength="2" data-stripe="exp-month" v-model="cardForm.month">
+                               placeholder="MM / YY" data-stripe="exp" v-model="expiry">
                     </div>
 
-                    <!-- Year -->
                     <div class="col-md-3">
-                        <input type="text" class="form-control"
-                            placeholder="YYYY" maxlength="4" data-stripe="exp-year" v-model="cardForm.year">
+                        <input type="text" placeholder="CVC" class="form-control" data-stripe="cvc" v-model="cardForm.cvc">
                     </div>
+
+                    <span class="col-md-6 col-md-offset-4 help-block" v-show="cardForm.errors.has('number')">
+                        @{{ cardForm.errors.get('number') }}
+                    </span>
                 </div>
 
                 <!-- Zip Code -->
