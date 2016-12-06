@@ -18,7 +18,7 @@
                                 <!-- URL -->
                                 <td class="website-url" :key="website.id">
                                     <div class="btn-table-align" 
-                                        :class="{ editing: website == editingWebsite }">
+                                        :class="{ editing: website == editingWebsite, 'has-error' : this.websiteUrlForm.error }">
                                         <label class="view" @click="toggleEditUrl(website, $event)">
                                                 @{{ website.url }}
                                                 <span class="overlay-icon fa fa-pencil"></span>
