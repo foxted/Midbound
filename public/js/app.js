@@ -37347,7 +37347,8 @@ Vue.component('spark-websites-list', {
             showingWebsite: null,
             deletingWebsite: null,
             websiteUrlForm: new SparkForm({
-                url: ''
+                url: '',
+                error: ''
             }),
             deleteWebsiteForm: new SparkForm({}),
             emailDeveloperForm: new SparkForm({
@@ -37357,13 +37358,15 @@ Vue.component('spark-websites-list', {
     },
 
 
-    computed: {
-        validWebsiteUrl: function validWebsiteUrl() {
-            return this.editedWebsite.url != "";
-        }
-    },
-
     methods: {
+        isValidDomain: function isValidDomain(url) {
+            if (!url) return false;
+            //var re = /^((http||https):\/\/)(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
+            var re = /^(http[s]?\:\/\/)?(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
+            return re.test(url);
+        },
+
+
         /**
          * Edit the specify website url .
          */
@@ -37382,21 +37385,21 @@ Vue.component('spark-websites-list', {
         *
         */
         doneEditUrl: function doneEditUrl(website) {
-            var _this = this;
-
             if (!this.editingWebsite) {
                 return;
             }
-            if (website.url == "") {
-                website.url = this.beforeEditCache;
+            this.editingWebsite = null;
+            if (!this.isValidDomain(website.url)) {
+                this.websiteUrlForm.error = 'The url format is invalid';
+                this.editingWebsite = website;
                 return;
             }
-            this.editingWebsite = null;
-            if (website.url != this.beforeEditCache && website.url != "") {
+            this.websiteUrlForm.error = '';
+            if (website.url != this.beforeEditCache) {
                 this.websiteUrlForm.url = website.url;
-                Spark.put('/api/websites/' + website.id, this.websiteUrlForm).then(function (response) {
-                    _this.editingWebsite = null;
-                });
+                Spark.put('/api/websites/' + website.id, this.websiteUrlForm);
+                this.websiteUrlForm.error = '';
+                this.websiteUrlForm.url = '';
             }
         },
 
@@ -37406,6 +37409,8 @@ Vue.component('spark-websites-list', {
          */
         cancelEditUrl: function cancelEditUrl(website) {
             this.editingWebsite = null;
+            this.websiteUrlForm.url = '';
+            this.websiteUrlForm.error = '';
             website.url = this.beforeEditCache;
         },
 
@@ -37434,23 +37439,23 @@ Vue.component('spark-websites-list', {
          * Delete the specified website.
          */
         deleteWebsite: function deleteWebsite() {
-            var _this2 = this;
+            var _this = this;
 
             Spark.delete('/api/websites/' + this.deletingWebsite.id, this.deleteWebsiteForm).then(function () {
-                _this2.$dispatch('updateWebsites');
+                _this.$dispatch('updateWebsites');
 
                 $('#modal-delete-website').modal('hide');
             });
         },
         sendEmail: function sendEmail() {
-            var _this3 = this;
+            var _this2 = this;
 
             this.emailDeveloperForm.busy = true;
             this.emailDeveloperForm.errors.forget();
 
             Spark.post('/api/email-developer/' + this.showingWebsite.id, this.emailDeveloperForm).then(function (response) {
-                _this3.busy = false;
-                _this3.emailDeveloperForm.email = '';
+                _this2.busy = false;
+                _this2.emailDeveloperForm.email = '';
                 $('#modal-view-website').modal('hide');
             });
         }
