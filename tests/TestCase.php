@@ -34,6 +34,15 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
      * @param array $attributes
      * @return mixed
      */
+    public function makeUser(array $attributes = [])
+    {
+        return factory(User::class)->make($attributes);
+    }
+
+    /**
+     * @param array $attributes
+     * @return mixed
+     */
     public function createUser(array $attributes = [])
     {
         return factory(User::class)->create($attributes);

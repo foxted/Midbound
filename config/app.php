@@ -190,6 +190,7 @@ return [
         Midbound\Providers\AuthServiceProvider::class,
         Midbound\Providers\EventServiceProvider::class,
         Midbound\Providers\RouteServiceProvider::class,
+        Midbound\Providers\MailchimpServiceProvider::class,
 
     ],
 

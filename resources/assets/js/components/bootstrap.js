@@ -19,6 +19,7 @@ require('./auth/registration');
 
 // Guest
 require('./guest/plans');
+require('./guest/newsletter');
 
 // Websites
 require('./websites/install-website');

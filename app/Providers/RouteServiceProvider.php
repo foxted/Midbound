@@ -45,6 +45,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapPublicRoutes();
         $this->mapAppRoutes();
         $this->mapApiRoutes();
+        $this->mapApiGuestRoutes();
     }
 
     /**
@@ -87,6 +88,21 @@ class RouteServiceProvider extends ServiceProvider
             'as' => 'app.'
         ], function ($router) {
             require base_path('routes/app.php');
+        });
+    }
+
+    /**
+     * Define the "api" routes for the guest application.
+     * @return void
+     */
+    protected function mapApiGuestRoutes()
+    {
+        Route::group([
+            'namespace' => $this->namespace . '\API',
+            'prefix' => 'api',
+            'middleware' => ['api-guest']
+        ], function ($router) {
+            require base_path('routes/api-guest.php');
         });
     }
 

@@ -26,7 +26,7 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/plans">Plans &amp; Pricing</a></li>
+                    {{--<li><a href="/plans">Plans &amp; Pricing</a></li>--}}
                     <li><a href="/login" class="navbar-link">Log In</a></li>
                 </ul>
             </div>

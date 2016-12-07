@@ -6452,12 +6452,15 @@ body {
   background-color: #e9ebee; }
   .jumbotron h1,
   .jumbotron .h1 {
+    max-width: 750px;
+    margin: .5em auto;
+    text-align: center;
     color: #2F4858; }
   .jumbotron p {
     margin-bottom: 15px;
     font-size: 22px;
     font-weight: 400;
-    max-width: 600px;
+    max-width: 750px;
     text-align: center;
     margin-left: auto;
     margin-right: auto; }
@@ -6592,6 +6595,10 @@ h4.navbar-text {
 .bulk-actions {
   position: fixed;
   top: 60px; }
+
+.newsletter small {
+  margin: 0 0 .5em;
+  display: inline-block; }
 
 .undo-message {
   z-index: 100;

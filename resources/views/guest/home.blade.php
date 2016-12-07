@@ -1,17 +1,20 @@
 @extends('layouts.guest')
 
 @section('title')
-    Turn prospects into leads faster with Midbound
+    Connect with the right prospects, at the right time
 @stop
 
 @section('content')
     <div class="jumbotron">
         <div class="container">
-            <h1>Turn prospects into leads, faster</h1>
-            <p class="lead">With Midbound, you know which sales prospects matter and when to make your move.</p>
-            <div class="cta">
-                <a href="{{ route('auth.register') }}" class="btn btn-primary btn-lg">Get Started for Free</a>
-            </div>
+            <h1>Connect with the right prospects, at the right time</h1>
+            <p class="lead">
+                Midbound tells you when prospects are interested and
+                makes it easy to connect with them just in time, with the right message.
+            </p>
+            <newsletter inline-template>
+                @include('guest.partials.newsletter')
+            </newsletter>
         </div>
     </div>
 
@@ -49,10 +52,12 @@
                 </div>
             </div>
             <div class="panel panel-benefit text-center">
-                <h2>The simple, nimble Prospect Engagement Platform</h2>
-                <p>Try Midbound today to see how simple life can be.</p>
-                <div class="cta">
-                    <a href="{{ route('auth.register') }}" class="btn btn-primary btn-lg">Get Started for Free</a>
+                <h2>The simple, nimble Prospect Connection Platform</h2>
+                <p>Request access to the Midbound beta to see how simple life can be.</p>
+                <div class="row">
+                    <newsletter inline-template>
+                        @include('guest.partials.newsletter')
+                    </newsletter>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
         trigger: 'click'
     });
     $('[data-toggle="popover"]').on('show.bs.popover', function() {
-        setTimeout(() => {
+        setTimeout(function() {
             $(this).popover('hide');
         }, 2000);
     });
