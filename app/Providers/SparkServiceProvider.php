@@ -14,10 +14,10 @@ class SparkServiceProvider extends ServiceProvider
      * @var array
      */
     protected $details = [
-        'vendor' => 'Midbound',
+        'vendor' => 'Saasquatch',
         'product' => 'Midbound',
-        'street' => '',
-        'location' => 'Vancouver, BC',
+        'street' => '48-35 40th St, 2nd Floor',
+        'location' => 'Long Island City, NY 11104',
         'phone' => '555-555-5555',
     ];
 

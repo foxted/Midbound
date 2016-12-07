@@ -1,6 +1,6 @@
 <div class="footer">
     <div class="container">
-        <p>Copyright &copy; Midbound.com {{ date("Y") }}</p>
-        <p>Made by <a href="https://twitter.com/valentinprgnd">@valentinprgnd</a> &amp; <a href="https://twitter.com/alhankeser">@alhankeser</a></p>
+        <p>Copyright {{ date("Y") }} &copy; Midbound.com</p>
+        <p>Made by Saasquatch Inc.</p>
     </div>
 </div>

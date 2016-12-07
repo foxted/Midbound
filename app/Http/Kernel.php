@@ -38,6 +38,11 @@ class Kernel extends HttpKernel
             'auth:api',
             'bindings',
         ],
+
+        'api-guest' => [
+            'throttle:60,1',
+            'bindings'
+        ]
     ];
 
     /**
