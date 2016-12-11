@@ -1,13 +1,5 @@
 <spark-subscribe-stripe :user="user" :team="team"
                 :plans="plans" :billable-type="billableType" inline-template>
-<<<<<<< HEAD
-    <div>
-        <!-- Common Subscribe Form Contents -->
-    @include('spark::settings.subscription.subscribe-common')
-
-    <!-- Billing Information -->
-        <div id="billing-information" class="panel panel-default" v-show="selectedPlan">
-=======
 
     <div>
         <!-- Common Subscribe Form Contents -->
@@ -15,7 +7,7 @@
 
         <!-- Billing Information -->
         <div class="panel panel-default" v-show="selectedPlan">
->>>>>>> 01bc6d3... Update spark
+
             <div class="panel-heading">Billing Information</div>
 
             <div class="panel-body">
@@ -25,11 +17,7 @@
                     us from charging the card. Please contact your card provider or customer support.
                 </div>
 
-<<<<<<< HEAD
                 <form class="form-horizontal subscribe-form" role="form">
-=======
-                <form class="form-horizontal" role="form">
->>>>>>> 01bc6d3... Update spark
                     <!-- Billing Address Fields -->
                     @if (Spark::collectsBillingAddress())
                         <h2><i class="fa fa-btn fa-map-marker"></i>Billing Address</h2>
