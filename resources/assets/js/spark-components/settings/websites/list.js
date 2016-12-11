@@ -58,10 +58,13 @@ Vue.component('spark-websites-list', {
             this.websiteUrlForm.error = '';
             if (website.url != this.beforeEditCache) {
                 this.websiteUrlForm.url = website.url;
-                Spark.put(`/api/websites/${website.id}`, this.websiteUrlForm);
-                this.websiteUrlForm.error = '';
-                this.websiteUrlForm.url = '';
-            } 
+                Spark.put(`/api/websites/${website.id}`, this.websiteUrlForm)
+                    .then(() => {
+                        this.websiteUrlForm.error = '';
+                        this.websiteUrlForm.url = '';
+                        this.websiteUrlForm.reset();
+                    });
+                            } 
       
         },
 
