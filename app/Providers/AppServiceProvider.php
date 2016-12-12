@@ -4,6 +4,7 @@ namespace Midbound\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Midbound\Http\Requests\Auth\RegisterRequest;
+use Midbound\Http\Requests\Settings\Teams\RemoveTeamMemberRequest;
 use Midbound\Observers\ProspectObserver;
 use Midbound\Observers\VisitorEventObserver;
 use Midbound\Observers\WebsiteObserver;
@@ -40,6 +41,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance(
             \Laravel\Spark\Contracts\Http\Requests\Auth\RegisterRequest::class,
             RegisterRequest::class
+        );
+        $this->app->instance(
+            \Laravel\Spark\Http\Requests\Settings\Teams\RemoveTeamMemberRequest::class,
+            RemoveTeamMemberRequest::class
         );
     }
 
