@@ -35913,9 +35913,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-b5c6a6fe", module.exports)
+    hotAPI.createRecord("_v-67010392", module.exports)
   } else {
-    hotAPI.update("_v-b5c6a6fe", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-67010392", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":38,"vue-hot-reload-api":36}],43:[function(require,module,exports){
@@ -35969,9 +35969,9 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-b5aa77fc", module.exports)
+    hotAPI.createRecord("_v-670f1b13", module.exports)
   } else {
-    hotAPI.update("_v-b5aa77fc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-670f1b13", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":38,"vue-hot-reload-api":36}],44:[function(require,module,exports){
@@ -37342,8 +37342,14 @@ Vue.component('spark-websites-list', {
      */
     data: function data() {
         return {
+            editing: false,
+            editingWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
+            websiteUrlForm: new SparkForm({
+                url: '',
+                error: ''
+            }),
             deleteWebsiteForm: new SparkForm({}),
             emailDeveloperForm: new SparkForm({
                 email: ''
@@ -37353,6 +37359,62 @@ Vue.component('spark-websites-list', {
 
 
     methods: {
+        isValidDomain: function isValidDomain(url) {
+            if (!url) return false;
+            //var re = /^((http||https):\/\/)(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
+            var re = /^(http[s]?\:\/\/)?(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
+            return re.test(url);
+        },
+
+
+        /**
+         * Edit the specify website url .
+         */
+        toggleEditUrl: function toggleEditUrl(website, $event) {
+            this.beforeEditCache = website.url;
+            this.editingWebsite = website;
+            if (this.editing || this.editingWebsite) {
+                this.$nextTick(function () {
+                    $($event.target).next('input').focus();
+                });
+            }
+        },
+
+
+        /** 
+        *
+        */
+        doneEditUrl: function doneEditUrl(website) {
+            if (!this.editingWebsite) {
+                return;
+            }
+            this.editingWebsite = null;
+            if (!this.isValidDomain(website.url)) {
+                this.websiteUrlForm.error = 'The url format is invalid';
+                this.editingWebsite = website;
+                return;
+            }
+            this.websiteUrlForm.error = '';
+            if (website.url != this.beforeEditCache) {
+                this.websiteUrlForm.url = website.url;
+                Spark.put('/api/websites/' + website.id, this.websiteUrlForm);
+                this.websiteUrlForm.error = '';
+                this.websiteUrlForm.url = '';
+            }
+        },
+
+
+        /**
+         * Cancel the edit website url .
+         */
+        cancelEditUrl: function cancelEditUrl(website) {
+            this.editingWebsite = null;
+            this.websiteUrlForm.url = '';
+            this.websiteUrlForm.error = '';
+            website.url = this.beforeEditCache;
+        },
+
+
         /**
          * Show the edit website modal.
          */
