@@ -30,7 +30,6 @@ module.exports = {
                     () => {
                         Bus.$emit('updateTeam');
                         Bus.$emit('updateTeams');
-
                         self.form.finishProcessing();
                     },
                     (error) => {
