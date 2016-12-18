@@ -6,7 +6,7 @@ use Laravel\Spark\Http\Requests\Settings\Teams\RemoveTeamMemberRequest as FormRe
 
 class RemoveTeamMemberRequest extends FormRequest
 {
-      /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
