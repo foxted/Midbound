@@ -105,7 +105,8 @@ class ProcessTrackingEvent extends Job implements ShouldQueue
             $event = new VisitorEvent([
                 'action' => $this->attributes['midac'],
                 'url' => $this->attributes['midurl'],
-                'resource' => $this->attributes['midrc']
+                'resource' => $this->attributes['midrc'],
+                'ip_address' => $this->attributes['ip_address']
             ]);
             $event->visitor()->associate($visitor);
             $event->team()->associate($visitor->team);

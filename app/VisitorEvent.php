@@ -27,13 +27,13 @@ class VisitorEvent extends Model
     protected $casts = [
         'created_at' => 'date',
         'updated_at' => 'date',
-        'deleted_at' => 'date',
+        'deleted_at' => 'date'
     ];
 
     /**
      * @var array
      */
-    protected $fillable = ['action', 'url', 'resource'];
+    protected $fillable = ['action', 'url', 'resource', 'ip_address'];
 
     /**
      * @var array
