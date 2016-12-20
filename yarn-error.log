@@ -1,14 +1,14 @@
 Arguments: 
-  /usr/local/Cellar/node/7.1.0/bin/node /Users/tonyta/.npm-packages/bin/yarn
+  /usr/local/Cellar/node/7.2.1/bin/node /Users/valentinprugnaud/.npm-packages/bin/yarn
 
 PATH: 
-  /Users/tonyta/.npm-packages/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/opt/php70/bin:/Users/tonyta/.bin
+  /Users/valentinprugnaud/.npm-packages/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
-  0.17.6
+  0.18.1
 
 Node version: 
-  7.1.0
+  7.2.1
 
 Platform: 
   darwin x64
@@ -5022,10 +5022,10 @@ Lockfile:
 
 Trace: 
   SyntaxError: Unknown token 34:1
-      at Parser.unexpected (/Users/tonyta/.npm-packages/lib/node_modules/yarn/lib/lockfile/parse.js:218:11)
-      at Parser.parse (/Users/tonyta/.npm-packages/lib/node_modules/yarn/lib/lockfile/parse.js:323:14)
-      at exports.default (/Users/tonyta/.npm-packages/lib/node_modules/yarn/lib/lockfile/parse.js:13:17)
-      at /Users/tonyta/.npm-packages/lib/node_modules/yarn/lib/lockfile/wrapper.js:129:60
+      at Parser.unexpected (/Users/valentinprugnaud/.npm-packages/lib/node_modules/yarn/lib/lockfile/parse.js:224:11)
+      at Parser.parse (/Users/valentinprugnaud/.npm-packages/lib/node_modules/yarn/lib/lockfile/parse.js:329:14)
+      at exports.default (/Users/valentinprugnaud/.npm-packages/lib/node_modules/yarn/lib/lockfile/parse.js:13:17)
+      at /Users/valentinprugnaud/.npm-packages/lib/node_modules/yarn/lib/lockfile/wrapper.js:129:60
       at Generator.next (<anonymous>)
-      at step (/Users/tonyta/.npm-packages/lib/node_modules/yarn/node_modules/babel-runtime/helpers/asyncToGenerator.js:17:30)
-      at /Users/tonyta/.npm-packages/lib/node_modules/yarn/node_modules/babel-runtime/helpers/asyncToGenerator.js:28:13
+      at step (/Users/valentinprugnaud/.npm-packages/lib/node_modules/yarn/node_modules/babel-runtime/helpers/asyncToGenerator.js:17:30)
+      at /Users/valentinprugnaud/.npm-packages/lib/node_modules/yarn/node_modules/babel-runtime/helpers/asyncToGenerator.js:28:13
