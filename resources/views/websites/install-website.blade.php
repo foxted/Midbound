@@ -35,7 +35,7 @@
                             <a href="{{ route('app.activity') }}" title="Go to your dashboard" class="btn btn-default">
                                 <i class="fa fa-check"></i>&nbsp;This is done
                             </a>
-                            <a href="/dashboard" title="Do this later" href="{{ route('app.activity') }}" class="btn btn-ghost pull-right">
+                            <a href="{{ route('app.activity') }}" title="Do this later" href="{{ route('app.activity') }}" class="btn btn-ghost pull-right">
                                 Do this later
                             </a>
                         </main>
