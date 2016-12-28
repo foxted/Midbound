@@ -40,7 +40,7 @@
                         <label for="number" class="col-md-4 control-label">Card Information</label>
 
                         <div class="col-md-6">
-                            <i v-if="cardType" class="fa fa-input fa-cc-@{{ cardType }}"></i>
+                            <i v-if="cardType" :class="['fa', 'fa-input', cardIcon]"></i>
                             <input type="text"
                                    class="form-control"
                                    data-stripe="number"
@@ -107,13 +107,13 @@
                     <div class="form-group">
                         <div class="col-sm-6 col-sm-offset-4">
                             <button type="submit" class="btn btn-primary" @click.prevent="subscribe" :disabled="form.busy">
-                            <span v-if="form.busy">
-                                <i class="fa fa-btn fa-spinner fa-spin"></i>Subscribing
-                            </span>
+                                <span v-if="form.busy">
+                                    <i class="fa fa-btn fa-spinner fa-spin"></i>Subscribing
+                                </span>
 
                                 <span v-else>
-                                Subscribe
-                            </span>
+                                    Subscribe
+                                </span>
                             </button>
                         </div>
                     </div>

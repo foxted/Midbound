@@ -60,13 +60,16 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import Vue from 'vue';
 
     export default {
 
         props: ['component', 'registerForm', 'emailDeveloperForm', 'website'],
 
-        ready() {
-            $('input').first().focus();
+        mounted() {
+            Vue.nextTick(() => {
+                $('input').first().focus();
+            });
         },
 
         methods: {

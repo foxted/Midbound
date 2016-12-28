@@ -64,8 +64,10 @@ class Register implements Contract
             self::$team = $invitation->team;
 
             $invitation->delete();
-        } else {
-            self::$team = Spark::interact(CreateTeam::class, [$user, ['name' => $request->team]]);
+        } elseif (Spark::onlyTeamPlans()) {
+            self::$team = Spark::interact(CreateTeam::class, [
+                $user, ['name' => $request->team, 'slug' => $request->team_slug]
+            ]);
         }
 
         $user->currentTeam();

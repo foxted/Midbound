@@ -93,7 +93,7 @@
                                 </span>
                         </li>
                         <li data-toggle="tooltip" v-if="selectedLimit > 0"
-                            data-placement="left" title="You can track up to @{{ selectedLimit }} prospects">
+                            data-placement="left" :title="'You can track up to ' + selectedLimit + ' prospects'">
                                 <span class="hover-info">
                                     <strong>Up to @{{ selectedLimit | numberFormat }}</strong> Prospects
                                 </span>
@@ -149,7 +149,7 @@
                                 </span>
                         </li>
                         <li data-toggle="tooltip" v-if="selectedLimit > 0"
-                            data-placement="left" title="Track up to @{{ selectedLimit }} prospects">
+                            data-placement="left" :title="'Track up to ' + selectedLimit + ' prospects'">
                                 <span class="hover-info">
                                     <strong>Up to @{{ selectedLimit | numberFormat }}</strong> Prospects
                                 </span>

@@ -11,7 +11,7 @@ Vue.component('install-website', {
         }
     },
 
-    ready() {
+    mounted() {
         this.$http.get(this.websiteUrl).then(({ data: website }) => {
             this.website = website;
         });

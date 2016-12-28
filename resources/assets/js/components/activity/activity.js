@@ -28,7 +28,7 @@ Vue.component('activity', {
         }
     },
 
-    ready() {
+    mounted() {
         this.$http.get(this.endpoint).then((response) => {
             this.prospects = response.data.data;
             delete response.data.data;
@@ -59,7 +59,9 @@ Vue.component('activity', {
                     this.prospectIgnored = false;
                     return;
                 }
-                this.prospects.$remove(prospect);
+
+                var index = this.prospects.indexOf(prospect);
+                this.prospects.splice(index, 1)
 
                 this.prospectTracked = prospect;
 
@@ -76,7 +78,9 @@ Vue.component('activity', {
                     this.prospectTracked = false;
                     return;
                 }
-                this.prospects.$remove(prospect);
+
+                var index = this.prospects.indexOf(prospect);
+                this.prospects.splice(index, 1)
 
                 this.prospectIgnored = prospect;
 
@@ -90,7 +94,8 @@ Vue.component('activity', {
             prospect.assignee = user;
 
             if(this.filter === 'prospects' && prospect.assignee.id !== this.user.id) {
-                this.prospects.$remove(prospect);
+                var index = this.prospects.indexOf(prospect);
+                this.prospects.splice(index, 1)
             }
 
             this.$http.put(`/api/prospects/${prospect.id}`, {assignee_id: user.id});
@@ -100,7 +105,8 @@ Vue.component('activity', {
             prospect.assignee = null;
 
             if(this.filter === 'prospects') {
-                this.prospects.$remove(prospect);
+                var index = this.prospects.indexOf(prospect);
+                this.prospects.splice(index, 1)
             }
 
             this.$http.put(`/api/prospects/${prospect.id}`, { assignee_id: 0 });

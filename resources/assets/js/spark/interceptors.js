@@ -1,9 +1,10 @@
 module.exports = (request, next) => {
 
     if (Cookies.get('XSRF-TOKEN') !== undefined) {
-        console.log(request.headers);
         request.headers.set('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     }
+
+    request.headers.set('X-CSRF-TOKEN', Spark.csrfToken);
 
     /**
      * Intercept the incoming responses.

@@ -19,8 +19,8 @@
     @yield('scripts', '')
     @include('layouts.partials-app.scripts-header')
 </head>
-<body @if (Auth::check()) class="with-navbar" @endif v-cloak>
-    <div id="spark-app">
+<body @if (Auth::check()) class="with-navbar" @endif>
+    <div id="spark-app" v-cloak>
         <!-- Navigation -->
         @if (Auth::check())
             @include('spark::nav.user')
@@ -37,12 +37,12 @@
             @include('spark::modals.support')
             @include('spark::modals.session-expired')
         @endif
-
-        <!-- JavaScript -->
-        <script src="/js/app.js"></script>
-        <script src="/js/all.js"></script>
-        <script src="/js/sweetalert.min.js"></script>
-        @include('layouts.partials-app.scripts-footer')
     </div>
+
+    <!-- JavaScript -->
+    <script src="/js/app.js"></script>
+    <script src="/js/all.js"></script>
+    <script src="/js/sweetalert.min.js"></script>
+    @include('layouts.partials-app.scripts-footer')
 </body>
 </html>

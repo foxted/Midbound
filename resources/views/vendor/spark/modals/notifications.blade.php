@@ -43,7 +43,7 @@
 
                                     <span v-else class="fa-stack fa-2x">
                                         <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa @{{ notification.icon }} fa-stack-1x fa-inverse"></i>
+                                        <i :class="['fa', 'fa-stack-1x', 'fa-inverse', notification.icon]"></i>
                                     </span>
                                 </figure>
 
@@ -65,14 +65,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="notification-body">
-                                        @{{{ notification.parsed_body }}}
-                                    </div>
+                                    <div class="notification-body" v-html="notification.parsed_body"></div>
 
                                     <!-- Notification Action -->
-                                    <a :href="notification.action_url" class="btn btn-primary" v-if="notification.action_text">
-                                        @{{ notification.action_text }}
-                                    </a>
+                                    <a :href="notification.action_url" class="btn btn-primary"
+                                       v-if="notification.action_text" v-html="notification.action_text"></a>
 
                                 </div>
                             </div>
@@ -97,14 +94,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="notification-body">
-                                        @{{{ announcement.parsed_body }}}
-                                    </div>
+                                    <div class="notification-body" v-html="announcement.parsed_body"></div>
 
                                     <!-- Announcement Action -->
-                                    <a :href="announcement.action_url" class="btn btn-primary" v-if="announcement.action_text">
-                                        @{{ announcement.action_text }}
-                                    </a>
+                                    <a :href="announcement.action_url" class="btn btn-primary"
+                                       v-if="announcement.action_text" v-html="announcement.action_text "></a>
 
                                 </div>
                             </div>

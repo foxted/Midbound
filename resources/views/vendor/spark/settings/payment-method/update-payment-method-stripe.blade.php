@@ -33,7 +33,7 @@
             </div>
 
             <span v-if="billable.card_last_four && !updating">
-                <i class="fa fa-btn @{{ cardIcon }}"></i>
+                <i :class="['fa', 'fa-btn', cardIcon]"></i>
                 Card ending in @{{ billable.card_last_four }}
             </span>
 
@@ -62,7 +62,7 @@
                     <label for="number" class="col-md-4 control-label">Card Information</label>
 
                     <div class="col-md-6">
-                        <i v-if="cardType" class="fa fa-input fa-cc-@{{ cardType }}"></i>
+                        <i v-if="cardType" :class="['fa', 'fa-input', cardIcon]"></i>
                         <input type="text"
                             class="form-control"
                             data-stripe="number"
