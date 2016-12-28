@@ -43,9 +43,19 @@ return [
     |--------------------------------------------------------------------------
     */
     'plans' => [
+        'default' => 1000,
+        'limits' => [
+            250,
+            500,
+            1000,
+            2500,
+            5000,
+            10000,
+            -1
+        ],
         'basic' => [
             'basic-250' => [
-                'name' => 'Basic',
+                'name' => 'Basic 250',
                 'price' => 19.99,
                 'attributes' => [
                     'limit' => 250,
@@ -53,7 +63,7 @@ return [
                 ]
             ],
             'basic-500' => [
-                'name' => 'Basic',
+                'name' => 'Basic 500',
                 'price' => 35.99,
                 'attributes' => [
                     'limit' => 500,
@@ -61,7 +71,7 @@ return [
                 ]
             ],
             'basic-1000' => [
-                'name' => 'Basic',
+                'name' => 'Basic 1K',
                 'price' => 59.99,
                 'attributes' => [
                     'limit' => 1000,
@@ -69,7 +79,7 @@ return [
                 ]
             ],
             'basic-2500' => [
-                'name' => 'Basic',
+                'name' => 'Basic 2.5K',
                 'price' => 79.99,
                 'attributes' => [
                     'limit' => 2500,
@@ -77,7 +87,7 @@ return [
                 ]
             ],
             'basic-5000' => [
-                'name' => 'Basic',
+                'name' => 'Basic 5K',
                 'price' => 99.99,
                 'attributes' => [
                     'limit' => 5000,
@@ -85,17 +95,25 @@ return [
                 ]
             ],
             'basic-10000' => [
-                'name' => 'Basic',
+                'name' => 'Basic 10K',
                 'price' => 119.99,
                 'attributes' => [
                     'limit' => 10000,
+                    'category' => 'basic'
+                ]
+            ],
+            'basic-unlimited' => [
+                'name' => 'Basic Unlimited',
+                'price' => 499.99,
+                'attributes' => [
+                    'limit' => -1,
                     'category' => 'basic'
                 ]
             ]
         ],
         'pro' => [
             'pro-250' => [
-                'name' => 'Pro',
+                'name' => 'Pro 250',
                 'price' => 49.99,
                 'attributes' => [
                     'limit' => 250,
@@ -103,7 +121,7 @@ return [
                 ]
             ],
             'pro-500' => [
-                'name' => 'Pro',
+                'name' => 'Pro 500',
                 'price' => 89.99,
                 'attributes' => [
                     'limit' => 500,
@@ -111,7 +129,7 @@ return [
                 ]
             ],
             'pro-1000' => [
-                'name' => 'Pro',
+                'name' => 'Pro 1K',
                 'price' => 149.99,
                 'attributes' => [
                     'limit' => 1000,
@@ -119,7 +137,7 @@ return [
                 ]
             ],
             'pro-2500' => [
-                'name' => 'Pro',
+                'name' => 'Pro 2.5K',
                 'price' => 199.99,
                 'attributes' => [
                     'limit' => 2500,
@@ -127,7 +145,7 @@ return [
                 ]
             ],
             'pro-5000' => [
-                'name' => 'Pro',
+                'name' => 'Pro 5K',
                 'price' => 249.99,
                 'attributes' => [
                     'limit' => 5000,
@@ -135,10 +153,18 @@ return [
                 ]
             ],
             'pro-10000' => [
-                'name' => 'Pro',
+                'name' => 'Pro 10K',
                 'price' => 299.99,
                 'attributes' => [
                     'limit' => 10000,
+                    'category' => 'pro'
+                ]
+            ],
+            'pro-unlimited' => [
+                'name' => 'Pro Unlimited',
+                'price' => 899.99,
+                'attributes' => [
+                    'limit' => -1,
                     'category' => 'pro'
                 ]
             ]

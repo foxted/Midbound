@@ -1,5 +1,6 @@
+import Payment from 'payment';
+
 var base = require('settings/payment-method/update-payment-method-stripe');
-var Payment = require('payment');
 
 Vue.component('spark-update-payment-method-stripe', {
     props: ['user', 'team', 'billableType'],
@@ -39,10 +40,13 @@ Vue.component('spark-update-payment-method-stripe', {
         Stripe.setPublishableKey(Spark.stripeKey);
 
         this.initializeBillingAddress();
+        this.initializeForm();
     },
 
     watch: {
         expiry(value) {
+            console.log(value);
+
             let expiry = Payment.fns.cardExpiryVal(value);
 
             if(expiry.month) {
@@ -60,6 +64,12 @@ Vue.component('spark-update-payment-method-stripe', {
     },
 
     methods: {
+        initializeForm() {
+            Payment.formatCardNumber($('.update-form input[data-stripe="number"]'));
+            Payment.formatCardExpiry($('.update-form input[data-stripe="exp"]'));
+            Payment.formatCardCVC($('.update-form input[data-stripe="cvc"]'));
+        },
+
         toggleUpdate() {
             if(this.updating) {
                 this.cardForm.name = '';
@@ -72,9 +82,7 @@ Vue.component('spark-update-payment-method-stripe', {
             } else {
                 this.updating = true;
                 this.$nextTick(() => {
-                    Payment.formatCardNumber($('input[data-stripe="number"]'));
-                    Payment.formatCardExpiry($('input[data-stripe="exp"]'));
-                    Payment.formatCardCVC($('input[data-stripe="cvc"]'));
+                    this.initializeForm();
                 })
             }
         },

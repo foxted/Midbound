@@ -1,13 +1,30 @@
 <spark-cancel-subscription :user="user" :team="team" :billable-type="billableType" inline-template>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <button class="btn btn-danger-outline"
+    <div class="panel panel-danger">
+        <div class="panel-heading clearfix">
+            <div class="pull-left">
+                <i class="fa fa-warning"></i>&nbsp;Danger Zone
+            </div>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item clearfix">
+                <div class="pull-left">
+                    <h4>Cancel your subscription</h4>
+                    <p class="text-muted">
+                        <small>
+                            The benefits of your subscription will continue until your current billing period ends.
+                            You may resume your subscription at no extra cost until the end of the billing period.
+                        </small>
+                    </p>
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-danger-outline"
                     @click="confirmCancellation"
                     :disabled="form.busy">
-
-                Cancel Subscription
-            </button>
-        </div>
+                    Cancel subscription
+                    </button>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <!-- Confirm Cancellation Modal -->

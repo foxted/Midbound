@@ -74,6 +74,27 @@
         .fa {
             font-size: $fa-font-size-base;
         }
+
+        &.clearfix {
+            display: flex;
+            padding: 0 1em;
+            white-space: normal;
+            &:hover {
+                background: transparent;
+            }
+            .pull-left, .pull-right {
+                flex: 1 1 50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .pull-left {
+                align-items: flex-start;
+            }
+            .pull-right {
+                align-items: flex-end;
+            }
+        }
     }
 }
 
