@@ -9,7 +9,7 @@
     @elseif(Request::is('activity/prospects'))
         <div class="text-center empty-message">
             <h2>No prospects assigned to you... yet.</h2>
-            <p>Go on the <a href="{{ route('app.activity') }}">activity</a> page and assign prospect to yourself!</p>
+            <p>See all <a href="{{ route('app.activity') }}">prospects</a> and assign yourself a prospect!</p>
         </div>
     @else
         <div class="text-center empty-message">
