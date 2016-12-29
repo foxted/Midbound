@@ -1,7 +1,7 @@
 @extends('spark::layouts.app')
 
 @section('content')
-    <prospects-index :user="user" inline-template>
+    <prospects-show :user="user" inline-template>
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
@@ -79,9 +79,15 @@
                                     <p class="event">
                                         {{ $event->actionVerb }} <a href="#">{{ $event->cleanUrl }}</a>
                                     </p>
+                                @elseif($event->isCapture())
+                                    <p class="event">
+                                        {{ $event->actionVerb }} <strong>{{ $event->resource }}</strong>
+                                        @if($event->url) on <a href="{{ $event->url }}">{{ $event->cleanUrl }}</a> @endif
+                                    </p>
                                 @else
                                     <p class="event">
                                         {{ $event->actionVerb }} <strong>{{ $event->resource }}</strong>
+                                        @if($event->url) from <a href="{{ $event->url }}">{{ $event->cleanUrl }}</a> @endif
                                     </p>
                                 @endif
 
@@ -97,5 +103,5 @@
                 </div>
             </div>
         </div>
-    </prospects-index>
+    </prospects-show>
 @endsection
