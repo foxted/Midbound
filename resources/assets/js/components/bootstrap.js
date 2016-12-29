@@ -27,3 +27,5 @@ require('./websites/install-website');
 // Activity
 require('./activity/activity');
 
+// Prospects
+require('./prospects/show');

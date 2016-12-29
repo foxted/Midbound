@@ -84,4 +84,12 @@ class VisitorEvent extends Model
     {
         return $this->action === self::TYPE_PAGEVIEW;
     }
+
+    /**
+     * @return bool
+     */
+    public function isCapture()
+    {
+        return $this->action === self::TYPE_CAPTURE;
+    }
 }
