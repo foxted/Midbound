@@ -20,7 +20,9 @@ trait Searchable
      */
     public function searchableAs()
     {
-        return 'midbound';
+        $model = (new \ReflectionClass($this))->getShortName();
+
+        return strtolower($model);
     }
 
     /**
@@ -33,41 +35,6 @@ trait Searchable
         $data = $this->itemResponse($this->getTransformer(), $this);
 
         return $data['data'];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSearchableKey()
-    {
-        return $this->objectID;
-    }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function getReverseSearchableKey($key)
-    {
-        return (int) str_replace("{$this->getResourceName()}-", '', $key);
-    }
-
-    /**
-     * @return string
-     */
-    public function getObjectIDAttribute()
-    {
-        return "{$this->getResourceName()}-{$this->getKey()}";
-    }
-
-    /**
-     * @return string
-     */
-    public function getResourceName()
-    {
-        $model = (new \ReflectionClass($this))->getShortName();
-
-        return strtolower($model);
     }
 
     /**
