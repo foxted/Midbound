@@ -2,6 +2,7 @@
 
 namespace Midbound\Providers;
 
+use Laravel\Spark as Spark;
 use Illuminate\Support\ServiceProvider;
 use Midbound\Http\Requests\Auth\RegisterRequest;
 use Midbound\Http\Requests\Settings\Teams\CreateInvitationRequest;
@@ -39,19 +40,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->instance(
-            \Laravel\Spark\Contracts\Http\Requests\Auth\RegisterRequest::class,
-            RegisterRequest::class
-        );
-        $this->app->instance(
-            \Laravel\Spark\Http\Requests\Settings\Teams\RemoveTeamMemberRequest::class,
-            RemoveTeamMemberRequest::class
-        );
-        $this->app->instance(
-            \Laravel\Spark\Http\Requests\Settings\Teams\CreateInvitationRequest::class,
-            CreateInvitationRequest::class
-        );
-
+        $this->overrideRegistration();
+        $this->overrideTeamMemberPermissions();
+        $this->overrideInvitationRequest();
     }
 
     /**
@@ -62,5 +53,38 @@ class AppServiceProvider extends ServiceProvider
         foreach ($this->observers as $model => $observer) {
             $model::observe($observer);
         }
+    }
+
+    /**
+     * Override user registration request validation
+     */
+    private function overrideRegistration()
+    {
+        $this->app->instance(
+            Spark\Contracts\Http\Requests\Auth\RegisterRequest::class,
+            RegisterRequest::class
+        );
+    }
+
+    /**
+     * Overrides team member permissions
+     */
+    private function overrideTeamMemberPermissions()
+    {
+        $this->app->instance(
+            Spark\Http\Requests\Settings\Teams\RemoveTeamMemberRequest::class,
+            RemoveTeamMemberRequest::class
+        );
+    }
+
+    /**
+     * Overrides invitation request validation
+     */
+    private function overrideInvitationRequest()
+    {
+        $this->app->instance(
+            Spark\Http\Requests\Settings\Teams\CreateInvitationRequest::class,
+            CreateInvitationRequest::class
+        );
     }
 }
