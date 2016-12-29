@@ -5,7 +5,7 @@
                 <div class="prospect-left">
                     <div class="prospect-header">
                         <div class="prospect-avatar">
-                            <a href="prospect.url" :title="prospect.name"><img :src="prospect.avatar" width="40"></a>
+                            <a :href="prospect.url" :title="prospect.name"><img :src="prospect.avatar" width="40"></a>
                         </div>
                         <div class="prospect-info">
                             <h4 class="name">
