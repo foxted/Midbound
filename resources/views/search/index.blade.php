@@ -5,6 +5,17 @@
         <div class="row">
             <div class="col-sm-3 col-md-2">
                 <div class="list-group">
+                    <li class="list-group-item">
+                        @if(!str_contains(URL::previous(), 'search'))
+                            <a href="{{ URL::previous() }}">
+                        @else
+                            <a href="{{  route('app.activity') }}">
+                        @endif
+                            <small>
+                                <i class="fa fa-angle-left"></i>&nbsp;Back
+                            </small>
+                        </a>
+                    </li>
                     <li class="list-header">Filters</li>
                     <li class="list-group-item @if(!Request::has('assigned') && !Request::has('ignored')) active @endif">
                         <a href="{{ route('app.search', ['q' => Request::get('q')]) }}" aria-controls="all">
