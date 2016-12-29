@@ -31,8 +31,10 @@ Vue.component('spark-subscribe-stripe', {
         };
     },
 
-    ready() {
-        $('[data-toggle="tooltip"]').tooltip();
+    mounted() {
+        Vue.nextTick(() => {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
         this.initializeForm();
     },
 

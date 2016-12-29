@@ -20,6 +20,10 @@ class CreateTeam implements Contract
             'name' => 'required',
         ]);
 
+        $validator->sometimes('slug', 'required|alpha_dash|unique:teams,slug', function () {
+            return Spark::teamsIdentifiedByPath();
+        });
+
         $validator->after(function ($validator) use ($user) {
             $this->validateMaximumTeamsNotExceeded($validator, $user);
         });

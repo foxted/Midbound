@@ -18,7 +18,7 @@
                                 <!-- URL -->
                                 <td class="website-url" :key="website.id">
                                     <div class="btn-table-align" 
-                                        :class="{ editing: website == editingWebsite, 'has-error' : this.websiteUrlForm.error }">
+                                        :class="{ editing: website == editingWebsite, 'has-error' : websiteUrlForm.error }">
                                         <label class="view" @click="toggleEditUrl(website, $event)">
                                                 @{{ website.url }}
                                                 <span class="overlay-icon fa fa-pencil"></span>
@@ -37,7 +37,7 @@
                                         {{--<span v-if="website.last_used_at">--}}
                                             {{--@{{ website.last_used_at | datetime }}--}}
                                         {{--</span>--}}
-                                        <span v-else>
+                                        <span>
                                             Never
                                         </span>
                                     </div>

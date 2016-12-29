@@ -9,8 +9,10 @@ Vue.component('spark-update-subscription', {
             selectedLimit: 1000
         }
     },
-    ready() {
-        $('[data-toggle="tooltip"]').tooltip();
+    mounted() {
+        Vue.nextTick(() => {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
         this.selectedLimit = this.activePlan.attributes.limit;
     },
     computed: {

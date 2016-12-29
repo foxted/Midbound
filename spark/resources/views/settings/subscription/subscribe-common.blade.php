@@ -69,13 +69,13 @@
                     <!-- Plan Price -->
                     <td>
                         <div class="btn-table-align">
-                            @{{ plan.price | currency spark.currencySymbol }} / @{{ plan.interval | capitalize }}
+                            @{{ plan.price | currency }} / @{{ plan.interval | capitalize }}
                         </div>
                     </td>
 
                     <!-- Trial Days -->
                     <td>
-                        <div class="btn-table-align" v-if="plan.trialDays">
+                        <div class="btn-table-align" v-if="plan.trialDays && ! hasSubscribed(plan)">
                             @{{ plan.trialDays}} Day Trial
                         </div>
                     </td>

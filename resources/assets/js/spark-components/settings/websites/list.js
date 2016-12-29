@@ -22,7 +22,7 @@ Vue.component('spark-websites-list', {
     },
 
     methods: {
-       isValidDomain(url) {
+        isValidDomain(url) {
             if (!url) return false;
             //var re = /^((http||https):\/\/)(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
             var re = /^(http[s]?\:\/\/)?(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
@@ -35,16 +35,16 @@ Vue.component('spark-websites-list', {
         toggleEditUrl(website, $event) {
             this.beforeEditCache = website.url;
             this.editingWebsite = website;
-            if(this.editing || this.editingWebsite) {
+            if (this.editing || this.editingWebsite) {
                 this.$nextTick(() => {
                     $($event.target).next('input').focus();
                 });
             }
         },
 
-        /** 
-        *
-        */
+        /**
+         *
+         */
         doneEditUrl(website) {
             if (!this.editingWebsite) {
                 return
@@ -52,7 +52,7 @@ Vue.component('spark-websites-list', {
             this.editingWebsite = null;
             if (!this.isValidDomain(website.url)) {
                 this.websiteUrlForm.error = 'The url format is invalid';
-                this.editingWebsite  = website;
+                this.editingWebsite = website;
                 return
             }
             this.websiteUrlForm.error = '';
@@ -64,8 +64,8 @@ Vue.component('spark-websites-list', {
                         this.websiteUrlForm.url = '';
                         this.websiteUrlForm.reset();
                     });
-                            } 
-      
+            }
+
         },
 
 
@@ -104,7 +104,7 @@ Vue.component('spark-websites-list', {
         deleteWebsite() {
             Spark.delete(`/api/websites/${this.deletingWebsite.id}`, this.deleteWebsiteForm)
                 .then(() => {
-                    this.$dispatch('updateWebsites');
+                    this.$emit('updateWebsites');
 
                     $('#modal-delete-website').modal('hide');
                 });

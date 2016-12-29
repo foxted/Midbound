@@ -24,7 +24,7 @@
 <div class="row" v-if="invitation">
     <div class="col-md-8 col-md-offset-2">
         <div class="alert alert-success">
-            We found your invitation to the <strong>@{{ invitation.team.name }}</strong> team!
+            We found your invitation to the <strong>@{{ invitation.team.name }}</strong> {{ Spark::teamString() }}!
         </div>
     </div>
 </div>
@@ -112,7 +112,7 @@
                                     </span>
 
                                     <span v-else>
-                                        @{{ plan.price | currency spark.currencySymbol }} / @{{ plan.interval | capitalize }}
+                                        @{{ plan.price | currency }} / @{{ plan.interval | capitalize }}
                                     </span>
                                 </div>
                             </td>

@@ -336,13 +336,23 @@ trait ManagesAvailablePlans
     }
 
     /**
+     * Determine if the application has team plans only.
+     *
+     * @return bool
+     */
+    public static function onlyTeamPlans()
+    {
+        return static::plans()->isEmpty() && ! static::teamPlans()->isEmpty();
+    }
+
+    /**
      * Get all of the plans, both individual and teams.
      *
      * @return \Illuminate\Support\Collection
      */
     public static function allPlans()
     {
-        return collect(array_merge(static::$plans, static::$teamPlans));
+        return static::plans()->merge(static::teamPlans());
     }
 
     /**

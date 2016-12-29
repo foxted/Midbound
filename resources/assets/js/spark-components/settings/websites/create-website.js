@@ -23,7 +23,7 @@ Vue.component('spark-create-website', {
 
                     this.resetForm();
 
-                    this.$dispatch('updateWebsites');
+                    this.$emit('updateWebsites');
                 });
         },
 
