@@ -67,7 +67,7 @@
                         <div class="cta-description">No Credit Card Required</div>
                     </div>
                     <div class="panel-footer" v-else>
-                        <a class="btn btn-primary" href="#">
+                        <a class="btn btn-lg btn-block btn-primary" href="#">
                             Contact Us
                         </a>
                     </div>
@@ -102,15 +102,21 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="panel-footer" v-if="selectedPlan.limit > 0">
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ route('auth.register') }}">Start 30-Day Free Trial</a>
-                        <div class="cta-description">No Credit Card Required</div>
+                    <div class="panel-footer">
+                        <button class="btn btn-lg btn-block btn-primary" disabled>
+                            Coming soon!
+                        </button>
+                        <div class="cta-description" v-if="selectedPlan.limit > 0">&nbsp;</div>
                     </div>
-                    <div class="panel-footer" v-else>
-                        <a class="btn btn-primary" href="#">
-                            Contact Us
-                        </a>
-                    </div>
+                    {{--<div class="panel-footer" v-if="selectedPlan.limit > 0">--}}
+                        {{--<a class="btn btn-primary btn-block btn-lg" href="{{ route('auth.register') }}">Start 30-Day Free Trial</a>--}}
+                        {{--<div class="cta-description">No Credit Card Required</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="panel-footer" v-else>--}}
+                        {{--<a class="btn btn-lg btn-block btn-primary" href="#">--}}
+                            {{--Contact Us--}}
+                        {{--</a>--}}
+                    {{--</div>--}}
                 </div>
             </div>
         </plans>

@@ -5,6 +5,7 @@ namespace Midbound\Http\Controllers\API;
 use Illuminate\Http\Response;
 use Midbound\Http\Controllers\Controller;
 use Midbound\Http\Requests\Settings\Websites\CreateWebsite;
+use Midbound\Http\Requests\Settings\Websites\UpdateWebsite;
 use Midbound\Website;
 
 /**
@@ -31,6 +32,19 @@ class WebsitesController extends Controller
     {
         $website = Website::create($request->only('url'));
 
+        return response()->json($website);
+    }
+
+
+    /**
+     * @param UpdateWebsiteUrl $request
+      * @return mixed
+     */
+    public function update(UpdateWebsite $request, $id)
+    {
+        $websites = Website::currentTeam()->latest()->get();
+        $website = $websites->find($id);
+        $website->fill($request->only('url'))->save();
         return response()->json($website);
     }
 

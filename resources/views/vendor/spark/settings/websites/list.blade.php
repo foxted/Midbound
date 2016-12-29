@@ -13,12 +13,21 @@
                             <th></th>
                         </thead>
 
-                        <tbody>
-                            <tr v-for="website in websites">
+                        <tbody v-cloak>
+                            <tr v-for="website in websites" >
                                 <!-- URL -->
-                                <td>
-                                    <div class="btn-table-align">
-                                        @{{ website.url }}
+                                <td class="website-url" :key="website.id">
+                                    <div class="btn-table-align" 
+                                        :class="{ editing: website == editingWebsite, 'has-error' : websiteUrlForm.error }">
+                                        <label class="view" @click="toggleEditUrl(website, $event)">
+                                                @{{ website.url }}
+                                                <span class="overlay-icon fa fa-pencil"></span>
+                                        </label>
+                                        <input class="edit form-control" type="text" 
+                                            v-model="website.url"
+                                            @blur="doneEditUrl(website)"
+                                            @keyup.enter="doneEditUrl(website)"
+                                            @keyup.esc="cancelEditUrl(website)" /> 
                                     </div>
                                 </td>
 
@@ -28,8 +37,7 @@
                                         {{--<span v-if="website.last_used_at">--}}
                                             {{--@{{ website.last_used_at | datetime }}--}}
                                         {{--</span>--}}
-
-                                        <span v-else>
+                                        <span>
                                             Never
                                         </span>
                                     </div>
@@ -130,7 +138,7 @@
                         Are you sure you want to delete this website? If deleted, the associated tracker will not record
                         any data anymore.
                     </div>
-
+ 
                     <!-- Modal Actions -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">No, Go Back</button>

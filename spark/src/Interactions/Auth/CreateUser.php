@@ -17,7 +17,16 @@ class CreateUser implements Contract
         $validator = $this->baseValidator($request);
 
         $validator->sometimes('team', 'required|max:255', function ($input) {
-            return Spark::usesTeams() && ! isset($input['invitation']);
+            return Spark::usesTeams() &&
+                   Spark::onlyTeamPlans() &&
+                   ! isset($input['invitation']);
+        });
+
+        $validator->sometimes('team_slug', 'required|alpha_dash|unique:teams,slug', function ($input) {
+            return Spark::usesTeams() &&
+                   Spark::onlyTeamPlans() &&
+                   Spark::teamsIdentifiedByPath() &&
+                   ! isset($input['invitation']);
         });
 
         return $validator;
@@ -48,7 +57,7 @@ class CreateUser implements Contract
         return [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:'.Spark::minimumPasswordLength(),
             'vat_id' => 'max:50|vat_id',
             'terms' => 'required|accepted',
         ];

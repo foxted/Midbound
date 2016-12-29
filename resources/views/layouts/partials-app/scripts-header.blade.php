@@ -1,7 +1,9 @@
 <!-- Global Spark Object -->
 <script>
     window.Spark = <?php echo json_encode(array_merge(
-            Spark::scriptVariables(), []
+            Spark::scriptVariables(), [
+                'plans' => config('spark.plans')
+            ]
     )); ?>;
 </script>
 

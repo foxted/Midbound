@@ -6,8 +6,14 @@ Vue.component('spark-websites-list', {
      */
     data() {
         return {
+            editing: false,
+            editingWebsite: null,
             showingWebsite: null,
             deletingWebsite: null,
+            websiteUrlForm: new SparkForm({
+                url: '',
+                error: ''
+            }),
             deleteWebsiteForm: new SparkForm({}),
             emailDeveloperForm: new SparkForm({
                 email: ''
@@ -16,6 +22,63 @@ Vue.component('spark-websites-list', {
     },
 
     methods: {
+        isValidDomain(url) {
+            if (!url) return false;
+            //var re = /^((http||https):\/\/)(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
+            var re = /^(http[s]?\:\/\/)?(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
+            return re.test(url);
+        },
+
+        /**
+         * Edit the specify website url .
+         */
+        toggleEditUrl(website, $event) {
+            this.beforeEditCache = website.url;
+            this.editingWebsite = website;
+            if (this.editing || this.editingWebsite) {
+                this.$nextTick(() => {
+                    $($event.target).next('input').focus();
+                });
+            }
+        },
+
+        /**
+         *
+         */
+        doneEditUrl(website) {
+            if (!this.editingWebsite) {
+                return
+            }
+            this.editingWebsite = null;
+            if (!this.isValidDomain(website.url)) {
+                this.websiteUrlForm.error = 'The url format is invalid';
+                this.editingWebsite = website;
+                return
+            }
+            this.websiteUrlForm.error = '';
+            if (website.url != this.beforeEditCache) {
+                this.websiteUrlForm.url = website.url;
+                Spark.put(`/api/websites/${website.id}`, this.websiteUrlForm)
+                    .then(() => {
+                        this.websiteUrlForm.error = '';
+                        this.websiteUrlForm.url = '';
+                        this.websiteUrlForm.reset();
+                    });
+            }
+
+        },
+
+
+        /**
+         * Cancel the edit website url .
+         */
+        cancelEditUrl(website) {
+            this.editingWebsite = null;
+            this.websiteUrlForm.url = '';
+            this.websiteUrlForm.error = '';
+            website.url = this.beforeEditCache;
+        },
+
         /**
          * Show the edit website modal.
          */
@@ -41,7 +104,7 @@ Vue.component('spark-websites-list', {
         deleteWebsite() {
             Spark.delete(`/api/websites/${this.deletingWebsite.id}`, this.deleteWebsiteForm)
                 .then(() => {
-                    this.$dispatch('updateWebsites');
+                    this.$emit('updateWebsites');
 
                     $('#modal-delete-website').modal('hide');
                 });

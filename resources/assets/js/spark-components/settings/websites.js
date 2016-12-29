@@ -12,7 +12,7 @@ Vue.component('spark-websites', {
     /**
      * Prepare the component.
      */
-    ready() {
+    mounted() {
         this.getWebsites();
     },
 

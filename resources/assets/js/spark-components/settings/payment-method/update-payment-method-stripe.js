@@ -1,5 +1,6 @@
+import Payment from 'payment';
+
 var base = require('settings/payment-method/update-payment-method-stripe');
-var Payment = require('payment');
 
 Vue.component('spark-update-payment-method-stripe', {
     props: ['user', 'team', 'billableType'],
@@ -35,14 +36,17 @@ Vue.component('spark-update-payment-method-stripe', {
     /**
      * Prepare the component.
      */
-    ready() {
+    mounted() {
         Stripe.setPublishableKey(Spark.stripeKey);
 
         this.initializeBillingAddress();
+        this.initializeForm();
     },
 
     watch: {
         expiry(value) {
+            console.log(value);
+
             let expiry = Payment.fns.cardExpiryVal(value);
 
             if(expiry.month) {
@@ -60,25 +64,6 @@ Vue.component('spark-update-payment-method-stripe', {
     },
 
     methods: {
-        toggleUpdate() {
-            if(this.updating) {
-                this.cardForm.name = '';
-                this.cardForm.number = '';
-                this.cardForm.cvc = '';
-                this.cardForm.month = '';
-                this.cardForm.year = '';
-                this.expiry = '';
-                this.updating = false;
-            } else {
-                this.updating = true;
-                this.$nextTick(() => {
-                    Payment.formatCardNumber($('input[data-stripe="number"]'));
-                    Payment.formatCardExpiry($('input[data-stripe="exp"]'));
-                    Payment.formatCardCVC($('input[data-stripe="cvc"]'));
-                })
-            }
-        },
-
         /**
          * Initialize the billing address form for the billable entity.
          */
@@ -95,49 +80,28 @@ Vue.component('spark-update-payment-method-stripe', {
             this.form.country = this.billable.billing_country || 'US';
         },
 
-
-        /**
-         * Update the billable's card information.
-         */
-        update() {
-            this.form.busy = true;
-            this.form.errors.forget();
-            this.form.successful = false;
-            this.cardForm.errors.forget();
-
-            // Here we will build out the payload to send to Stripe to obtain a card token so
-            // we can create the actual subscription. We will build out this data that has
-            // this credit card number, CVC, etc. and exchange it for a secure token ID.
-            const payload = {
-                name: this.cardForm.name,
-                number: this.cardForm.number,
-                cvc: this.cardForm.cvc,
-                exp_month: this.cardForm.month,
-                exp_year: this.cardForm.year,
-                address_line1: this.form.address,
-                address_line2: this.form.address_line_2,
-                address_city: this.form.city,
-                address_state: this.form.state,
-                address_zip: this.form.zip,
-                address_country: this.form.country,
-            };
-
-            // Once we have the Stripe payload we'll send it off to Stripe and obtain a token
-            // which we will send to the server to update this payment method. If there is
-            // an error we will display that back out to the user for their information.
-            Stripe.card.createToken(payload, (status, response) => {
-                if (response.error) {
-                    this.cardForm.errors.set({number: [
-                        response.error.message
-                    ]});
-
-                    this.form.busy = false;
-                } else {
-                    this.sendUpdateToServer(response.id);
-                }
-            });
+        initializeForm() {
+            Payment.formatCardNumber($('.update-form input[data-stripe="number"]'));
+            Payment.formatCardExpiry($('.update-form input[data-stripe="exp"]'));
+            Payment.formatCardCVC($('.update-form input[data-stripe="cvc"]'));
         },
 
+        toggleUpdate() {
+            if(this.updating) {
+                this.cardForm.name = '';
+                this.cardForm.number = '';
+                this.cardForm.cvc = '';
+                this.cardForm.month = '';
+                this.cardForm.year = '';
+                this.expiry = '';
+                this.updating = false;
+            } else {
+                this.updating = true;
+                this.$nextTick(() => {
+                    this.initializeForm();
+                })
+            }
+        },
 
         /**
          * Send the credit card update information to the server.
@@ -147,8 +111,8 @@ Vue.component('spark-update-payment-method-stripe', {
 
             Spark.put(this.urlForUpdate, this.form)
                 .then(() => {
-                    this.$dispatch('updateUser');
-                    this.$dispatch('updateTeam');
+                    Bus.$emit('updateUser');
+                    Bus.$emit('updateTeam');
 
                     this.cardForm.name = '';
                     this.cardForm.number = '';
@@ -169,13 +133,6 @@ Vue.component('spark-update-payment-method-stripe', {
 
     computed: {
         /**
-         * Get the new card brand
-         */
-        cardType() {
-            return Payment.fns.cardType(this.cardForm.number);
-        },
-
-        /**
          * Get the billable entity's "billable" name.
          */
         billableName() {
@@ -190,6 +147,13 @@ Vue.component('spark-update-payment-method-stripe', {
             return this.billingUser
                 ? '/settings/payment-method'
                 : `/settings/${Spark.pluralTeamString}/${this.team.id}/payment-method`;
+        },
+
+        /**
+         * Get the new card brand
+         */
+        cardType() {
+            return Payment.fns.cardType(this.cardForm.number);
         },
 
         /**
@@ -217,7 +181,6 @@ Vue.component('spark-update-payment-method-stripe', {
                     return 'fa-cc-stripe';
             }
         },
-
 
         /**
          * Get the placeholder for the billable entity's credit card.

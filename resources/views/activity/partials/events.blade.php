@@ -1,5 +1,5 @@
 <div class="col-sm-9 col-md-10" v-if="prospects && prospects.length">
-    <div class="panel panel-prospect" v-for="prospect in prospects | orderBy 'created_at' -1">
+    <div class="panel panel-prospect" v-for="prospect in prospects">
         <div class="panel-body">
             <div class="prospect-top">
                 <div class="prospect-left">
@@ -11,7 +11,7 @@
                             <h4 class="name">
                                 <a :href="prospect.url">@{{ prospect.name }}</a>
                             </h4>
-                            <a href="mailto:@{{ prospect.email }}" class="email">@{{ prospect.email }}</a>
+                            <a :href="'mailto:'+ prospect.email" class="email">@{{ prospect.email }}</a>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 </ul>
             </div>
             {{--<a class="btn btn-ghost btn-sm" href="#"><i class="fa fa-envelope"></i> Email</a>--}}
-            <a class="btn btn-ghost btn-sm" href="@{{ prospect.linkedin }}" target="_blank">
+            <a class="btn btn-ghost btn-sm" :href="prospect.linkedin" target="_blank">
                 <i class="fa fa-linkedin-square"></i> LinkedIn
             </a>
             <div class="pull-right">

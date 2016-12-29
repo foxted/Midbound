@@ -2,7 +2,7 @@
  * Export the root Spark application.
  */
 module.exports = {
-    el: 'body',
+    el: '#spark-app',
 
 
     /**
@@ -34,6 +34,8 @@ module.exports = {
      * The component has been created by Vue.
      */
     created() {
+        var self = this;
+
         if (Spark.userId) {
             this.loadDataForAuthenticatedUser();
         }
@@ -41,50 +43,28 @@ module.exports = {
         if (Spark.userId && Spark.usesApi) {
             this.refreshApiTokenEveryFewMinutes();
         }
-    },
 
+        Bus.$on('updateUser', function () {
+            self.getUser();
+        });
 
-    /**
-     * Prepare the application.
-     */
-    ready() {
-        this.whenReady();
-    },
+        Bus.$on('updateUserData', function() {
+            self.loadDataForAuthenticatedUser();
+        });
 
+        Bus.$on('updateTeams', function () {
+            self.getTeams();
+        });
 
-    events: {
-        /*
-         * Update the current user of the application.
-         */
-        updateUser() {
-            this.getUser();
-        },
-
-
-        /**
-         * Update the current team list.
-         */
-        updateTeams() {
-            this.getTeams();
-        },
-
-
-        /**
-         * Show the application's notifications.
-         */
-        showNotifications() {
+        Bus.$on('showNotifications', function () {
             $('#modal-notifications').modal('show');
 
-            this.markNotificationsAsRead();
-        },
+            self.markNotificationsAsRead();
+        });
 
-
-        /**
-         * Show the customer support e-mail form.
-         */
-        showSupportForm() {
-            if (this.user) {
-                this.supportForm.from = this.user.email;
+        Bus.$on('showSupportForm', function () {
+            if (self.user) {
+                self.supportForm.from = self.user.email;
             }
 
             $('#modal-support').modal('show');
@@ -92,7 +72,15 @@ module.exports = {
             setTimeout(() => {
                 $('#support-subject').focus();
             }, 500);
-        }
+        });
+    },
+
+
+    /**
+     * Prepare the application.
+     */
+    mounted() {
+        this.whenReady();
     },
 
 
@@ -124,7 +112,7 @@ module.exports = {
             }, 240000);
 
             setInterval(() => {
-                if (this.lastRefreshedApiTokenAt.diff(moment(), 'minutes') >= 5) {
+                if (moment().diff(this.lastRefreshedApiTokenAt, 'minutes') >= 5) {
                     this.refreshApiToken();
                 }
             }, 5000);

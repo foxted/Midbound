@@ -7,7 +7,8 @@ module.exports = {
             plans: [],
 
             form: new SparkForm({
-                name: ''
+                name: '',
+                slug: ''
             })
         };
     },
@@ -62,8 +63,10 @@ module.exports = {
          * Get the remaining teams in the active plan.
          */
         remainingTeams() {
+            var ownedTeams = _.filter(this.$parent.teams, {owner_id: this.$parent.billable.id});
+
             return this.activePlan
-                    ? this.activePlan.attributes.teams - this.$parent.teams.length
+                    ? this.activePlan.attributes.teams - ownedTeams.length
                     : 0;
         },
 
@@ -75,6 +78,7 @@ module.exports = {
             if (! this.hasTeamLimit) {
                 return true;
             }
+
             return this.remainingTeams > 0;
         }
     },
@@ -104,6 +108,20 @@ module.exports = {
     },
 
 
+    watch: {
+        /**
+         * Watch the team name for changes.
+         */
+        'form.name': function (val, oldVal) {
+            if (this.form.slug == '' ||
+                this.form.slug == oldVal.toLowerCase().replace(/[\s\W-]+/g, '-')
+            ) {
+                this.form.slug = val.toLowerCase().replace(/[\s\W-]+/g, '-');
+            }
+        }
+    },
+
+
     methods: {
         /**
          * Create a new team.
@@ -112,9 +130,10 @@ module.exports = {
             Spark.post('/settings/'+Spark.pluralTeamString, this.form)
                 .then(() => {
                     this.form.name = '';
+                    this.form.slug = '';
 
-                    this.$dispatch('updateUser');
-                    this.$dispatch('updateTeams');
+                    Bus.$emit('updateUser');
+                    Bus.$emit('updateTeams');
                 });
         },
 

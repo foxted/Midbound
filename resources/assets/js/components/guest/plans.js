@@ -14,7 +14,7 @@ Vue.component('plans', {
         };
     },
 
-    ready() {
+    mounted() {
         this.selectedPlan = {limit: 1000, basicPrice: 59.99, proPrice: 149.99};
     },
 
