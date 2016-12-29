@@ -15,3 +15,7 @@ Route::get('search', 'SearchController@index')->name('search');
 
 // Authentication
 Route::get('logout', 'Auth\LoginController@logout');
+
+// TeamMember
+Route::post('settings/teams/{team}/invitations', 'Settings\Teams\MailedInvitationController@store');
+Route::delete('settings/teams/{team}/members/{team_member}', 'Settings\Teams\TeamMemberController@destroy');

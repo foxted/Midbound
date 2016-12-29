@@ -1,11 +1,13 @@
 <spark-subscribe-stripe :user="user" :team="team"
                 :plans="plans" :billable-type="billableType" inline-template>
+
     <div>
         <!-- Common Subscribe Form Contents -->
-    @include('spark::settings.subscription.subscribe-common')
+        @include('spark::settings.subscription.subscribe-common')
 
-    <!-- Billing Information -->
-        <div id="billing-information" class="panel panel-default" v-show="selectedPlan">
+        <!-- Billing Information -->
+        <div class="panel panel-default" v-show="selectedPlan">
+
             <div class="panel-heading">Billing Information</div>
 
             <div class="panel-body">

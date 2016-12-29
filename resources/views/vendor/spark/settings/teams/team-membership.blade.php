@@ -1,15 +1,15 @@
 <spark-team-membership :user="user" :team="team" :billable-type="billableType" inline-template>
     <div>
-        @if (Auth::user()->ownsTeam($team))
-            <!-- Send Invitation -->
-            <div v-if="user && team">
-                @include('spark::settings.teams.send-invitation')
-            </div>
+        @if (Auth::user()->ownsTeam($team) || Auth::user()->onTeam($team))
+        <!-- Send Invitation -->
+        <div v-if="user && team">
+            @include('spark::settings.teams.send-invitation')
+        </div>
 
-            <!-- Pending Invitations -->
-            <div v-if="invitations && invitations.length > 0">
-                @include('spark::settings.teams.mailed-invitations')
-            </div>
+        <!-- Pending Invitations -->
+        <div v-if="invitations && invitations.length > 0">
+            @include('spark::settings.teams.mailed-invitations')
+        </div>
         @endif
 
         <!-- Team Members -->
