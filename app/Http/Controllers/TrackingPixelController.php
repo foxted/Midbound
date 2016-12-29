@@ -19,7 +19,6 @@ class TrackingPixelController extends Controller
     public function show(Request $request)
     {
         try {
-            $request->request->add(['ip_address' => $request->ip()]);
             dispatch(
                 new ProcessTrackingEvent($request->only(
                     'midid',
@@ -27,8 +26,7 @@ class TrackingPixelController extends Controller
                     'midac',
                     'midrc',
                     'midtype',
-                    'midurl',
-                    'ip_address'
+                    'midurl'
                 ))
             );
         } catch (Exception $e) {
