@@ -16,7 +16,8 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $prospects = Prospect::search($request->get('q', ''))->where('team.data.id', auth()->user()->currentTeam()->id);
+        $prospects = Prospect::search($request->get('q', ''))
+            ->where('team.data.id', auth()->user()->currentTeam()->id);
 
         $prospects = $this->applyFilters($request, $prospects);
 
@@ -32,11 +33,11 @@ class SearchController extends Controller
      */
     public function applyFilters(Request $request, Builder $query)
     {
-        if($request->has('assigned')) {
+        if ($request->has('assigned')) {
             $query->where('assignee.data.id', auth()->id());
         }
 
-        if($request->has('ignored')) {
+        if ($request->has('ignored')) {
             $query->where('is_ignored', 1);
         } else {
             $query->where('is_ignored', 0);

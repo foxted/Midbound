@@ -23,7 +23,7 @@ class ProspectTransformer extends TransformerAbstract
     public function transform(Prospect $prospect)
     {
         return [
-            'objectID' => $prospect->objectID,
+            'objectID' => $prospect->id,
             'id' => $prospect->id,
             'name' => $prospect->name,
             'email' => $prospect->email,
