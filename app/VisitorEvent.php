@@ -41,6 +41,11 @@ class VisitorEvent extends Model
     protected $appends = ['actionVerb', 'cleanUrl'];
 
     /**
+     * @var array
+     */
+    protected $touches = ['visitor'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function visitor()

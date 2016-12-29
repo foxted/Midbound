@@ -34,10 +34,10 @@
                                 <!-- Last Used At -->
                                 <td>
                                     <div class="btn-table-align">
-                                        {{--<span v-if="website.last_used_at">--}}
-                                            {{--@{{ website.last_used_at | datetime }}--}}
-                                        {{--</span>--}}
-                                        <span>
+                                        <span v-if="website.updated_at">
+                                            @{{ website.updated_at | human }}
+                                        </span>
+                                        <span v-else>
                                             Never
                                         </span>
                                     </div>

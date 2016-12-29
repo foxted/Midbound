@@ -20,6 +20,11 @@ class Visitor extends Model
     protected $fillable = ['guid', 'team_id', 'website_id'];
 
     /**
+     * @var array
+     */
+    protected $touches = ['website'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function website()

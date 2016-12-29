@@ -35,6 +35,14 @@ class Website extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function events()
+    {
+        return $this->hasManyThrough(VisitorEvent::class, Visitor::class);
+    }
+
+    /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getSnippetAttribute()
