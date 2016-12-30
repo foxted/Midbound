@@ -22,7 +22,7 @@ class Visitor extends Model
     /**
      * @var array
      */
-    protected $touches = ['website'];
+    protected $touches = ['website', 'prospect'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
