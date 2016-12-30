@@ -28,6 +28,8 @@
             @include('spark::nav.guest')
         @endif
 
+        @include('partials.alerts')
+
         <!-- Main Content -->
         @yield('content')
 
