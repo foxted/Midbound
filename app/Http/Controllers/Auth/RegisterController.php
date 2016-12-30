@@ -72,12 +72,12 @@ class RegisterController extends Controller
             ]);
 
             return response()->json([
-                'redirectUrl' => $website->installUrl
+                'redirect' => $website->installUrl
             ]);
         }
 
         return response()->json([
-            'redirectUrl' => route('app.activity')
+            'redirect' => route('app.activity')
         ]);
     }
 }

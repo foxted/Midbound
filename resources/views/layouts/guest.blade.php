@@ -29,18 +29,17 @@
 
     <!-- Footer -->
     @include('guest.footer')
-
-    <!-- Application Level Modals -->
-    @if (Auth::check())
-        @include('spark::modals.notifications')
-        @include('spark::modals.support')
-        @include('spark::modals.session-expired')
-    @endif
-
-    <!-- JavaScript -->
-    <script src="/js/app.js"></script>
-    <script src="/js/sweetalert.min.js"></script>
-    @include('layouts.partials-guest.scripts-footer')
 </div>
+<!-- Application Level Modals -->
+@if (Auth::check())
+    @include('spark::modals.notifications')
+    @include('spark::modals.support')
+    @include('spark::modals.session-expired')
+@endif
+
+<!-- JavaScript -->
+<script src="/js/app.js"></script>
+<script src="/js/sweetalert.min.js"></script>
+@include('layouts.partials-guest.scripts-footer')
 </body>
 </html>
