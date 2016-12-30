@@ -35,7 +35,7 @@ Vue.component('spark-register-stripe', {
                 terms: false,
                 coupon: null,
                 invitation: null,
-                website: null
+                website: ''
             }), Spark.forms.register),
 
             cardForm: new SparkForm({

@@ -46,7 +46,7 @@
             </div>
 
             <!-- Organization -->
-            <div class="form-group" :class="{'has-error': registerForm.errors.has('team')}">
+            <div class="form-group" :class="{'has-error': registerForm.errors.has('team')}" v-if="!registerForm.invitation">
                 <label class="col-md-4 control-label">Organization</label>
 
                 <div class="col-md-6">
@@ -61,7 +61,7 @@
             </div>
 
             <!-- Website -->
-            <div class="form-group" :class="{'has-error': registerForm.errors.has('website')}">
+            <div class="form-group" :class="{'has-error': registerForm.errors.has('website')}" v-if="!registerForm.invitation">
                 <label class="col-md-4 control-label">Website</label>
 
                 <div class="col-md-6">
