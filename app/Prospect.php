@@ -96,9 +96,7 @@ class Prospect extends Model
         $type = str_singular($type);
 
         if (in_array($type, config('tracking.allowed-fields'))) {
-            if (!$this->{$type}) {
-                $this->{$type} = strtolower($value);
-            }
+            $this->{$type} = strtolower($value);
         }
 
         return $this;
