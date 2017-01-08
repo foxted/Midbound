@@ -29,7 +29,7 @@ class Prospect extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'email', 'phone', 'company', 'is_ignored'];
+    protected $fillable = ['name', 'email', 'phone', 'company', 'is_ignored', 'city', 'state', 'country', 'timezone'];
 
     /**
      * @var array
