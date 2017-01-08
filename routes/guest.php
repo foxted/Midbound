@@ -15,3 +15,7 @@ Route::post('login/token', 'Auth\LoginController@verifyToken');
 // Registration...
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('auth.register');
 Route::post('register', 'Auth\RegisterController@register');
+
+Route::get('geolocate', function() {
+   dd(geoip("207.102.57.34"));
+});

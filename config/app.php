@@ -178,6 +178,7 @@ return [
          */
         Vinkla\Hashids\HashidsServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
+        Torann\GeoIP\GeoIPServiceProvider::class,
 
         /*
          * Application Service Providers...
