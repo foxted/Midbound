@@ -9,6 +9,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     {
         $trackingUrl = $this->buildTrackingUrl('pageview');
 
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
+
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
                 'action' => 'pageview'
@@ -19,6 +21,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     public function it_can_track_a_click_event()
     {
         $trackingUrl = $this->buildTrackingUrl('click', 'this');
+
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
 
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
@@ -32,6 +36,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     {
         $trackingUrl = $this->buildTrackingUrl('download', 'this');
 
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
+
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
                 'action' => 'download',
@@ -44,6 +50,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     {
         $trackingUrl = $this->buildTrackingUrl('subscribe', 'this');
 
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
+
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
                 'action' => 'subscribe',
@@ -55,6 +63,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     public function it_can_track_a_capture_event_with_name()
     {
         $trackingUrl = $this->buildTrackingUrl('capture', 'John Doe', 'name');
+
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
 
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
@@ -71,6 +81,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     {
         $trackingUrl = $this->buildTrackingUrl('capture', 'john@doe.com', 'email');
 
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
+
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
                 'action' => 'capture',
@@ -85,6 +97,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     public function it_can_track_a_capture_event_with_company()
     {
         $trackingUrl = $this->buildTrackingUrl('capture', 'Acme Inc.', 'company');
+
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
 
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
@@ -101,6 +115,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     {
         $trackingUrl = $this->buildTrackingUrl('capture', '123-456-7890', 'phone');
 
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
+
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
                 'action' => 'capture',
@@ -115,6 +131,8 @@ class TrackingPixelTest extends AbstractTrackingPixel
     public function it_cannot_track_a_random_event()
     {
         $trackingUrl = $this->buildTrackingUrl('capture', '@laravelphp', 'twitter');
+
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
 
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
@@ -140,9 +158,11 @@ class TrackingPixelTest extends AbstractTrackingPixel
     {
         $user = $this->createUser();
         $team = $this->createTeam($user);
-        $prospect = $this->createProspect($team);
+        $prospect = $this->createProspect($team, ['email' => 'john@doe.com']);
 
         $trackingUrl = $this->buildTrackingUrl('capture', $prospect->email, 'email');
+
+        $this->expectsEvents(\Midbound\Events\Tracker\VisitorEventWasTriggered::class);
 
         $this->visit($trackingUrl)
             ->seeInDatabase('visitor_events', [
