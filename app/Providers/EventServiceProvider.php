@@ -4,7 +4,9 @@ namespace Midbound\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Midbound\Events\Tracker\VisitorEventWasTriggered;
 use Midbound\Listeners\Auth\SendWelcomeEmail;
+use Midbound\Listeners\Tracker\GeolocateFromIpAddress;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -66,6 +68,10 @@ class EventServiceProvider extends ServiceProvider
         'Laravel\Spark\Events\Teams\UserInvitedToTeam' => [
             'Laravel\Spark\Listeners\Teams\CreateInvitationNotification',
         ],
+
+        VisitorEventWasTriggered::class => [
+            GeolocateFromIpAddress::class
+        ]
     ];
 
     /**
