@@ -39,7 +39,7 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
-                    {{--<li><a href="/register" class="btn btn-primary">60-Day Free Trial</a></li>--}}
+                    <li><a href="/register" class="btn btn-primary">60-Day Free Trial</a></li>
                     <li><a href="/dashboard" class="navbar-link">Go to dashboard</a></li>
                 </ul>
             </div>

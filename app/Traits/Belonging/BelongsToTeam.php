@@ -25,7 +25,7 @@ trait BelongsToTeam
      */
     public function scopeByTeam($query, Team $team)
     {
-        return $query->whereTeamId($team->id);
+        return $query->where($this->getTable().'.team_id', $team->id);
     }
 
     /**
@@ -34,6 +34,6 @@ trait BelongsToTeam
      */
     public function scopeCurrentTeam($query)
     {
-        return $query->whereTeamId(auth()->user()->currentTeam()->id);
+        return $query->byTeam(auth()->user()->currentTeam());
     }
 }

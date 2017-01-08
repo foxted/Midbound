@@ -6,12 +6,17 @@
             li {
                 flex: 1 1;
                 padding: 0;
-                color: $gray-light;
                 text-align: center;
 
+                a {
+                    color: $gray-light;
+                }
+
                 &.active {
-                    font-weight: bold;
-                    color: $text-color;
+                    a {
+                        font-weight: bold;
+                        color: $text-color;
+                    }
                 }
             }
         }

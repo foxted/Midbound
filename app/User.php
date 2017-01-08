@@ -2,6 +2,7 @@
 
 namespace Midbound;
 
+use Carbon\Carbon;
 use Laravel\Spark\CanJoinTeams;
 use Laravel\Spark\User as SparkUser;
 
@@ -19,6 +20,7 @@ class User extends SparkUser
     protected $fillable = [
         'name',
         'email',
+        'confirmed_at',
     ];
 
     /**
@@ -55,6 +57,11 @@ class User extends SparkUser
     protected $appends = ['firstname'];
 
     /**
+     * @var array
+     */
+    public $timestamps = ['created_at', 'updated_at', 'confirmed_at'];
+
+    /**
      * @return mixed
      */
     public function getFirstnameAttribute()
@@ -62,5 +69,22 @@ class User extends SparkUser
         $firstname = explode(' ', $this->name);
 
         return $firstname[0];
+    }
+
+    /**
+     * Confirm email address
+     */
+    public function confirm()
+    {
+        $this->confirmed_at = Carbon::now();
+        $this->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotConfirmed()
+    {
+        return is_null($this->confirmed_at);
     }
 }

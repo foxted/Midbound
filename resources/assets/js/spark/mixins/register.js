@@ -12,7 +12,6 @@ module.exports = {
         };
     },
 
-
     methods: {
         /**
          * Get the active plans for the application.

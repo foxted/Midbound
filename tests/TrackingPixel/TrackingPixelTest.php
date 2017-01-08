@@ -1,5 +1,7 @@
 <?php
 
+use Midbound\Prospect;
+
 class TrackingPixelTest extends AbstractTrackingPixel
 {
     /** @test */
@@ -131,5 +133,23 @@ class TrackingPixelTest extends AbstractTrackingPixel
             ->dontSeeInDatabase('prospects', [
                 'company' => '@laravelphp'
             ]);
+    }
+
+    /** @test */
+    public function it_can_connect_a_visitor_id_to_a_prospect_if_same_email()
+    {
+        $user = $this->createUser();
+        $team = $this->createTeam($user);
+        $prospect = $this->createProspect($team);
+
+        $trackingUrl = $this->buildTrackingUrl('capture', $prospect->email, 'email');
+
+        $this->visit($trackingUrl)
+            ->seeInDatabase('visitor_events', [
+                'action' => 'capture',
+                'resource' => 'john@doe.com'
+            ]);
+
+        $this->assertEquals(1, Prospect::whereEmail($prospect->email)->count());
     }
 }
