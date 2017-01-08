@@ -5,6 +5,7 @@ namespace Midbound\Jobs\Tracker;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Midbound\Events\Tracker\VisitorEventWasTriggered;
 use Midbound\Jobs\Job;
 use Midbound\Prospect;
 use Midbound\Visitor;
@@ -65,6 +66,8 @@ class RecordVisitorEvent extends Job implements ShouldQueue
             $event->visitor()->associate($this->visitor);
             $event->team()->associate($this->visitor->team);
             $event->save();
+
+            event(new VisitorEventWasTriggered($event));
         }
     }
 }

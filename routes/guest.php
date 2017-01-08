@@ -17,5 +17,5 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('au
 Route::post('register', 'Auth\RegisterController@register');
 
 Route::get('geolocate', function() {
-   dd(geoip("207.102.57.34"));
+   dd(geoip("127.0.0.1"));
 });

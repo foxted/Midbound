@@ -21,13 +21,13 @@ class TrackingPixelController extends Controller
      */
     public function show(Request $request)
     {
-        try {
+//        try {
             $this->processingEvent($request);
-        } catch (Exception $e) {
-            logger($e->getMessage());
-        } finally {
-            return $this->returnResponseImage();
-        }
+//        } catch (Exception $e) {
+//            logger($e->getMessage());
+//        } finally {
+//            return $this->returnResponseImage();
+//        }
     }
 
     /**
