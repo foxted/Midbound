@@ -15,5 +15,6 @@ elixir(function(mix) {
         })
        .scripts(['scripts.js'])
        .copy('node_modules/sweetalert/dist/sweetalert.min.js', 'public/js/sweetalert.min.js')
-       .copy('node_modules/sweetalert/dist/sweetalert.css', 'public/css/sweetalert.css');
+       .copy('node_modules/sweetalert/dist/sweetalert.css', 'public/css/sweetalert.css')
+       .copy('node_modules/@saasquatch-inc/midbound/build/midbound.js', 'public/midbound.js');
 });
